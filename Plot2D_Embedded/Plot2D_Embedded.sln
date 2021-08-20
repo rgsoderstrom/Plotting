@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plot2D_Embedded", "Plot2D_Embedded.csproj", "{0132D199-8804-4E6E-B2F9-95F6B9D0EE07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plot2D_Embedded_Driver", "..\Plot2D_Embedded_Driver\Plot2D_Embedded_Driver.csproj", "{07E67F0B-4D61-4DC2-9BF5-B0FBE8057616}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0132D199-8804-4E6E-B2F9-95F6B9D0EE07} = {0132D199-8804-4E6E-B2F9-95F6B9D0EE07}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{19014E91-6DB4-49DC-A707-C8B393BBD135}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0132D199-8804-4E6E-B2F9-95F6B9D0EE07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0132D199-8804-4E6E-B2F9-95F6B9D0EE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0132D199-8804-4E6E-B2F9-95F6B9D0EE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0132D199-8804-4E6E-B2F9-95F6B9D0EE07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07E67F0B-4D61-4DC2-9BF5-B0FBE8057616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07E67F0B-4D61-4DC2-9BF5-B0FBE8057616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07E67F0B-4D61-4DC2-9BF5-B0FBE8057616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07E67F0B-4D61-4DC2-9BF5-B0FBE8057616}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E8CD64E3-1507-4B9F-83A2-5C9ADA331DC1}
+	EndGlobalSection
+EndGlobal

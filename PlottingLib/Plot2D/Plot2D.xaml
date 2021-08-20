@@ -1,0 +1,70 @@
+﻿<Window x:Class="PlottingLib.Plot2D"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PlottingLib"
+             xmlns:Plot2D_Embedded="clr-namespace:Plot2D_Embedded;assembly=Plot2D_Embedded"
+             mc:Ignorable="d" 
+             Height="650" Width="800" Loaded="Window_Loaded" Closed="Window_Closed">
+    <!-- --> 
+    <DockPanel>
+        <Menu Name="MainMenu" DockPanel.Dock="Top" Background="White">
+            <MenuItem Header="Labels">
+                <MenuItem Name="XAxisLabelFormat" Header="X Axis">
+                    <RadioButton Content="Automatic" Name="XAxisLabelAutomatic" Tag="Auto"></RadioButton>
+                    <RadioButton Content="integer"                              Tag="0"></RadioButton>
+                    <RadioButton Content="float, 1 digit after decimal"         Tag="0.0"></RadioButton>
+                    <RadioButton Content="float, 2 digits"                      Tag="0.00"></RadioButton>
+                    <RadioButton Content="float, 3 digits"                      Tag="0.000"></RadioButton>
+                    <RadioButton Content="Exponential, 1 digit"                 Tag="0.0e+00"></RadioButton>
+                    <RadioButton Content="Exponential, 2 digits"                Tag="0.00e+00"></RadioButton>
+                    <RadioButton Content="Exponential, 3 digits"                Tag="0.000e+00"></RadioButton>
+                </MenuItem>
+                <MenuItem Name="YAxisLabelFormat" Header="Y Axis">
+                    <RadioButton Content="Automatic" Name="YAxisLabelAutomatic" Tag="Auto"></RadioButton>
+                    <RadioButton Content="integer"                              Tag="0"></RadioButton>
+                    <RadioButton Content="float, 1 digit after decimal"         Tag="0.0"></RadioButton>
+                    <RadioButton Content="float, 2 digits"                      Tag="0.00"></RadioButton>
+                    <RadioButton Content="float, 3 digits"                      Tag="0.000"></RadioButton>
+                    <RadioButton Content="Exponential, 1 digit"                 Tag="0.0e+00"></RadioButton>
+                    <RadioButton Content="Exponential, 2 digits"                Tag="0.00e+00"></RadioButton>
+                    <RadioButton Content="Exponential, 3 digits"                Tag="0.000e+00"></RadioButton>
+                </MenuItem>
+                <MenuItem Header="Rho"/>
+                <MenuItem Header="Theta"/>
+            </MenuItem>
+
+            <MenuItem Header="Grid">
+                <MenuItem Name="menuRectangularGrid" Header="Rectangular" IsCheckable="True" IsChecked="False" Click="RectangularGrid_Click"/>
+                <MenuItem Name="menuPolarGrid"       Header="Polar"       IsCheckable="True" IsChecked="False" Click="PolarGrid_Click"/>
+            </MenuItem>
+
+            <MenuItem Name="menuAxis" Header="Axis">
+                <MenuItem Name="menuAxisFreeze" Header="Freeze" IsCheckable="True" IsChecked="False" Click="AxisFreeze_Click"/>
+                <MenuItem Name="menuAxisEqual"  Header="Equal"  IsCheckable="True" IsChecked="False" Click="AxisEqual_Click"/>
+                <MenuItem Name="menuAxisTight"  Header="Tight"  IsCheckable="True" IsChecked="False" Click="AxisTight_Click"/>
+                <MenuItem Name="manualAxes"     Header="Manual ..." Click="ManualAxes_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!--
+        <ToolBar DockPanel.Dock="Top" Background="#FFf0f0f0">
+            <Button Name="ToolbarBtn_Print">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="PrintHS.png" Stretch="None"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </ToolBar>
+        -->
+
+        <Plot2D_Embedded:Bare2DPlot Name="PlotArea"/>
+    </DockPanel>
+    <!-- -->
+</Window>
+
+    
+    
+    

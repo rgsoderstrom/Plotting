@@ -1,0 +1,105 @@
+﻿<Window x:Class="Plot2D_Embedded_Driver.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Plot2D_Embedded="clr-namespace:Plot2D_Embedded;assembly=Plot2D_Embedded"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="950" Loaded="Window_Loaded">
+    <DockPanel Name="DriverPanel">
+
+        <DockPanel.Resources>
+            <Style x:Key="A">
+                <Setter Property="Control.Margin" Value ="8,2,8,0"></Setter>
+                <Setter Property="Control.Padding" Value ="10,3,10,3"></Setter>
+                <Setter Property="Control.Background" Value ="OldLace"></Setter>
+            </Style>
+
+            <Style x:Key="B">
+                <Setter Property="Control.Margin" Value ="8,2,8,0"></Setter>
+                <Setter Property="Control.Padding" Value ="8,0,0,0"></Setter>
+                <Setter Property="Control.VerticalContentAlignment" Value ="Center"></Setter>
+            </Style>
+        </DockPanel.Resources>
+
+        <Border Margin="1,2,0,1" BorderBrush="Black" BorderThickness="2" DockPanel.Dock="Left">
+
+            <StackPanel Orientation="Vertical">
+                <GroupBox Header="Grid Type" BorderThickness="2" BorderBrush="Black" Margin="8,2,8,0">
+                    <StackPanel Orientation="Vertical">
+                        <CheckBox Margin="8,2,8,0" Name="RectGrid_Button"  Padding="8,0,0,0" VerticalContentAlignment="Center" Click="RectGridButton_Click">Rect Grid</CheckBox>
+                        <CheckBox Margin="8,2,8,0" Name="PolarGrid_Button" Padding="8,0,0,3" VerticalContentAlignment="Center" Click="PolarGridButton_Click">PolarGrid</CheckBox>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Grid Values" BorderThickness="2" BorderBrush="Black" Margin="8,2,8,0">
+                    <StackPanel Orientation="Vertical">
+                        <RadioButton Margin="8,2,8,0" Name="GridLinesFixed_Button" Click="GridLinesFixed_Click">Lines Fixed</RadioButton>
+                        <RadioButton Margin="8,2,8,0" Name="GridValuesFixed_Button" Click="GridValuesFixed_Click">Values Fixed</RadioButton>
+                    </StackPanel>
+                </GroupBox>
+
+
+                <GroupBox Header="Axes" BorderThickness="2" BorderBrush="Black" Margin="8,2,8,0">
+                    <StackPanel Orientation="Vertical">
+                        <CheckBox Style="{StaticResource B}" Name="AxesEqual_Button"  Click="Equal_Click">Equal</CheckBox>
+                        <CheckBox Style="{StaticResource B}" Name="AxesTight_Button"  Click="Tight_Click">Tight</CheckBox>
+                        <CheckBox Style="{StaticResource B}" Name="AxesFrozen_Button" Click="Frozen_Click">Frozen</CheckBox>
+                        <CheckBox Style="{StaticResource B}" Name="PlotHold_Button"   Click="Hold_Click">Hold</CheckBox>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Mouse Functions" BorderThickness="2" BorderBrush="Black" Margin="8,2,8,0">
+                    <CheckBox Style="{StaticResource B}" Name="MouseEnable_Button"  Click="MouseEnable_Click">Mouse Enabled</CheckBox>
+                </GroupBox>
+
+                <Button Margin="8,4,8,0" Padding="10,3,10,3" Click="ClearButton_Click">Clear</Button>
+                <Button Margin="8,2,8,0" Padding="10,3,10,3" Click="Refresh_Click">Refresh</Button>
+
+                <Expander BorderBrush="Black" BorderThickness="1" Background="Gainsboro" Margin="8,4,8,0" Padding="10,3,10,3" Header="Basic Objects" IsExpanded="False">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                        <Button Style="{StaticResource A}" Click="PointButton_Click">Point</Button>
+                        <Button Style="{StaticResource A}" Click="CircleButton_Click">Circle</Button>
+                        <Button Style="{StaticResource A}" Click="EllipseButton_Click">Ellipse</Button>
+                        <Button Style="{StaticResource A}" Click="RectangleButton_Click">Rectangle</Button>
+                        <Button Style="{StaticResource A}" Click="RotateRectButton_Click" IsEnabled="False" Name="RotateButton">Rotate Rectangle</Button>
+                        <Button Style="{StaticResource A}" Click="MoveRectButton_Click" IsEnabled="False" Name="MoveButton">Move Rectangle</Button>
+                        <Button Style="{StaticResource A}" Click="LineViewCurveButton_Click">LineView Curve</Button>
+                        <Button Style="{StaticResource A}" Click="PointViewCurveButton_Click">PointView Curve</Button>
+                    </StackPanel>
+                </Expander>
+
+                <Expander BorderBrush="Black" BorderThickness="1" Background="Gainsboro" Margin="8,4,8,0" Padding="10,3,10,3" Header="Custom Objects">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                        <Button Style="{StaticResource A}" Click="DartButton_Click">Dart</Button>
+                        <Button Style="{StaticResource A}" Click="MoveDartButton_Click" IsEnabled="False" Name="MoveDartButton">Move Dart</Button>
+                        <Button Style="{StaticResource A}" Click="ButterflyButton_Click">Butterfly</Button>
+                    </StackPanel>
+                </Expander>
+
+
+                <Button Margin="8,2,8,0" Padding="10,3,10,3" Click="Text_Click">Text</Button>
+
+                <Expander BorderBrush="Black" BorderThickness="1" Background="Gainsboro"  Margin="8,4,8,0" Padding="10,3,10,3" Header="Composite Objects" IsExpanded="True">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                        <Button Style="{StaticResource A}" Click="VectorButton_Click">Vector</Button>
+                        <Button Style="{StaticResource A}" Click="VectorFieldButton_Click">Vector Field</Button>
+                        <Button Style="{StaticResource A}" Click="Contour_1_Button_Click">Contour Plot, Function</Button>
+                        <Button Style="{StaticResource A}" Click="Contour_2_Button_Click">Contour Plot, Matrix</Button>
+                    </StackPanel>
+                </Expander>
+
+            </StackPanel>
+        </Border>
+
+        <TextBox DockPanel.Dock="Bottom" Name="TxtBox" Margin="1,0,1,1" Height="150" AcceptsReturn="True" BorderBrush="Black" BorderThickness="2"
+                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        </TextBox>
+
+
+        <Plot2D_Embedded:Bare2DPlot Name="figure"/>
+
+
+
+    </DockPanel>
+</Window>
