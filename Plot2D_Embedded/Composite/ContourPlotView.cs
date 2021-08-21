@@ -34,7 +34,23 @@ namespace Plot2D_Embedded
         public readonly List<double>      yValues;
         public readonly CommonMath.Matrix zValues;
 
-        public bool ShowText           {get; set;} = false;
+        private bool showText = false;
+        
+        public bool ShowText           
+        {
+            get
+            {
+                return showText;
+            }
+
+            set
+            {
+                showText = value;
+                if (showText == true) {ShowContourLevelText ();}
+                else                  {RemoveContourLevelText ();}
+            }
+        }
+
         public bool ShowGradientArrows {get; set;} = true;
 
         //*********************************************************************************************
@@ -281,23 +297,6 @@ namespace Plot2D_Embedded
                 }
 
                 //
-                // add text near start of first segment of this contour
-                //
-
-                if (ShowText)
-                {
-                    if (lines [i].Count > 0)
-                    {
-                        TextView txt = new TextView (lines [i] [0].StartPoint, string.Format (" {0:0.0}", ContourValues [i]));
-                        Add (txt);
-
-                        txt.FontSizeAppInUnits = 0.2;
-                        txt.Color = contourColor [k];
-                        //boundingBox.Union (txt.BoundingBox);
-                    }
-                }
-
-                //
                 // gradient arrows
                 //
 
@@ -337,6 +336,31 @@ namespace Plot2D_Embedded
                 if (++k == contourColor.Length) {k = 0; if (++l == lineStyle.Length) l = 0;}
             }
         }
+
+        private void ShowContourLevelText ()
+        {
+            //
+            // add text near start of first segment of this contour
+            //
+
+            for (int i=0; i<lines.Count; i++)
+            {
+                if (lines [i].Count > 0)
+                {
+                    TextView txt = new TextView (lines [i] [0].StartPoint, string.Format (" {0:0.0}", ContourValues [i]));
+                    //txt.Tag = "ContourLevelText";
+                    Add (txt);
+
+                    txt.FontSizeAppInUnits = 0.2;
+                    txt.Color = lines [i][0].Color;
+                }
+            }
+        }
+
+        private void RemoveContourLevelText ()
+        {
+        }
+
     }
 }
 

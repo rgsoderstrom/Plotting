@@ -211,12 +211,16 @@ namespace Plot2D_Embedded_Driver
 
                 ContourPlotView cp = new ContourPlotView (ZForContours1, contourValues, minX, maxX, minY, maxY, numberXSamples, numberYSamples);
                 
-                //cp.ShowGradientArrows = true; // these must be set before cp is plotted
-                
-                //cp.ShowText = true;
-                
+                cp.ShowGradientArrows = true; // these must be set before cp is plotted  
+               cp.ShowText = true;
+
                 figure.Plot (cp);
 
+                cp.ShowText = true;
+
+                
+
+                
                 figure.SetAxes (minX, maxX, minY, maxY);           
                 figure.AxesEqual = true;
             }

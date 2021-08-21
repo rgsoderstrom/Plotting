@@ -18,11 +18,17 @@ namespace Plot2D_Embedded
 
         static public double DefaultLineThickness = 2;
 
-        string name;
+        //**********************************************************************************
 
-        public string Name {get {return name;}
-                            set {name = value; if (path != null) path.ToolTip = value;}}
+        // used to identify groups of related objects in a list of CanvasObjects
+        //  - e.g. Vector arrows on contour levels
+
+        //string tag;
+
+        //public string Tag {get {return tag;}
+        //                   set {tag = value; if (path != null) path.ToolTip = value;}}
        
+        //**********************************************************************************
 
         public Path path = new Path ();
         public virtual UIElement View {get {return path;}}
