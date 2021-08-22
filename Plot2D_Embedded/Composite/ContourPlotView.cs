@@ -34,24 +34,14 @@ namespace Plot2D_Embedded
         public readonly List<double>      yValues;
         public readonly CommonMath.Matrix zValues;
 
-        private bool showText = false;
-        
-        public bool ShowText           
-        {
-            get
-            {
-                return showText;
-            }
+        //*********************************************************************************************
 
-            set
-            {
-                showText = value;
-                if (showText == true) {ShowContourLevelText ();}
-                else                  {RemoveContourLevelText ();}
-            }
-        }
+        static public bool DrawLines {get; set;} = true;
+        static public bool LabelLines {get; set;} = false;
+        static public bool DrawLinesInColors {get; set;} = false;
 
-        public bool ShowGradientArrows {get; set;} = true;
+        static public bool ShowGradientArrows {get; set;} = false;
+        static public bool ShowColoredBackground {get; set;} = false;
 
         //*********************************************************************************************
         //*********************************************************************************************
@@ -193,7 +183,7 @@ namespace Plot2D_Embedded
             CommonCtor2 ();
         }
 
-
+        //************************************************************************************************************************************
 
         // each contour will be drawn with one contourColor and one contourStyle
         private readonly SolidColorBrush [] contourColor  = new SolidColorBrush [] {Brushes.Black, Brushes.Red, Brushes.DarkOrange, Brushes.Gold, Brushes.Green, Brushes.Blue, Brushes.Indigo, Brushes.Violet};
@@ -201,17 +191,7 @@ namespace Plot2D_Embedded
 
         private void CommonCtor2 ()
         {
-            //
             // Box around contours
-            //  - optional color background
-            //
-
-            // Red-White-Blue reversed (to blue-white-red) for contour plot background, with negative values blue,
-            // zero white and positive red
-            Colormap cm = new Colormap ("ColormapRWB", true);
-
-            if (cm.colors.Count == 0)
-                throw new Exception ("Error loading colormap");
 
             double width  = (boundingBox.TRC - boundingBox.TLC).Length;
             double height = (boundingBox.BLC - boundingBox.TLC).Length;
@@ -220,6 +200,132 @@ namespace Plot2D_Embedded
             RectangleView rv = new RectangleView (center, width, height);
             Add (rv);
            
+            if (ShowColoredBackground)
+            {
+                DrawColoredBackground (rv);
+            }
+
+            if (DrawLines)
+            {
+                DrawContourLines ();
+            }
+
+            if (DrawLines && ShowGradientArrows)
+            {
+                DrawGradientArrows ();
+            }
+
+            if (DrawLines && LabelLines == true)
+            {
+                ShowContourLevelText ();
+            }
+        }
+
+        //********************************************************************************************
+
+        private void DrawContourLines ()
+        {
+            int k = 0, l = 0;
+
+            for (int i = 0; i<lines.Count; i++)
+            {
+                foreach (LineView h in lines [i])
+                {
+                    Add (h);
+                    h.Color = contourColor [k];
+                    h.LineStyle = lineStyle [l];
+                }
+
+                if (DrawLinesInColors) 
+                {
+                    // next color and style. cycle through all colors, then change style and go through colors again
+                    if (++k == contourColor.Length)
+                    {
+                        k = 0;
+                        if (++l == lineStyle.Length)
+                        {
+                            l = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        //***********************************************************************************************************
+        //
+        // label each contour line level
+        //
+
+        private void ShowContourLevelText ()
+        {
+            for (int i=0; i<lines.Count; i++)
+            {
+                if (lines [i].Count > 0)
+                {
+                    // to reduce clutter just label the first line segment at each level
+                    TextView txt = new TextView (lines [i] [0].StartPoint, string.Format (" {0:0.0}", ContourValues [i]));
+                    Add (txt);
+
+                    txt.FontSizeAppInUnits = 0.2;
+                    txt.Color = lines [i][0].Color;
+                }
+            }
+        }
+
+        //***********************************************************************************************************
+        //
+        // Draw arrows near each gradient line to show direction of increasing value
+        //
+
+        private void DrawGradientArrows ()
+        {
+            //List<double> gradientArrowsAt = new List<double> () {1/6.0, 3/6.0, 5/6.0};
+            List<double> gradientArrowsAt = new List<double> () { 0.5 };
+
+            for (int i=0; i<lines.Count; i++)
+            {
+                if (lines [i].Count > 0)
+                {
+                    for (int j = 0; j<lines [i].Count; j++)
+                    {
+                        foreach (double offset in gradientArrowsAt)
+                        {
+                            Point P = lines [i][j].PointAtOffset (offset);
+
+                            Vector gradient = ZFunction != null
+                                ? CommonMath.LinearAlgebra.Gradient (P, ZFunction)
+                                : CommonMath.LinearAlgebra.Gradient (P, xValues, yValues, zValues);
+
+                            gradient.Normalize ();
+                            gradient *= 0.1;
+
+                            VectorView v = new VectorView (P, gradient);
+                            v.Color = lines [i][0].Color;
+                            v.ArrowheadSize = 0.15;
+                            AddRange (v);
+                            boundingBox.Union (P + gradient); // these can cause gap between border and contours
+                        }
+                    }
+                }
+            }
+        }
+
+        //***********************************************************************************************************
+        //
+        // Color background proportional to function value
+        //      - Red-White-Blue loaded from file and reversed to blue-white-red
+        //          - negative values blue,
+        //          - zero white
+        //          - positive red
+        //
+
+        private void DrawColoredBackground (RectangleView rv)
+        {
+            Colormap cm = new Colormap ("ColormapRWB", true);
+
+            if (cm.colors.Count == 0)
+                throw new Exception ("Error loading colormap");
+
             BitmapPalette palette = new BitmapPalette (cm.colors);
 
             // bitmap bits
@@ -239,9 +345,6 @@ namespace Plot2D_Embedded
                     if (maxZ < zValues [y, x]) {maxZ = zValues [y, x];}
                 }
             }
-
-
-
 
             for (int x=0; x<numberCols; x++)
             {
@@ -267,100 +370,16 @@ namespace Plot2D_Embedded
                 }
             }
 
-
             BitmapSource bitmap = BitmapSource.Create (numberCols, numberRows, 96, 96, PixelFormats.Indexed8, palette, array, numberCols);
 
             // Image
             Image img = new Image ();
             img.Source = bitmap;
-            //img.Stretch = Stretch.Fill;
             img.Stretch = Stretch.None;
 
             ImageBrush ib = new ImageBrush (img.Source);
             rv.path.Fill = ib;
-
-            //
-            // draw all polylines at one contour level
-            //
-
-            int k = 1, l = 0;
-
-            for (int i=0; i<lines.Count; i++)
-            {
-                int N = lines [i].Count; // debug only
-
-                foreach (LineView h in lines [i])
-                {
-                    Add (h);
-                    h.Color = contourColor [k];
-                    h.LineStyle = lineStyle [l];
-                }
-
-                //
-                // gradient arrows
-                //
-
-                if (ShowGradientArrows)
-                {
-                    //List<double> gradientArrowsAt = new List<double> () {1/6.0, 3/6.0, 5/6.0};
-                    List<double> gradientArrowsAt = new List<double> () { 0.5 };
-
-                    if (lines [i].Count > 0)
-                    {
-                        for (int j = 0; j<lines [i].Count; j++)
-                        {
-                            foreach (double offset in gradientArrowsAt)
-                            {
-                                Point P = lines [i][j].PointAtOffset (offset);
-
-                                Vector gradient = ZFunction != null
-                                    ? CommonMath.LinearAlgebra.Gradient (P, ZFunction)
-                                    : CommonMath.LinearAlgebra.Gradient (P, xValues, yValues, zValues);
-
-                                gradient.Normalize ();
-                                gradient *= 0.1;
-
-                                VectorView v = new VectorView (P, gradient);
-                                v.Color = contourColor [k];
-                                v.ArrowheadSize = 0.15;
-                                AddRange (v);
-                                boundingBox.Union (P + gradient); // these can cause gap between border and contours
-                            }
-                        }
-                    }
-                }
-
-                //
-                // next color and style. cycle through all colors, then change style and go through colors again
-                //
-                if (++k == contourColor.Length) {k = 0; if (++l == lineStyle.Length) l = 0;}
-            }
         }
-
-        private void ShowContourLevelText ()
-        {
-            //
-            // add text near start of first segment of this contour
-            //
-
-            for (int i=0; i<lines.Count; i++)
-            {
-                if (lines [i].Count > 0)
-                {
-                    TextView txt = new TextView (lines [i] [0].StartPoint, string.Format (" {0:0.0}", ContourValues [i]));
-                    //txt.Tag = "ContourLevelText";
-                    Add (txt);
-
-                    txt.FontSizeAppInUnits = 0.2;
-                    txt.Color = lines [i][0].Color;
-                }
-            }
-        }
-
-        private void RemoveContourLevelText ()
-        {
-        }
-
     }
 }
 

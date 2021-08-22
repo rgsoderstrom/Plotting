@@ -209,17 +209,13 @@ namespace Plot2D_Embedded_Driver
                     contourValues.AddRange (new double [] {-3, -1, 1, 3, 5, 7});
                 }
 
+                ContourPlotView.DrawLines = true;
+                ContourPlotView.LabelLines = true;
+                ContourPlotView.ShowGradientArrows = false;
+                ContourPlotView.ShowColoredBackground = true;
                 ContourPlotView cp = new ContourPlotView (ZForContours1, contourValues, minX, maxX, minY, maxY, numberXSamples, numberYSamples);
-                
-                cp.ShowGradientArrows = true; // these must be set before cp is plotted  
-               cp.ShowText = true;
-
+               
                 figure.Plot (cp);
-
-                cp.ShowText = true;
-
-                
-
                 
                 figure.SetAxes (minX, maxX, minY, maxY);           
                 figure.AxesEqual = true;
@@ -275,11 +271,12 @@ namespace Plot2D_Embedded_Driver
                         }
                     }
                 }
-
+                
+                ContourPlotView.DrawLines = false;
+                ContourPlotView.LabelLines = false;
+                ContourPlotView.ShowGradientArrows = true;
+                ContourPlotView.ShowColoredBackground = true;
                 ContourPlotView cp = new ContourPlotView (xValues, yValues, zValues, contourValues);
-
-                cp.ShowGradientArrows = true; // these must be set before cp is plotted
-                cp.ShowText = true;
 
                 figure.Plot (cp);
 
