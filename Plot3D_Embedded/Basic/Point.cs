@@ -51,8 +51,8 @@ namespace Plot3D_Embedded
 
         static Point3DView ()
         {
-            mesh.Slices = 16; // 3; 
-            mesh.Stacks = 16; // 3; 
+            mesh.Slices = 12; // 3; 
+            mesh.Stacks = 12; // 3; 
             mesh.Radius = 0.5;
         }
 
@@ -62,7 +62,7 @@ namespace Plot3D_Embedded
             GeometryModel3D gm = new GeometryModel3D ();
             gm.Geometry = mesh.Geometry;
             Content = gm;
-            Color = DefaultPointColor;
+           // Color = DefaultPointColor;
             scale.ScaleX = scale.ScaleY = scale.ScaleZ = geometry.Diameter;
 
             TranslateTransform3D xlate = new TranslateTransform3D (new Vector3D (geometry.point.X, geometry.point.Y, geometry.point.Z));
@@ -76,7 +76,7 @@ namespace Plot3D_Embedded
 
         //***********************************************************************
 
-        Color color;
+        Color color = DefaultPointColor;
         double opacity = 1;
 
         public Color Color
@@ -91,7 +91,9 @@ namespace Plot3D_Embedded
                 b.Color = color;
                 b.Opacity = opacity;
 
-                (Content as GeometryModel3D).Material = (Content as GeometryModel3D).BackMaterial = new DiffuseMaterial (b);
+                (Content as GeometryModel3D).Material = new DiffuseMaterial (b);
+                (Content as GeometryModel3D).BackMaterial = null;
+                //(Content as GeometryModel3D).Material = (Content as GeometryModel3D).BackMaterial = new DiffuseMaterial (b);
             }
         }
 
@@ -149,7 +151,9 @@ namespace Plot3D_Embedded
             {
                 Geometry.Radius = value / 2;
                 Geometry.SetBoundingBox ();
+                Color wasColor = PointView.Color;
                 PointView = new Point3DView (Geometry);
+                PointView.Color = wasColor;
             }
         }
 
