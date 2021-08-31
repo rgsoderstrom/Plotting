@@ -91,7 +91,7 @@ namespace PlottingLib_Driver
         {
             if (CurrentFigure == null)
             {
-                CurrentFigure = new Plot2D ();
+                New2DFigButton_Click (null, null); 
             }
 
             else if (CurrentFigure is PlotFigure)
@@ -103,7 +103,7 @@ namespace PlottingLib_Driver
 
             else if (CurrentFigure is Plot3D)
             {
-                CurrentFigure = new Plot2D ();
+                New2DFigButton_Click (null, null); 
             }
         }
 
@@ -111,7 +111,7 @@ namespace PlottingLib_Driver
         {
             if (CurrentFigure == null)
             {
-                CurrentFigure = new Plot3D ();
+                New3DFigButton_Click (null, null); 
             }
 
             else if (CurrentFigure is PlotFigure)
@@ -123,7 +123,7 @@ namespace PlottingLib_Driver
 
             else if (CurrentFigure is Plot2D)
             {
-                CurrentFigure = new Plot3D ();
+                New3DFigButton_Click (null, null); 
             }
         }
 
