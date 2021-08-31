@@ -43,26 +43,26 @@
             </Border>
 
             <Expander Style="{StaticResource B}" Header="Basic 2D Objects" IsExpanded="false">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Basic2D" IsEnabled="False">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Basic2D">
                     <Button Style="{StaticResource A}" Click="CircleButton_Click">Circle</Button>
                     <Button Style="{StaticResource A}" Click="EllipseButton_Click">Ellipse</Button>
                     <Button Style="{StaticResource A}" Click="RectangleButton_Click">Rectangle</Button>
                     <Button Style="{StaticResource A}" Click="RotateRectButton_Click" IsEnabled="False" Name="RotateButton">Rotate Rectangle</Button>
                     <Button Style="{StaticResource A}" Click="MoveRectButton_Click" IsEnabled="False" Name="MoveButton">Move Rectangle</Button>
                     <Button Style="{StaticResource A}" Click="SmoothCurveButton_Click">Smooth Curve</Button>
-                    <Button Style="{StaticResource A}" Click="CurveButton2_Click">Point Curve</Button>
+                    <Button Style="{StaticResource A}" Click="PointCurveButton_Click">Point Curve</Button>
                 </StackPanel>
             </Expander>
 
             <Expander Style="{StaticResource B}" Header="Composite 2D Objects" IsExpanded="True">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Composite2D" IsEnabled="False">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Composite2D">
                     <Button Style="{StaticResource A}" Click="VectorButton_Click">Vector</Button>
                     <Button Style="{StaticResource A}" Click="VectorFieldButton_Click">Vector Field</Button>
                 </StackPanel>
             </Expander>
 
             <Expander Style="{StaticResource B}" Header="Basic 3D Objects" IsExpanded="False">
-                <StackPanel Orientation="Vertical" Name="Basic3D" IsEnabled="False">
+                <StackPanel Orientation="Vertical" Name="Basic3D">
                     <Button Style="{StaticResource A}" Click="Point_Clicked">One Point</Button>
                     <Button Style="{StaticResource A}" Click="PointCloud_Clicked">Point Cloud</Button>
                     <Button Style="{StaticResource A}" Click="Line_PP_Clicked">Two End Points</Button>

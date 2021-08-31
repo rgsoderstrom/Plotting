@@ -20,7 +20,7 @@ namespace PlottingLib
 {
     public partial class Plot3D : Window, IPlotCommon, IPlotDrawable
     {
-        public int ID {get; set;} = -1;
+        public int ID {get; set;}
 
         public Plot3D ()
         {
@@ -40,7 +40,6 @@ namespace PlottingLib
             Width = src.Width;
             Height = src.Height;
             Hold = src.Hold;
-            Title = src.Title;
             ID = src.ID;
 
             Show ();
@@ -49,7 +48,7 @@ namespace PlottingLib
         protected virtual void Window_Loaded (object sender, RoutedEventArgs e)
         {
             PlotArea.MatlabStyle ();
-            Title = string.Format ("Figure {0}", ID);
+            Title = string.Format ("Figure {0} - Plot3D", ID);
         }
 
         private void Window_Closed (object sender, EventArgs e)

@@ -6,29 +6,20 @@ using System.Threading.Tasks;
 
 namespace PlottingLib
 {
-    //
-    // methods implemented by both Plot2D and Plot3D
-    //
-
-
-
-
-
-
+    /// <summary>
+    /// IPlotCommon - properties implmented by PlotFigure, Plot2D and Plot3D
+    /// </summary>
     public interface IPlotCommon
     {
         int ID {get; set;}
         bool Hold {set; get;}
     }
 
-
-
-
-
+    /// <summary>
+    /// IPlotDrawable - properties and methods that must be imlplemented by Plot2D and Plot3D
+    /// </summary>
     public interface IPlotDrawable
     {
-        int  ID {get; set;}
-        bool Hold {get; set;}
         bool AxesTight  {set; get;}
         bool AxesFrozen {set; get;}
         bool AxesEqual  {set; get;}

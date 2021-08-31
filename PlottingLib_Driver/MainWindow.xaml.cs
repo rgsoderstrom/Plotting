@@ -39,123 +39,95 @@ namespace PlottingLib_Driver
         // Functionality needed by any application that uses PlottingLib
         //
 
-        List<Plot2D> Figures2D = new List<Plot2D> ();       
-        Plot2D Fig2D = null;
-
-        List<Plot3D> Figures3D = new List<Plot3D> ();       
-        Plot3D Fig3D = null;
-
-        IPlotCommon CurrentFigure = null;
-
-        private void Plot2DFigure_Closed (object sender, EventArgs e)
-        {
-            if (sender is Plot2D)
-            {
-                Figures2D.Remove (sender as Plot2D);
-
-                if (Figures2D.Count > 0)
-                    Fig2D = Figures2D [Figures2D.Count - 1];
-                else
-                {
-                    Fig2D = null;
-                    Basic2D.IsEnabled = false; // disable buttons
-                    Composite2D.IsEnabled = false;
-                }
-
-                CurrentFigure = Fig2D;
-            }
-        }
-
-        private void Plot3DFigure_Closed (object sender, EventArgs e)
-        {
-            if (sender is Plot3D)
-            {
-                Figures3D.Remove (sender as Plot3D);
-
-                if (Figures3D.Count > 0)
-                    Fig3D = Figures3D [Figures3D.Count - 1];
-                else
-                {
-                    Fig3D = null;
-                    Basic3D.IsEnabled = false; // disable buttons
-                }
-
-                CurrentFigure = Fig3D;
-            }
-        }
-
+        private List<IPlotCommon> Figures = new List<IPlotCommon> ();
+        private IPlotCommon CurrentFigure = null;
+        
         //*******************************************************************************************
 
-        PlotFigure pf = null;
-
-        void NewFigButton_Click (object sender, RoutedEventArgs e) 
+        private void NewFigButton_Click (object sender, RoutedEventArgs e) 
         {
-            pf = new PlotFigure ();
+            CurrentFigure = new PlotFigure ();
+            (CurrentFigure as PlotFigure).Closed += Figure_Closed;
+            (CurrentFigure as PlotFigure).Activated += Figure_Activated;
+            Figures.Add (CurrentFigure);
         }
 
-        void New2DFigButton_Click (object sender, RoutedEventArgs e) 
+        private void New2DFigButton_Click (object sender, RoutedEventArgs e) 
         {
-            if (pf != null)
-            {
-                Fig2D = new Plot2D (pf);
-                pf.Close ();
-                pf = null; ;
-            }
+            CurrentFigure = new Plot2D ();
+            (CurrentFigure as Plot2D).Closed += Figure_Closed;
+            (CurrentFigure as Plot2D).Activated += Figure_Activated;
 
+            Figures.Add (CurrentFigure);
+            HoldBox.IsChecked = (CurrentFigure as Plot2D).Hold;
+        }
+
+        private void New3DFigButton_Click (object sender, RoutedEventArgs e) 
+        {
+            CurrentFigure = new Plot3D ();
+            (CurrentFigure as Plot3D).Closed += Figure_Closed;
+            (CurrentFigure as Plot3D).Activated += Figure_Activated;
+
+            Figures.Add (CurrentFigure);
+        }
+
+        private void Figure_Activated (object sender, EventArgs e)
+        {
+            CurrentFigure = sender as IPlotCommon;
+            HoldBox.IsChecked = CurrentFigure.Hold;
+        }
+
+        private void Figure_Closed (object sender, EventArgs e)
+        {
+            Figures.Remove (sender as IPlotCommon);
+
+            if (Figures.Count > 0)
+                CurrentFigure = Figures [Figures.Count - 1];
             else
-                Fig2D = new Plot2D ();
-
-            Fig2D.Title += " - Plot2D";
-            Fig2D.Closed += Plot2DFigure_Closed;
-            Fig2D.Activated += Fig2D_Activated;
-
-            Figures2D.Add (Fig2D);
-            Basic2D.IsEnabled = true;  // buttons
-            Composite2D.IsEnabled = true;
-            HoldBox.IsChecked = Fig2D.Hold;
-            CurrentFigure = Fig2D;
+                CurrentFigure = null;
         }
 
-        void New3DFigButton_Click (object sender, RoutedEventArgs e) 
-        { 
-            if (pf != null)
-            {
-                Fig3D = new Plot3D (pf);
-                pf.Close ();
-                pf = null;;
-            }
-
-            else
-                Fig3D = new Plot3D ();
-
-            Fig3D.Title += " - Plot3D";
-            Fig3D.Closed += Plot3DFigure_Closed;
-            Fig3D.Activated += Fig3D_Activated;
-
-            Figures3D.Add (Fig3D);
-            Basic3D.IsEnabled = true;  // buttons
-            CurrentFigure = Fig3D;
-        }
-
-        private void Fig2D_Activated (object sender, EventArgs e)
+        private void SetCurrentFigureTo2D ()
         {
-            if (sender is Plot2D)
+            if (CurrentFigure == null)
             {
-                Fig2D = sender as Plot2D;
-                HoldBox.IsChecked = Fig2D.Hold;
-                CurrentFigure = Fig2D;
+                CurrentFigure = new Plot2D ();
+            }
+
+            else if (CurrentFigure is PlotFigure)
+            {
+                Plot2D fig = new Plot2D (CurrentFigure as PlotFigure);
+                (CurrentFigure as PlotFigure).Close ();
+                CurrentFigure = fig;
+            }
+
+            else if (CurrentFigure is Plot3D)
+            {
+                CurrentFigure = new Plot2D ();
             }
         }
 
-        private void Fig3D_Activated (object sender, EventArgs e)
+        private void SetCurrentFigureTo3D ()
         {
-            if (sender is Plot3D)
+            if (CurrentFigure == null)
             {
-                Fig3D = sender as Plot3D;
-                HoldBox.IsChecked = Fig3D.Hold;
-                CurrentFigure = Fig3D;
+                CurrentFigure = new Plot3D ();
+            }
+
+            else if (CurrentFigure is PlotFigure)
+            {
+                Plot3D fig = new Plot3D (CurrentFigure as PlotFigure);
+                (CurrentFigure as PlotFigure).Close ();
+                CurrentFigure = fig;
+            }
+
+            else if (CurrentFigure is Plot2D)
+            {
+                CurrentFigure = new Plot3D ();
             }
         }
+
+
 
         //
         // End of functionality needed 
@@ -188,19 +160,23 @@ namespace PlottingLib_Driver
 
         Random random = new Random ();
 
-        void VectorButton_Click (object sender, RoutedEventArgs e) 
+        private void VectorButton_Click (object sender, RoutedEventArgs e) 
         {
-            Point pt = new Point (random.NextDouble (), random.NextDouble ());
-            Vector v = new Vector (random.NextDouble (), random.NextDouble ());
+            Point pt = new Point  (5 * (random.NextDouble () - 0.5), 5 * (random.NextDouble () - 0.5));
+            Vector v = new Vector (5 * (random.NextDouble () - 0.5), 5 * (random.NextDouble () - 0.5));
 
             VectorView VV = new VectorView (pt, v);
             VV.ShowComponents = true;
-            Fig2D.Plot (VV);
+
+            SetCurrentFigureTo2D ();
+            (CurrentFigure as Plot2D).Hold = true;
+            (CurrentFigure as Plot2D).AxesEqual = true;
+            (CurrentFigure as Plot2D).Plot (VV);
         }
 
-        void VectorFieldButton_Click (object sender, RoutedEventArgs e)
+        private void VectorFieldButton_Click (object sender, RoutedEventArgs e)
         {
-            int N = 20;
+            int N = 10;
             List<Point> points = new List<Point> ();
             List<Vector> vects = new List<Vector> ();
 
@@ -213,37 +189,59 @@ namespace PlottingLib_Driver
             }
 
             VectorFieldView vfv = new VectorFieldView (points, vects);
-            Fig2D.Plot (vfv);
+            SetCurrentFigureTo2D ();
+            (CurrentFigure as Plot2D).Hold = true;
+            (CurrentFigure as Plot2D).AxesEqual = true;
+            (CurrentFigure as Plot2D).Plot (vfv);
         }
 
-        void CircleButton_Click (object sender, RoutedEventArgs e) {EllipseView h = new EllipseView (new Point (2, 2), 1); Fig2D.Plot (h);}
+        private void CircleButton_Click (object sender, RoutedEventArgs e) 
+        {
+            EllipseView h = new EllipseView (new Point (2, 2), 1); 
+            SetCurrentFigureTo2D ();
+            (CurrentFigure as Plot2D).Plot (h);
+        }
 
-        void EllipseButton_Click (object sender, RoutedEventArgs e) 
+        private void EllipseButton_Click (object sender, RoutedEventArgs e) 
         {
             EllipseView h = new EllipseView () {Center = new Point (-1, 2), Width = 2, Height = 1, Angle = 10};
 
-            Fig2D.Plot (h);
-            Fig2D.AxesEqual = true;
-            Fig2D.RectangularGridOn = true;
+            SetCurrentFigureTo2D ();
+            (CurrentFigure as Plot2D).Hold = true;
+            (CurrentFigure as Plot2D).AxesEqual = true;
+            (CurrentFigure as Plot2D).Plot (h);
+            (CurrentFigure as Plot2D).RectangularGridOn = true;
         }
 
-
-        void RectangleButton_Click (object sender, RoutedEventArgs e) {RectangleView h = new RectangleView (new Point (2.5, 5), 1, 0.5); h.Angle = 10; Fig2D.Plot (h);}
-
-
-        void RotateRectButton_Click (object sender, RoutedEventArgs e) { }
-        void MoveRectButton_Click (object sender, RoutedEventArgs e) { }
-
-
-        void SmoothCurveButton_Click (object sender, RoutedEventArgs e) 
+        private void RectangleButton_Click (object sender, RoutedEventArgs e) 
         {
-            LineView lv = new LineView (new Point (1, 2), new Point (2, 3)); 
-            Fig2D.Plot (lv);
-            lv.Color = Brushes.Red;
+            RectangleView h = new RectangleView (new Point (2.5, 5), 1, 0.5); 
+            h.Angle = 10;
+            SetCurrentFigureTo2D ();
+            (CurrentFigure as Plot2D).Plot (h);
+        }
+
+        private void RotateRectButton_Click (object sender, RoutedEventArgs e)
+        {
+        }
+        
+        private void MoveRectButton_Click (object sender, RoutedEventArgs e) 
+        {
+        }
+
+        private void SmoothCurveButton_Click (object sender, RoutedEventArgs e) 
+        {
+            LineView h = new LineView (new Point (1, 2), new Point (2, 3)); 
+            SetCurrentFigureTo2D ();
+            (CurrentFigure as Plot2D).Plot (h);
+            h.Color = Brushes.Red;
         }
 
 
-        void CurveButton2_Click (object sender, RoutedEventArgs e) { }
+        void PointCurveButton_Click (object sender, RoutedEventArgs e) 
+        { 
+        
+        }
 
         //**********************************************************************************
 
@@ -257,7 +255,8 @@ namespace PlottingLib_Driver
             PlottedPoint3D ppt = new PlottedPoint3D (pt);
             ppt.Diameter = 0.2;
             
-            Fig3D.Plot (ppt);
+            SetCurrentFigureTo3D ();
+            (CurrentFigure as Plot3D).Plot (ppt);
         }
 
         void PointCloud_Clicked (object sender, RoutedEventArgs args)
@@ -269,9 +268,9 @@ namespace PlottingLib_Driver
 
             double radius = 0.2 + Utils.RandomDouble (0.3);
 
-            PointCloud3D pc = new PointCloud3D (points); //, radius);
-
-            PointCloud3DView h =  Fig3D.Plot (pc) as PointCloud3DView;
+            PointCloud3D pc = new PointCloud3D (points);
+            SetCurrentFigureTo3D ();
+            PointCloud3DView h = (CurrentFigure as Plot3D).Plot (pc) as PointCloud3DView;
 
             h.Diameter = 2 * radius;
             h.Color = Colors.Tomato;
@@ -287,7 +286,7 @@ namespace PlottingLib_Driver
 
             Line3D l3d = new Line3D (pt1, pt2);
 
-            Line3DView h =  Fig3D.Plot (l3d) as Line3DView;
+            Line3DView h = null;// Fig3D.Plot (l3d) as Line3DView;
             h.Color = Colors.MediumAquamarine;
         }
 
@@ -302,7 +301,7 @@ namespace PlottingLib_Driver
 
             Line3D l3d = new Line3D (p1, v1);
 
-            Line3DView h =  Fig3D.Plot (l3d) as Line3DView;
+            Line3DView h = null;//  Fig3D.Plot (l3d) as Line3DView;
             h.Color = Colors.MediumAquamarine;
             h.ArrowEnds = Petzold.Media2D.ArrowEnds.End;
         }
@@ -314,8 +313,8 @@ namespace PlottingLib_Driver
             PlottedPoint3D p1 = new PlottedPoint3D (new Point3D ( r, 0, 0));
             PlottedPoint3D p2 = new PlottedPoint3D (new Point3D (-r, 0, 0));
 
-            Point3DView p1View = Fig3D.Plot (p1) as Point3DView;
-            Point3DView p2View = Fig3D.Plot (p2) as Point3DView;
+            Point3DView p1View = null;// Fig3D.Plot (p1) as Point3DView;
+            Point3DView p2View = null;// Fig3D.Plot (p2) as Point3DView;
 
             p1View.Color = Colors.Red;
             p2View.Color = Colors.Black;
@@ -333,7 +332,7 @@ namespace PlottingLib_Driver
             try
             {
                 Polyline3D pl3 = new Polyline3D (arcPoints);
-                Polyline3DView pv = Fig3D.Plot (pl3) as Polyline3DView;
+                Polyline3DView pv = null;// Fig3D.Plot (pl3) as Polyline3DView;
                 pv.Color = Colors.Red;
                 pv.Thickness = 1;
 
@@ -366,27 +365,21 @@ namespace PlottingLib_Driver
         void Polyline_Func_Clicked (object sender, RoutedEventArgs args)
         {
             Polyline3D pl3 = new Polyline3D (xFunction, yFunction, zFunction, -3, 3, 1.0 / 32);
-            Polyline3DView pv = Fig3D.Plot (pl3) as Polyline3DView;
+            Polyline3DView pv = null;// Fig3D.Plot (pl3) as Polyline3DView;
         }
 
         //*****************************************************************************************
         //*****************************************************************************************
         //*****************************************************************************************
 
-
-
-
-
-        //*****************************************************************************************
-
-        //static int lineNumber = 1;
+        static int lineNumber = 1;
         object TextBoxLock = new object ();
 
         internal void Print (string str)
         {
             lock (TextBoxLock)
             {
-                //TextPane.Text += string.Format ("{0}: ", lineNumber++);
+                TextPane.Text += string.Format ("{0}: ", lineNumber++);
                 TextPane.Text += str;
                 TextPane.Text += "\n";
                 TextPane.ScrollToEnd ();
