@@ -21,6 +21,10 @@ namespace Plot3D_Embedded
         {get {return axesTight;}
          set {axesTight = value;}}
 
+        public string DataAreaTitle
+        {get {return DataTitle.Text;}
+         set {DataTitle.Text = value; Draw ();}}
+
         public void MatlabStyle ()
         {
             AnotationBackground = new SolidColorBrush (Color.FromRgb (0xa8, 0xa8, 0xa8));

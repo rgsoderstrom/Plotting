@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
+using System.Windows.Controls;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,7 +51,7 @@ namespace Plot3D_Embedded
         // debug flag, not intended for client use
         readonly bool ShowCompositeBoundingBox = false;
 
-        void Draw ()
+        private void Draw ()
         {
             /***/
             Vector3D Up = Camera3D.Up;

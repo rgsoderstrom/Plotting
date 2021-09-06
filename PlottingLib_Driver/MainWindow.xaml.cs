@@ -172,6 +172,8 @@ namespace PlottingLib_Driver
             (CurrentFigure as Plot2D).Hold = true;
             (CurrentFigure as Plot2D).AxesEqual = true;
             (CurrentFigure as Plot2D).Plot (VV);
+
+            (CurrentFigure as Plot2D).DataAreaTitle = "Vector";
         }
 
         private void VectorFieldButton_Click (object sender, RoutedEventArgs e)
@@ -257,6 +259,8 @@ namespace PlottingLib_Driver
             
             SetCurrentFigureTo3D ();
             (CurrentFigure as Plot3D).Plot (ppt);
+
+            (CurrentFigure as Plot3D).DataAreaTitle = "Random point";
         }
 
         void PointCloud_Clicked (object sender, RoutedEventArgs args)
@@ -286,7 +290,8 @@ namespace PlottingLib_Driver
 
             Line3D l3d = new Line3D (pt1, pt2);
 
-            Line3DView h = null;// Fig3D.Plot (l3d) as Line3DView;
+            SetCurrentFigureTo3D ();
+            Line3DView h = (CurrentFigure as Plot3D).Plot (l3d) as Line3DView;
             h.Color = Colors.MediumAquamarine;
         }
 
@@ -301,20 +306,22 @@ namespace PlottingLib_Driver
 
             Line3D l3d = new Line3D (p1, v1);
 
-            Line3DView h = null;//  Fig3D.Plot (l3d) as Line3DView;
+            SetCurrentFigureTo3D ();
+            Line3DView h = (CurrentFigure as Plot3D).Plot (l3d) as Line3DView;
             h.Color = Colors.MediumAquamarine;
             h.ArrowEnds = Petzold.Media2D.ArrowEnds.End;
         }
 
         void Polyline_Points_Clicked (object sender, RoutedEventArgs args)
         {
+            SetCurrentFigureTo3D ();
             double r = Utils.RandomDouble (20);
 
             PlottedPoint3D p1 = new PlottedPoint3D (new Point3D ( r, 0, 0));
             PlottedPoint3D p2 = new PlottedPoint3D (new Point3D (-r, 0, 0));
 
-            Point3DView p1View = null;// Fig3D.Plot (p1) as Point3DView;
-            Point3DView p2View = null;// Fig3D.Plot (p2) as Point3DView;
+            Point3DView p1View = (CurrentFigure as Plot3D).Plot (p1) as Point3DView;
+            Point3DView p2View = (CurrentFigure as Plot3D).Plot (p2) as Point3DView;
 
             p1View.Color = Colors.Red;
             p2View.Color = Colors.Black;
@@ -331,8 +338,9 @@ namespace PlottingLib_Driver
 
             try
             {
+                SetCurrentFigureTo3D ();
                 Polyline3D pl3 = new Polyline3D (arcPoints);
-                Polyline3DView pv = null;// Fig3D.Plot (pl3) as Polyline3DView;
+                Polyline3DView pv = (CurrentFigure as Plot3D).Plot (pl3) as Polyline3DView;
                 pv.Color = Colors.Red;
                 pv.Thickness = 1;
 
@@ -364,8 +372,9 @@ namespace PlottingLib_Driver
 
         void Polyline_Func_Clicked (object sender, RoutedEventArgs args)
         {
+            SetCurrentFigureTo3D ();
             Polyline3D pl3 = new Polyline3D (xFunction, yFunction, zFunction, -3, 3, 1.0 / 32);
-            Polyline3DView pv = null;// Fig3D.Plot (pl3) as Polyline3DView;
+            Polyline3DView pv = (CurrentFigure as Plot3D).Plot (pl3) as Polyline3DView;
         }
 
         //*****************************************************************************************

@@ -132,7 +132,10 @@ namespace Plot2D_Embedded_Driver
                 PointView h = new PointView (parabola, PointView.DrawingStyle.Plus);
                 h.Size = 1.0 / 16;
                 h.BorderColor = Brushes.DarkSlateBlue;
-                h.BorderThickness = 3;
+
+                //h.BorderThickness = 3;
+                h.Thickness = 3;
+
                 h.FillColor = Brushes.BlueViolet;
 
                 figure.Plot (h);

@@ -16,8 +16,7 @@ namespace PlottingLib
         public bool AxesEqual  {get {return false;} set {bool unused = value;}}
         public bool AxesFrozen {get {return false;} set {bool unused = value;}}
 
-        public string DataAreaTitle {get {return "not supported";}  set {}}
-        //public string DataAreaTitle {get {return PlotArea.DataAreaTitle;}  set {PlotArea.DataAreaTitle = value;}}
+        public string DataAreaTitle {get {return PlotArea.DataAreaTitle;}  set {PlotArea.DataAreaTitle = value;}}
         //public string XAxisLabel    {get {return PlotArea.XAxisLabel;}     set {PlotArea.XAxisLabel = value;}}
         //public string YAxisLabel    {get {return PlotArea.YAxisLabel;}     set {PlotArea.YAxisLabel = value;}}
 

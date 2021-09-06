@@ -22,8 +22,11 @@ namespace Plot3D_Embedded
         {
             //EventLog.WriteLine ("UserControl_Loaded");
 
+            Canvas.SetLeft (DataTitle, (DataAreaX1 + DataAreaX0 - 8 * DataTitle.Text.Length) / 2);
+            Canvas.SetTop  (DataTitle, DataAreaY0 * 0.4);
+
             Canvas.SetLeft (InnerBorder, DataAreaLeft);
-            Canvas.SetTop (InnerBorder, DataAreaTop);
+            Canvas.SetTop  (InnerBorder, DataAreaTop);
 
             Viewport.Focusable = true;
             Keyboard.Focus (Viewport);
@@ -33,6 +36,9 @@ namespace Plot3D_Embedded
         private void UserControl_SizeChanged (object sender, SizeChangedEventArgs e)
         {
             //EventLog.WriteLine ("UserControl_SizeChanged");
+
+            Canvas.SetLeft (DataTitle, (DataAreaX1 + DataAreaX0 - 8 * DataTitle.Text.Length) / 2);
+            Canvas.SetTop  (DataTitle, DataAreaY0 * 0.4);
 
             double w = OuterCanvas.ActualWidth - (DataAreaLeft + DataAreaRight);
             if (w > 0) InnerBorder.Width = w;

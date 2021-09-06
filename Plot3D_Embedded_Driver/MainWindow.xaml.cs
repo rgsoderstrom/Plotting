@@ -119,6 +119,8 @@ namespace Plot3D_Embedded_Driver
         {
             try
             {
+                //double x1 = figure.ViewportBoundingBox.
+
                 CartesianAxisDescription xAxis = new CartesianAxisDescription () {min = -3, max = 10, ticsAt = new List<double> () { 0, 2, 4, 6, 8 }};
                 CartesianAxisDescription yAxis = new CartesianAxisDescription () {min = -2, max = 8,  ticsAt = new List<double> () { 0, 3, 6 }};
                 CartesianAxisDescription zAxis = new CartesianAxisDescription () {min = -1, max = 4,  ticsAt = new List<double> () { 0, 3}};
@@ -160,6 +162,7 @@ namespace Plot3D_Embedded_Driver
                     txt.TextView.OrientationFrozen = true;
 
                 figure.AxesTight = false;
+                figure.DataAreaTitle = "One Point";
             }
 
             catch (Exception ex)
@@ -215,7 +218,7 @@ namespace Plot3D_Embedded_Driver
                 //Point3D  p1 = Utils.RandomPoint (5);
                 Vector3D v1 = Utils.RandomVector (5);
 
-                v1 = new Vector3D (1, 1, 1);
+                //v1 = new Vector3D (1, 1, 1);
 
                 List<Vector3D> basis = new List<Vector3D> () {new Vector3D (-1, 0.5, 0),
                                                               new Vector3D (0, 0.6, 0.3),
@@ -224,8 +227,11 @@ namespace Plot3D_Embedded_Driver
                 PlotVector3D pv = new PlotVector3D (v1, basis);
                 PlotVector3DView vv = figure.Plot (pv) as PlotVector3DView;
                 vv.ShowComponents = true;
-                //vv.Color = Colors.Red;
-                //vv.XComponentView.Color = Colors.Green;
+
+                vv.Color = Colors.Black;
+                vv.XComponentView.Color = Colors.Red;
+                vv.YComponentView.Color = Colors.Green;
+                vv.ZComponentView.Color = Colors.Blue;
 
                 CartesianAxisDescription cd = new CartesianAxisDescription ();
                 cd.min = -1;

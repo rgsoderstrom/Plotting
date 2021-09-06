@@ -155,6 +155,9 @@ namespace Plot2D_Embedded
             path.StrokeThickness = 1;
         }
 
+        public double Thickness {get {return path.StrokeThickness;}
+                                 set {path.StrokeThickness = value;}}
+
         public double Size {get {return scale.ScaleX;}
                             set {scale.ScaleX = scale.ScaleY = value;}}
 
