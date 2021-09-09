@@ -36,7 +36,7 @@ namespace Plot2D_Embedded
 
         //*********************************************************************************************
 
-        static public bool DrawLines {get; set;} = true;
+        static public bool DrawLines {get; set;} = false;// true;
         static public bool LabelLines {get; set;} = false;
         static public bool DrawLinesInColors {get; set;} = false;
 
@@ -292,18 +292,26 @@ namespace Plot2D_Embedded
                         {
                             Point P = lines [i][j].PointAtOffset (offset);
 
-                            Vector gradient = ZFunction != null
-                                ? CommonMath.LinearAlgebra.Gradient (P, ZFunction)
-                                : CommonMath.LinearAlgebra.Gradient (P, xValues, yValues, zValues);
+                            try
+                            {
+                                Vector gradient = ZFunction != null
+                                    ? CommonMath.LinearAlgebra.Gradient (P, ZFunction)
+                                    : CommonMath.LinearAlgebra.Gradient (P, xValues, yValues, zValues);
 
-                            gradient.Normalize ();
-                            gradient *= 0.1;
+                                gradient.Normalize ();
+                                gradient *= 0.1;
 
-                            VectorView v = new VectorView (P, gradient);
-                            v.Color = lines [i][0].Color;
-                            v.ArrowheadSize = 0.15;
-                            AddRange (v);
-                            boundingBox.Union (P + gradient); // these can cause gap between border and contours
+                                VectorView v = new VectorView (P, gradient);
+                                v.Color = lines [i][0].Color;
+                                v.ArrowheadSize = 0.15;
+                                AddRange (v);
+                                boundingBox.Union (P + gradient); // these can cause gap between border and contours
+                            }
+
+                            catch (Exception _)
+                            {
+
+                            }
                         }
                     }
                 }
