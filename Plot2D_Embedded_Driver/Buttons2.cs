@@ -211,7 +211,9 @@ namespace Plot2D_Embedded_Driver
 
                 ContourPlotView.DrawLines = true;
                 ContourPlotView.LabelLines = true;
-                ContourPlotView.ShowGradientArrows = false;
+                ContourPlotView.LabelFontSize = 0.1;
+                ContourPlotView.ShowGradientArrows = true;
+                ContourPlotView.GradientArrowSize = 0.1;
                 ContourPlotView.ShowColoredBackground = true;
                 ContourPlotView cp = new ContourPlotView (ZForContours1, contourValues, minX, maxX, minY, maxY, numberXSamples, numberYSamples);
                

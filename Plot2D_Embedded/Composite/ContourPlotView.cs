@@ -36,11 +36,15 @@ namespace Plot2D_Embedded
 
         //*********************************************************************************************
 
-        static public bool DrawLines {get; set;} = false;// true;
-        static public bool LabelLines {get; set;} = false;
+        static public bool DrawLines {get; set;} = true;
         static public bool DrawLinesInColors {get; set;} = false;
 
+        static public bool LabelLines {get; set;} = false;
+        static public double LabelFontSize {get; set;} = 0.15;
+
         static public bool ShowGradientArrows {get; set;} = false;
+        static public double GradientArrowSize {get; set;} = 0.15; 
+
         static public bool ShowColoredBackground {get; set;} = false;
 
         //*********************************************************************************************
@@ -263,10 +267,10 @@ namespace Plot2D_Embedded
                 if (lines [i].Count > 0)
                 {
                     // to reduce clutter just label the first line segment at each level
-                    TextView txt = new TextView (lines [i] [0].StartPoint, string.Format (" {0:0.0}", ContourValues [i]));
+                    TextView txt = new TextView (lines [i][0].StartPoint, string.Format (" {0:0.0}", ContourValues [i]));
                     Add (txt);
 
-                    txt.FontSizeAppInUnits = 0.2;
+                    txt.FontSizeAppInUnits = LabelFontSize;
                     txt.Color = lines [i][0].Color;
                 }
             }
@@ -303,7 +307,7 @@ namespace Plot2D_Embedded
 
                                 VectorView v = new VectorView (P, gradient);
                                 v.Color = lines [i][0].Color;
-                                v.ArrowheadSize = 0.15;
+                                v.ArrowheadSize = GradientArrowSize;
                                 AddRange (v);
                                 boundingBox.Union (P + gradient); // these can cause gap between border and contours
                             }
