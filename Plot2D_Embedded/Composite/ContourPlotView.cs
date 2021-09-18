@@ -303,7 +303,7 @@ namespace Plot2D_Embedded
                                     : CommonMath.LinearAlgebra.Gradient (P, xValues, yValues, zValues);
 
                                 gradient.Normalize ();
-                                gradient *= 0.1;
+                                gradient *= GradientArrowSize; //0.1;
 
                                 VectorView v = new VectorView (P, gradient);
                                 v.Color = lines [i][0].Color;
