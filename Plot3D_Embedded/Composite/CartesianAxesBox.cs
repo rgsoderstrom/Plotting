@@ -12,9 +12,66 @@ namespace Plot3D_Embedded
 {
     public class CartesianAxisDescription
     {
-        public double min;
-        public double max;
-        public List<double> ticsAt;
+        //***************************************************************************************
+
+        public CartesianAxisDescription (double _min, double _max, List<double> _ticsAt,
+                                         double _ticSize, double _textSize)
+        {
+            ticSize = _ticSize;
+            textSize = _textSize;
+
+            min = _min;
+            max = _max;
+            ticsAt = _ticsAt;
+        }
+
+        //***************************************************************************************
+
+        public CartesianAxisDescription (double _min, double _max, int numberTics,
+                                         double _ticSize, double _textSize)
+        {
+            ticSize = _ticSize;
+            textSize = _textSize;
+
+            min = _min;
+            max = _max;
+            ticsAt = new List<double> ();
+
+            double span = max - min;
+
+            if (numberTics == 1)
+            {
+                ticsAt.Add (min + firstTicAt * span);
+            }
+
+            else if (numberTics == 2)
+            {
+                ticsAt.Add (min + firstTicAt * span);
+                ticsAt.Add (min + lastTicAt  * span);
+            }
+
+            else if (numberTics > 2)
+            {
+                double step = (lastTicAt - firstTicAt) / (numberTics - 1);
+                double tic = firstTicAt;
+
+                while (tic <= lastTicAt)
+                {
+                    ticsAt.Add (min + tic * span);
+                    tic += step;
+                }
+            }
+        }
+
+        public double ticSize  {get; protected set;}
+        public double textSize {get; protected set;}
+
+        public double min {get; protected set;}
+        public double max {get; protected set;}
+        public List<double> ticsAt {get; protected set;}
+
+        public static double firstTicAt = 0.05;
+        public static double lastTicAt  = 0.95;
     }
 
     //*********************************************************************************************
@@ -68,7 +125,6 @@ namespace Plot3D_Embedded
 
     //****************************************************************************************************
 
-
     public partial class CartesianAxesBoxView : ModelVisual3D
     {
         CartesianAxesBoxGeometry geometry;
@@ -112,13 +168,13 @@ namespace Plot3D_Embedded
             DrawAxisTics (xAxisMarkings);
             DrawAxisText (xAxisMarkings);
 
-            YAxisDecorations yAxisMarkings = new YAxisDecorations (lines [7], yDesc);
-            DrawAxisTics (yAxisMarkings);
-            DrawAxisText (yAxisMarkings);
+            //YAxisDecorations yAxisMarkings = new YAxisDecorations (lines [7], yDesc);
+            //DrawAxisTics (yAxisMarkings);
+            //DrawAxisText (yAxisMarkings);
 
-            ZAxisDecorations zAxisMarkings = new ZAxisDecorations (lines [8], zDesc);
-            DrawAxisTics (zAxisMarkings);
-            DrawAxisText (zAxisMarkings);
+            //ZAxisDecorations zAxisMarkings = new ZAxisDecorations (lines [8], zDesc);
+            //DrawAxisTics (zAxisMarkings);
+            //DrawAxisText (zAxisMarkings);
         }
 
         //*******************************************************************************************
@@ -126,25 +182,33 @@ namespace Plot3D_Embedded
         void DrawAxisTics (AxisDecorations ad)
         {
             Point3D start = ad.hostLine.Point1;
-            Vector3D axisDir = ad.hostLine.Point2 - ad.hostLine.Point1;
+            Point3D end   = ad.hostLine.Point2;
+            Vector3D axisDir = end - start;
             axisDir.Normalize ();
 
             foreach (double tv in ad.ticValues)
             {
-                foreach (Vector3D ticDir in ad.ticDirs)
+                // tic lines will pass through this point
+                Point3D axisPoint = start + (tv - ad.startValue) * axisDir;
+
+                // ensure axisPoint is between box line start and end
+                if (Vector3D.DotProduct (axisPoint - start, axisDir) > 0 && Vector3D.DotProduct (axisPoint - end, axisDir) < 0)
                 {
-                    Point3D p1 = start + (tv - ad.startValue) * axisDir + (ad.ticLength / 2) * ticDir;
-                    Point3D p2 = start + (tv - ad.startValue) * axisDir - (ad.ticLength / 2) * ticDir;
-
-                    WireLine tic = new WireLine
+                    foreach (Vector3D ticDir in ad.ticDirs)
                     {
-                        Point1 = p1,
-                        Point2 = p2,
-                        Color = ad.hostLine.Color,
-                        Thickness = ad.hostLine.Thickness
-                    };
+                        Point3D p1 = axisPoint + ad.ticLength / 2 * ticDir;
+                        Point3D p2 = axisPoint - ad.ticLength / 2 * ticDir;
 
-                    Children.Add (tic);
+                        WireLine tic = new WireLine
+                        {
+                            Point1 = p1,
+                            Point2 = p2,
+                            Color = ad.hostLine.Color,
+                            Thickness = ad.hostLine.Thickness
+                        };
+
+                        Children.Add (tic);
+                    }
                 }
             }
         }
@@ -152,16 +216,24 @@ namespace Plot3D_Embedded
         void DrawAxisText (AxisDecorations ad)
         {
             Point3D start = ad.hostLine.Point1;
-            Vector3D axisDir = ad.hostLine.Point2 - ad.hostLine.Point1;
+            Point3D end   = ad.hostLine.Point2;
+            Vector3D axisDir = end - start;
             axisDir.Normalize ();
 
             foreach (double tv in ad.textValues)
             {
-                Point3D p1 = start + (tv - ad.startValue) * axisDir + ad.textOffset;
+                // text will be near this point
+                Point3D axisPoint = start + (tv - ad.startValue) * axisDir;
 
-                Text3D txt = new Text3D (p1, ad.textDir, ad.textUp, 2 * ad.ticLength, string.Format ("{0:0.0}", tv));
-                txt.TextView.Color = ad.hostLine.Color;
-                Children.Add (txt.View);
+                // ensure axisPoint is between box line start and end
+                if (Vector3D.DotProduct (axisPoint - start, axisDir) >= 0 && Vector3D.DotProduct (axisPoint - end, axisDir) <= 0)
+                {
+                    Point3D p1 = axisPoint + ad.textOffset;
+
+                    Text3D txt = new Text3D (p1, ad.textDir, ad.textUp, ad.textSize, string.Format ("{0:0.0}", tv));
+                    txt.TextView.Color = ad.hostLine.Color;
+                    Children.Add (txt.View);
+                }
             }
         }
     }

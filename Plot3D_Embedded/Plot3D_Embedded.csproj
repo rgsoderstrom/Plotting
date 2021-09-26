@@ -70,6 +70,7 @@
     <Compile Include="Basic\Text.cs" />
     <Compile Include="Composite\CartesianAxesBox.cs" />
     <Compile Include="Composite\CartesianAxesBox2.cs" />
+    <Compile Include="Composite\CartesianAxisLine.cs" />
     <Compile Include="Composite\Cylinder.cs" />
     <Compile Include="Composite\CartesianAxes.cs" />
     <Compile Include="Composite\CartesianAxes2.cs" />
