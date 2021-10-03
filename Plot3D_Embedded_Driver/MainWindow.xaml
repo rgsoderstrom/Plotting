@@ -70,14 +70,14 @@
                 <Expander Style="{StaticResource B}" FontSize="16" Header="Basic" HorizontalContentAlignment="Left" IsExpanded="True">
                     <StackPanel Orientation="Vertical">
 
-                        <Expander Style="{StaticResource B}" Header="Points" IsExpanded="False">
+                        <Expander Style="{StaticResource B}" Header="Points" IsExpanded="True">
                             <StackPanel Orientation="Vertical">
                                 <Button Style="{StaticResource A}" Click="Point_Clicked">One Point</Button>
                                 <Button Style="{StaticResource A}" Click="PointCloud_Clicked">Point Cloud</Button>
                             </StackPanel>
                         </Expander>
                         
-                        <Expander Style="{StaticResource B}" Header="Lines" IsExpanded="True">
+                        <Expander Style="{StaticResource B}" Header="Lines" IsExpanded="False">
                             <StackPanel Orientation="Vertical">
                                 <Button Style="{StaticResource A}" Click="Line_PP_Clicked">Two End Points</Button>
                                 <Button Style="{StaticResource A}" Click="Line_PV_Clicked">Point and Vector</Button>

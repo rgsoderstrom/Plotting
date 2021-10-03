@@ -89,24 +89,95 @@ namespace Plot3D_Embedded_Driver
             }
         }
 
+        //****************************************************************************
+
         void CartesianAxis_Clicked (object sender, RoutedEventArgs args)
         {
             try
             {
-                CartesianAxes3D axes1 = new CartesianAxes3D
+                XAxisLine xAxis1 = new XAxisLine ()
                 {
-                    XMax = 4,
-                    XMin = -2
+                    ZeroPoint = new Point3D (0, 1, 1),
+                    TailCoordinate = 0,
+                    HeadCoordinate = 4,
+
+                    TicsAt = new List<double> () {1, 3, 5},
+                    //CustomText = new List<string> () {"Abc", "Def", "Ghi"},
+                    TextDisplay = AxisLineView.TextDisplayOptions.Numbers,
+                    TextSize = 0.25,
+                    TicSize = 0.2,
+                    
+                    TextOffsetDistance = 0.1,                    
                 };
 
-                figure.Plot (axes1);
+                YAxisLine yAxis1 = new YAxisLine ()
+                {
+                    //LineOrigin = new Point3D (0, 0, 0),
+                    TailCoordinate = 0,
+                    HeadCoordinate = 1,
 
-                axes1.YMax = 3;
-                axes1.YMin = -0.2;
+                    Color = Colors.Green,
+                };
 
-                axes1.ZMax = 3;
-                axes1.ZMin = -0.2;
-                figure.AxesTight = true;
+                ZAxisLine zAxis1 = new ZAxisLine ()
+                {
+                    //LineOrigin = new Point3D (0, 0, 0),
+                    TailCoordinate = 0,
+                    HeadCoordinate = 1,
+
+                    Color = Colors.Blue
+                };
+
+                figure.Plot (xAxis1);
+
+                //xAxis1.TextDisplay = AxisLineView.TextDisplayOptions.Numbers;
+                //figure.Refresh ();
+
+                figure.Plot (yAxis1);
+                figure.Plot (zAxis1);
+
+
+
+
+                // line with tic marks
+                //XAxisLine xAxis2 = new XAxisLine (new Point3D (0, 0, 0), -3, 15, new List<double> () { -2, -1, 0, 1, 5, 10 }, 0.3);
+                //figure.Plot (xAxis2);
+
+                // line with tic marks and default text
+                //XAxisLine xAxis3 = new XAxisLine (new Point3D (0, 0, 0), -3, 15, new List<double> () {-2, -1, 0, 1, 5, 10}, 0.3, 0.3); 
+                //xAxis3.AxisView.Color = Colors.DarkGreen;
+                //figure.Plot (xAxis3);
+
+
+                //XAxisLine xAxis4 = new XAxisLine (new Point3D (0, 0, 0), 0, 10,
+                //                                  new List<double> () {3, 4, 5},
+                //                                  new List<string> () {"A", "B", "C"}, 
+                //                                  0.5, 0.5);
+                //figure.Plot (xAxis4);
+
+                //YAxisLine yAxis = new YAxisLine (0,  6, new Point3D (0, 0, 0), new List<double> () {3, 4, 5}, 1, 1); 
+                //ZAxisLine zAxis = new ZAxisLine (0,  3, new Point3D (0, 0, 0), new List<double> () {3, 4, 5}, 1, 1); 
+
+
+                //figure.Plot (yAxis);
+                //figure.Plot (zAxis);
+
+
+
+                //CartesianAxes3D axes1 = new CartesianAxes3D
+                //{
+                //    XMax = 4,
+                //    XMin = -2
+                //};
+
+                //figure.Plot (axes1);
+
+                //axes1.YMax = 3;
+                //axes1.YMin = -0.2;
+
+                //axes1.ZMax = 3;
+                //axes1.ZMin = -0.2;
+                //figure.AxesTight = true;
             }
 
             catch (Exception ex)
@@ -119,11 +190,37 @@ namespace Plot3D_Embedded_Driver
         {
             try
             {
-                //double x1 = figure.ViewportBoundingBox.
+                double x1 = -2;
+                double x2 =  2;
+                double y1 = -1.5;
+                double y2 =  1.5;
+                double z1 = -3;
+                double z2 =  3;
 
-                CartesianAxisDescription xAxis = new CartesianAxisDescription () {min = -3, max = 10, ticsAt = new List<double> () { 0, 2, 4, 6, 8 }};
-                CartesianAxisDescription yAxis = new CartesianAxisDescription () {min = -2, max = 8,  ticsAt = new List<double> () { 0, 3, 6 }};
-                CartesianAxisDescription zAxis = new CartesianAxisDescription () {min = -1, max = 4,  ticsAt = new List<double> () { 0, 3}};
+                if (figure.ViewportBoundingBox.IsValid)
+                {
+                    x1 = figure.ViewportBoundingBox.MinX;
+                    x2 = figure.ViewportBoundingBox.MaxX;
+                    y1 = figure.ViewportBoundingBox.MinY;
+                    y2 = figure.ViewportBoundingBox.MaxY;
+                    z1 = figure.ViewportBoundingBox.MinZ;
+                    z2 = figure.ViewportBoundingBox.MaxZ;
+                }
+
+                double dx = x2 - x1;
+                double dy = y2 - y1;
+                double dz = z2 - z1;
+
+                double d = Math.Min (dx, dy);
+                d = Math.Min (d, dz);
+
+                //CartesianAxisDescription xAxis = new CartesianAxisDescription (x1, x2, 3, d/10, d/12);
+                CartesianAxisDescription xAxis = new CartesianAxisDescription (x1, x2, new List<double> () {-3, -2, -1, 0, 1, 2, 3}, 0.2, 0.3);
+
+
+
+                CartesianAxisDescription yAxis = new CartesianAxisDescription (y1, y2, 3, d/10, d/12);
+                CartesianAxisDescription zAxis = new CartesianAxisDescription (z1, z2, 3, d/10, d/12);
 
                 CartesianAxesBox box = new CartesianAxesBox (xAxis, yAxis, zAxis);
                 figure.Plot (box);
@@ -171,14 +268,20 @@ namespace Plot3D_Embedded_Driver
             }
         }
 
+        private double range = 10;
+
         void PointCloud_Clicked (object sender, RoutedEventArgs args)
         {
             List<Point3D> points = new List<Point3D> ();
 
             for (int i=0; i<50; i++)
-                points.Add (Utils.RandomPoint (15));
+            {
+                points.Add (Utils.RandomPoint (range));
+            }
 
-            double radius = 0.2 + Utils.RandomDouble (0.3);
+            double radius = 0.5 + Utils.RandomDouble (range / 50);
+
+            range *= 2;
 
             PointCloud3D pc = new PointCloud3D (points); //, radius);
 
@@ -233,12 +336,12 @@ namespace Plot3D_Embedded_Driver
                 vv.YComponentView.Color = Colors.Green;
                 vv.ZComponentView.Color = Colors.Blue;
 
-                CartesianAxisDescription cd = new CartesianAxisDescription ();
-                cd.min = -1;
-                cd.max = 2;
-                cd.ticsAt = new List<double> () {0};
-                CartesianAxesBox cb = new CartesianAxesBox (cd, cd, cd);
-                figure.Plot (cb);
+                //CartesianAxisDescription cd = new CartesianAxisDescription ();
+                //cd.min = -1;
+                //cd.max = 2;
+                //cd.ticsAt = new List<double> () {0};
+                //CartesianAxesBox cb = new CartesianAxesBox (cd, cd, cd);
+                //figure.Plot (cb);
             }
 
             catch (Exception ex)
