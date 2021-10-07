@@ -9,9 +9,6 @@ namespace Plot3D_Embedded
 {
     public class BoundingBox3D : ViewportObject
     {
-        //public override ModelVisual3D View {get {return view;}}
-
-        // 
         override protected ModelVisual3D BoundingBoxView {get {return (new BoundingBox3D ()).View;}}
         override public    BoundingBox3D BoundingBox     {get {return new BoundingBox3D ();}}
 
@@ -24,6 +21,13 @@ namespace Plot3D_Embedded
 
         public double MaxZ {get {return maxZ;} protected set {maxZ = value;}}
         public double MinZ {get {return minZ;} protected set {minZ = value;}}
+
+        public double XSize {get {return MaxX - MinX;}}
+        public double YSize {get {return MaxY - MinY;}}
+        public double ZSize {get {return MaxZ - MinZ;}}
+
+        //public bool IsValid {get {return XSize > 0 && YSize > 0 && ZSize > 0;}}
+        public bool IsValid {get {return !empty;}}
 
         double minX = 0, maxX = 0;
         double minY = 0, maxY = 0;

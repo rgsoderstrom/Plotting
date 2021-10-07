@@ -31,20 +31,27 @@ namespace Plot3D_Embedded
             set {min = value; UpdateBoundingBox ();}
         }
         
-        public double HeadCoodinate
+        public double HeadCoordinate
         {
             get {return max;} 
             set {max = value; UpdateBoundingBox ();}
         }
 
         public Point3D P0 {get {return ZeroPoint + TailCoordinate * Direction;}}
-        public Point3D P1 {get {return ZeroPoint + HeadCoodinate  * Direction;}}
+        public Point3D P1 {get {return ZeroPoint + HeadCoordinate * Direction;}}
 
         public AxisLineGeometry (Vector3D dir)
         {
             Direction = dir;
             Direction.Normalize ();
             UpdateBoundingBox ();
+        }
+
+        public void CopyFrom (AxisLineGeometry src)
+        { 
+            ZeroPoint      = src.ZeroPoint;
+            TailCoordinate = src.TailCoordinate;
+            HeadCoordinate = src.HeadCoordinate;
         }
 
         private void UpdateBoundingBox ()
@@ -61,77 +68,95 @@ namespace Plot3D_Embedded
 
     public class AxisLineView : Line3DView
     {
-        AxisLineGeometry geomCopy;
+        public AxisLineGeometry geomCopy;
 
-        public enum TextDisplayOptions {NoText, Numbers, Custom};
+        public String Label {get; set;} = null;
 
-        public TextDisplayOptions TextDisplay {get; set;} = TextDisplayOptions.NoText;
-        public List<string> CustomText {get; set;} 
+        public enum TicTextDisplayOptions {NoText, Numbers, Custom};
+
+        public TicTextDisplayOptions TicTextDisplay {get; set;} = TicTextDisplayOptions.NoText;
+        public List<string> CustomTicText {get; set;} 
     
 
         public double TicSize  {get; set;}
-        public double TextSize {get; set;}
+        public double TicTextSize {get; set;}
 
         public List<double> TicsAt  {get; set;}
-
         public List<Vector3D> TicDirs; // usually one or two, orthogonal to axis line
 
-        public List<string> Text;      // optional characters displayed next to a tic mark
-        public Vector3D TextDir;       // usually along axis line
-        public Vector3D TextUp;
+        public List<string> TicText;      // optional characters displayed next to a tic mark
+        public Vector3D TicTextDir;       // flow direction, default is along axis line
+        public Vector3D TicTextUp;
 
-        public Vector3D TextOffsetDirection;
-        public double   TextOffsetDistance;
+        public Vector3D TicTextOffsetDirection;
+        public double   TicTextOffsetDistance;
 
         public AxisLineView (AxisLineGeometry geom) : base (new Line3DGeometry (geom.P0, geom.P1))
         {
             geomCopy = geom;
 
             TicSize = 1;  // defaults that will almost never be acceptable
-            TextSize = 1;
-
+            TicTextSize = 1;
         }
 
         public AxisLineView (AxisLineView src, AxisLineGeometry geom) : base (new Line3DGeometry (geom.P0, geom.P1))
         {
             geomCopy   = geom;
             Color      = src.Color;
+            Thickness  = src.Thickness;
+            Label      = src.Label;
             TicDirs    = src.TicDirs;
-            TextDir    = src.TextDir;
-            TextUp     = src.TextUp;
+            TicTextDir = src.TicTextDir;
+            TicTextUp  = src.TicTextUp;
 
-            TextOffsetDistance  = src.TextOffsetDistance;
-            TextOffsetDirection = src.TextOffsetDirection;
+            TicTextOffsetDistance  = src.TicTextOffsetDistance;
+            TicTextOffsetDirection = src.TicTextOffsetDirection;
 
             TicsAt  = src.TicsAt;
             TicSize = src.TicSize;
-            CustomText = src.CustomText;
-            TextDisplay = src.TextDisplay;
+            CustomTicText = src.CustomTicText;
+            TicTextDisplay   = src.TicTextDisplay;
 
-            TextSize = src.TextSize;
-
+            TicTextSize = src.TicTextSize;
         }
+
+
+
+        public void CopyFrom (AxisLineView src)
+        {
+            Color = src.Color;
+            Label = src.Label;
+            TicsAt = src.TicsAt; 
+            TicSize = src.TicSize;           
+            TicTextSize = src.TicTextSize;
+            TicTextDisplay = src.TicTextDisplay;
+            CustomTicText = src.CustomTicText;
+            TicTextOffsetDirection = src.TicTextOffsetDirection;
+            TicTextOffsetDistance = src.TicTextOffsetDistance;
+        }
+
 
         public void ConstructChildren ()
         {
+            if (Label != null)
+            {
+                // 
+                Point3D labelPoint = geomCopy.P0 + (geomCopy.P1 - geomCopy.P0) * 0.5;
+                labelPoint -= (Label.Length * TicTextSize / 3) * TicTextDir;
+                labelPoint += TicTextOffsetDirection * TicTextOffsetDistance * 4;
+
+                Text3D txt = new Text3D (labelPoint, TicTextDir, TicTextUp, TicTextSize, Label);
+                txt.TextView.Color = Color;
+                Children.Add (txt.View);
+            }
+
             if (TicsAt != null && TicsAt.Count > 0)
             {
-
-                //if (TextDisplay == TextDisplayOptions.Custom)
-                //{
-                //    if (CustomText == null || CustomText.Count == 0)
-                //        throw new Exception ("Custom Text option selected but no text specified");
-
-                //    if (CustomText.Count != TicsAt.Count)
-                //        throw new Exception ("Number of CustomText strings must match number of TicsAt locations");
-                //}
-
-
                 for (int i = 0; i<TicsAt.Count; i++)
                 {
                     double tv = TicsAt [i];
 
-                    if (tv >= geomCopy.TailCoordinate && tv <= geomCopy.HeadCoodinate)
+                    if (tv >= geomCopy.TailCoordinate && tv <= geomCopy.HeadCoordinate)
                     {
                         // tic lines will pass through this point
                         Point3D axisPoint = geomCopy.P0 + (tv - geomCopy.TailCoordinate) * geomCopy.Direction;
@@ -145,18 +170,22 @@ namespace Plot3D_Embedded
                             Children.Add (tic);
                         }
 
-                        if (TextDisplay == TextDisplayOptions.Custom)
+                        if (TicTextDisplay == TicTextDisplayOptions.Custom)
                         {
-                            Vector3D textOffset = TextOffsetDistance * TextOffsetDirection - (TextSize / 2) * TextDir;
-                            Text3D txt = new Text3D (axisPoint + textOffset, TextDir, TextUp, TextSize, CustomText [i]);
-                            txt.TextView.Color = Color;
-                            Children.Add (txt.View);
+                            if (CustomTicText != null)
+                            {
+                                Vector3D textOffset = TicTextOffsetDistance * TicTextOffsetDirection - (TicTextSize / 2) * TicTextDir;
+                                Text3D txt = new Text3D (axisPoint + textOffset, TicTextDir, TicTextUp, TicTextSize, CustomTicText [i]);
+                                txt.TextView.Color = Color;
+                                Children.Add (txt.View);
+                            }
                         }
 
-                        else if (TextDisplay == TextDisplayOptions.Numbers)
+                        else if (TicTextDisplay == TicTextDisplayOptions.Numbers)
                         {
-                            Vector3D textOffset = TextOffsetDistance * TextOffsetDirection - (TextSize / 2) * TextDir;
-                            Text3D txt = new Text3D (axisPoint + textOffset, TextDir, TextUp, TextSize, tv.ToString ());
+                            Vector3D textOffset = TicTextOffsetDistance * TicTextOffsetDirection - (TicTextSize / 2) * TicTextDir;
+                            string tvs = string.Format ("{0:0.0}", tv);
+                            Text3D txt = new Text3D (axisPoint + textOffset, TicTextDir, TicTextUp, TicTextSize, tvs);
                             txt.TextView.Color = Color;
                             Children.Add (txt.View);
                         }
@@ -164,99 +193,6 @@ namespace Plot3D_Embedded
                 }
             }
         }
-
-        //public AxisLineView (double min, double max, 
-        //                     List<double> ticsAt,
-        //                     List<Vector3D> ticDirs,
-        //                     double ticSize, 
-        //                     AxisLineGeometry geom) 
-        //    : this (min, max, ticsAt, ticDirs, new Vector3D (), new Vector3D (), new Vector3D (), null, ticSize, 0, geom)
-        //{
-        //}
-
-
-
-        //public AxisLineView (double min, double max, 
-        //                     List<double> ticsAt,
-        //                     List<Vector3D> ticDirs,
-        //                     Vector3D textDir,
-        //                     Vector3D textUp,
-        //                     Vector3D textOffset,
-        //                     List<string> text,  // text to display at each tic. can be null
-        //                     double ticSize, 
-        //                     double textSize, 
-        //                     AxisLineGeometry geom) : base (geom)
-        //{
-        //    Color = Colors.Blue; // color;
-        //    Thickness = 2; // t;
-        //    ArrowEnds = Petzold.Media2D.ArrowEnds.End;
-
-        //    TextUp = textUp;
-        //    TextOffset = textOffset;
-
-        //    //DashParameters dp = new DashParameters ();
-        //    //dp.OffPercent = 60;
-        //    //dp.OnPercent = 40;
-        //    //dp.Cycles = 3;
-        //    //SetDashParameters (dp);
-
-        //    if (text != null)
-        //    {
-        //        Text = text;
-        //    }
-
-        //    else if (ticsAt != null)
-        //    {
-        //        Text = new List<string> ();
-
-        //        foreach (double tic in ticsAt)
-        //        {
-        //            Text.Add (tic.ToString ()); // TBR!!!    
-        //        }
-        //    }
-
-        //    TicDirs  = ticDirs;
-        //    TextDir  = textDir;
-        //    TicsAt   = ticsAt;
-        //    TicSize  = ticSize;
-        //    TextSize = textSize;
-
-
-
-        //    if (TicsAt != null)
-        //    {
-        //        for (int i=0; i<ticsAt.Count; i++)
-        //        {
-        //            double tv = ticsAt [i];
-
-        //            if (tv >= min && tv <= max)
-        //            {
-        //                // tic lines will pass through this point
-        //                Point3D axisPoint = geom.P0 + (tv - min) * geom.Direction;
-
-        //                foreach (Vector3D ticDir in ticDirs)
-        //                {
-        //                    Point3D p1 = axisPoint + TicSize / 2 * ticDir;
-        //                    Point3D p2 = axisPoint - TicSize / 2 * ticDir;
-
-        //                    WireLine tic = new WireLine {Point1 = p1, Point2 = p2, Color = Color, Thickness = Thickness};
-        //                    Children.Add (tic);
-        //                }
-
-        //                if (Text != null && Text.Count > i)
-        //                {
-        //                    Point3D p1 = axisPoint + TextOffset;
-
-        //                    Text3D txt = new Text3D (p1, TextDir, TextUp, TextSize, Text [i]);
-        //                    txt.TextView.Color = Color;
-        //                    Children.Add (txt.View);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-
     }
 
     //*********************************************************************************************************
@@ -295,20 +231,19 @@ namespace Plot3D_Embedded
         protected override ModelVisual3D BoundingBoxView {get {return Geometry.BoundingBox.View;}}
         public    override BoundingBox3D BoundingBox {get {return Geometry.BoundingBox;}}
 
+        public String Label {get {return AxisView.Label;}
+                             set {AxisView.Label = value; AxisView.Children.Clear ();}}
 
-
-
-
+        // for an X axis line, this is the spot where the line would pierce the x = 0 plane.
+        // for a Y axis line, where it pierces the y = 0 plane. same for Z axis
         public Point3D ZeroPoint {get {return Geometry.ZeroPoint;} 
                                   set {Geometry.ZeroPoint = value; AxisView = new AxisLineView (AxisView, Geometry);}}
-
-
 
         public double  TailCoordinate {get {return Geometry.TailCoordinate;} 
                                        set {Geometry.TailCoordinate = value; AxisView = new AxisLineView (AxisView, Geometry);}}
 
-        public double  HeadCoordinate {get {return Geometry.HeadCoodinate;} 
-                                       set {Geometry.HeadCoodinate = value; AxisView = new AxisLineView (AxisView, Geometry);}}
+        public double  HeadCoordinate {get {return Geometry.HeadCoordinate;} 
+                                       set {Geometry.HeadCoordinate = value; AxisView = new AxisLineView (AxisView, Geometry);}}
 
         public Color Color {get {return AxisView.Color;}
                             set {AxisView.Color = value; AxisView.Children.Clear ();}}
@@ -326,27 +261,35 @@ namespace Plot3D_Embedded
 
 
 
-        public double TextSize {get {return AxisView.TextSize;}
-                                set {AxisView.TextSize = value; AxisView.Children.Clear ();}}
+        public double TicTextSize {get {return AxisView.TicTextSize;}
+                                   set {AxisView.TicTextSize = value; AxisView.Children.Clear ();}}
 
 
 
 
-        public AxisLineView.TextDisplayOptions TextDisplay {get {return AxisView.TextDisplay;}
-                                                            set {AxisView.TextDisplay = value; AxisView.Children.Clear ();}}
+        public AxisLineView.TicTextDisplayOptions TicTextDisplay {get {return AxisView.TicTextDisplay;}
+                                                                  set {AxisView.TicTextDisplay = value; AxisView.Children.Clear ();}}
 
 
 
-        public List<string> CustomText 
+        public List<string> CustomTicText 
         {
-            get {return AxisView.CustomText;}
+            get {return AxisView.CustomTicText;}
 
             set 
             {
-                AxisView.CustomText = value; 
+                AxisView.CustomTicText = value; 
                 
-                if (AxisView.CustomText == null) AxisView.TextDisplay = AxisLineView.TextDisplayOptions.NoText;  
-                else                             AxisView.TextDisplay = AxisLineView.TextDisplayOptions.Custom;
+                if (AxisView.CustomTicText != null)
+                {
+                    AxisView.TicTextDisplay = AxisLineView.TicTextDisplayOptions.Custom;
+                }
+
+                else
+                {
+                    if (AxisView.TicTextDisplay == AxisLineView.TicTextDisplayOptions.Custom)
+                        AxisView.TicTextDisplay = AxisLineView.TicTextDisplayOptions.NoText;
+                }
                 
                 AxisView.Children.Clear ();
             }
@@ -357,11 +300,11 @@ namespace Plot3D_Embedded
 
 
 
-        public Vector3D TextOffsetDirection  {get {return AxisView.TextOffsetDirection;}
-                                              set {AxisView.TextOffsetDirection = value; AxisView.Children.Clear ();}}
+        public Vector3D TicTextOffsetDirection  {get {return AxisView.TicTextOffsetDirection;}
+                                                 set {AxisView.TicTextOffsetDirection = value; AxisView.Children.Clear ();}}
 
-        public double TextOffsetDistance  {get {return AxisView.TextOffsetDistance;}
-                                           set {AxisView.TextOffsetDistance = value; AxisView.Children.Clear ();}}
+        public double TicTextOffsetDistance  {get {return AxisView.TicTextOffsetDistance;}
+                                              set {AxisView.TicTextOffsetDistance = value; AxisView.Children.Clear ();}}
 
     }
 
@@ -374,16 +317,21 @@ namespace Plot3D_Embedded
             Geometry = new AxisLineGeometry (new Vector3D (1, 0, 0));
 
             AxisLineView tempAxisView = new AxisLineView (Geometry);
-
-            tempAxisView.Color      = Colors.Red;
-            tempAxisView.TicDirs    = new List<Vector3D> () {YAxis, ZAxis}; // usually 2, perpendicular to axis line
-            tempAxisView.TextDir    = XAxis; // usually along axis line
-            tempAxisView.TextUp     = ZAxis;
-
-            tempAxisView.TextOffsetDirection = -ZAxis;
-            tempAxisView.TextOffsetDistance  = 1;
+            tempAxisView.Thickness     = 1;
+            tempAxisView.Color         = Colors.Red;
+            tempAxisView.TicDirs       = new List<Vector3D> () {YAxis, ZAxis}; // usually 2, perpendicular to axis line
+            tempAxisView.TicTextDir    = XAxis; // usually along axis line
+            tempAxisView.TicTextUp     = ZAxis;
+            tempAxisView.TicTextOffsetDirection = -ZAxis;
+            tempAxisView.TicTextOffsetDistance  = 1;
 
             AxisView = tempAxisView;
+        }
+    
+        public XAxisLine (XAxisLine src) : this ()
+        {
+            Geometry.CopyFrom (src.Geometry);
+            AxisView.CopyFrom (src.AxisView);
         }
     }
 
@@ -394,21 +342,25 @@ namespace Plot3D_Embedded
         public YAxisLine ()
         {
             Geometry = new AxisLineGeometry (new Vector3D (0, 1, 0));
-            AxisView = new AxisLineView (Geometry);
+
+            AxisLineView tempAxisView = new AxisLineView (Geometry);
+
+            tempAxisView.Color         = Colors.Green;
+            tempAxisView.Thickness     = 1;
+            tempAxisView.TicDirs       = new List<Vector3D> () {XAxis, ZAxis}; // usually 2, perpendicular to axis line
+            tempAxisView.TicTextDir    = YAxis; // usually along axis line
+            tempAxisView.TicTextUp     = ZAxis;
+            tempAxisView.TicTextOffsetDirection = -ZAxis;
+            tempAxisView.TicTextOffsetDistance  = 1;
+
+            AxisView = tempAxisView;
         }
 
-        //public YAxisLine (double min, double max, Point3D lineOrigin, List<double> ticsAt, double ticSize, double textSize)
-        //{
-            //Geometry = new AxisLineGeometry (min, max, lineOrigin, new Vector3D (0, 1, 0));
-            //AxisView = new AxisLineView (ticsAt, ticSize, textSize, Geometry);
-
-            //AxisView.ticDirs    = new List<Vector3D> () {new Vector3D (0, 0, 1), new Vector3D (1, 0, 0)};
-            //AxisView.textDir    = new Vector3D (0, 1, 0);
-            //AxisView.textUp     = new Vector3D (0, 0, 1);
-            //AxisView.textOffset = new Vector3D (0, -3, -1) / Math.Sqrt (10) * textSize;
-        //}
-
-
+        public YAxisLine (YAxisLine src) : this ()
+        {
+            Geometry.CopyFrom (src.Geometry);
+            AxisView.CopyFrom (src.AxisView);
+        }
     }
 
     //*********************************************************************************************************
@@ -418,21 +370,25 @@ namespace Plot3D_Embedded
         public ZAxisLine ()
         {
             Geometry = new AxisLineGeometry (new Vector3D (0, 0, 1));
-            AxisView = new AxisLineView (Geometry);
+
+            AxisLineView tempAxisView = new AxisLineView (Geometry);
+
+            tempAxisView.Color         = Colors.Blue;
+            tempAxisView.Thickness     = 1;
+            tempAxisView.TicDirs       = new List<Vector3D> () {XAxis, YAxis}; // usually 2, perpendicular to axis line
+            tempAxisView.TicTextDir    = ZAxis; // usually along axis line
+            tempAxisView.TicTextUp     = XAxis;
+            tempAxisView.TicTextOffsetDirection = -XAxis;
+            tempAxisView.TicTextOffsetDistance  = 1;
+
+            AxisView = tempAxisView;
         }
 
-        //public ZAxisLine (double min, double max, Point3D lineOrigin, List<double> ticsAt, double ticSize, double textSize)
-        //{
-            //Geometry = new AxisLineGeometry (min, max, lineOrigin, new Vector3D (0, 0, 1));
-            //AxisView = new AxisLineView (ticsAt, ticSize, textSize, Geometry);
-
-            //AxisView.ticDirs    = new List<Vector3D> () {new Vector3D (1, 0, 0), new Vector3D (0, 1, 0)};
-            //AxisView.textDir    = new Vector3D (0, 0, 1);
-            //AxisView.textUp     = new Vector3D (1, 1, 0);
-            //AxisView.textOffset = new Vector3D (-1, -1, -3) / Math.Sqrt (11) * textSize;
-        //}
-
-
+        public ZAxisLine (ZAxisLine src) : this ()
+        {
+            Geometry.CopyFrom (src.Geometry);
+            AxisView.CopyFrom (src.AxisView);
+        }
     }
 }
 

@@ -50,7 +50,7 @@ namespace Plot3D_Embedded_Driver
         private double ZFunction (double x, double y)
         {
             //return y - x - 0.5;
-            return 0.25 * (x * x + y * y - 6) + 0;
+            return 0.025 * (x * x + y * y - 6) + 0;
             //return 1 + x * y / 4;
         }
 
@@ -61,10 +61,10 @@ namespace Plot3D_Embedded_Driver
                 List<double> xCoords = new List<double> ();
                 List<double> yCoords = new List<double> ();
 
-                for (double x=-4; x<=4; x+=1)
+                for (double x=-40; x<=40; x+=10)
                     xCoords.Add (x);
 
-                for (double y=-4; y<=4; y+=1)
+                for (double y=-40; y<=40; y+=10)
                     yCoords.Add (y);
 
                 double [,] zValues = new double [yCoords.Count, xCoords.Count];
@@ -102,13 +102,28 @@ namespace Plot3D_Embedded_Driver
                     HeadCoordinate = 4,
 
                     TicsAt = new List<double> () {1, 3, 5},
-                    //CustomText = new List<string> () {"Abc", "Def", "Ghi"},
-                    TextDisplay = AxisLineView.TextDisplayOptions.Numbers,
-                    TextSize = 0.25,
+                    CustomTicText = new List<string> () {"Abc", "Def", "Ghi"},
+                    //TicTextDisplay = AxisLineView.TicTextDisplayOptions.Numbers,
+                    TicTextSize = 0.25,
                     TicSize = 0.2,
                     
-                    TextOffsetDistance = 0.1,                    
+                    TicTextOffsetDistance = 0.1,                    
+
+                    Label = "X axis label",
                 };
+
+                XAxisLine xAxis2 = new XAxisLine (xAxis1)
+                {
+                    ZeroPoint = new Point3D (0, 0, 0),
+                    //TicsAt = null,
+                    TicTextDisplay = AxisLineView.TicTextDisplayOptions.NoText,
+                    Label = null,
+                };
+
+                figure.Plot (xAxis1);
+                figure.Plot (xAxis2);
+
+
 
                 YAxisLine yAxis1 = new YAxisLine ()
                 {
@@ -128,7 +143,6 @@ namespace Plot3D_Embedded_Driver
                     Color = Colors.Blue
                 };
 
-                figure.Plot (xAxis1);
 
                 //xAxis1.TextDisplay = AxisLineView.TextDisplayOptions.Numbers;
                 //figure.Refresh ();
@@ -190,39 +204,17 @@ namespace Plot3D_Embedded_Driver
         {
             try
             {
-                double x1 = -2;
-                double x2 =  2;
-                double y1 = -1.5;
-                double y2 =  1.5;
-                double z1 = -3;
-                double z2 =  3;
+                //CartesianAxesBox box = new CartesianAxesBox (new Point3D (0, 0, 0), new Point3D (5, 4, 3));
+                //CartesianAxesBox box = new CartesianAxesBox (new Point3D (-5, -5, -5), new Point3D (5, 5, 5));
+                //CartesianAxesBox box = new CartesianAxesBox (new Point3D (12, 10, 5), new Point3D (15, 15, 15));
+
+                CartesianAxesBox box;
 
                 if (figure.ViewportBoundingBox.IsValid)
-                {
-                    x1 = figure.ViewportBoundingBox.MinX;
-                    x2 = figure.ViewportBoundingBox.MaxX;
-                    y1 = figure.ViewportBoundingBox.MinY;
-                    y2 = figure.ViewportBoundingBox.MaxY;
-                    z1 = figure.ViewportBoundingBox.MinZ;
-                    z2 = figure.ViewportBoundingBox.MaxZ;
-                }
+                    box = new CartesianAxesBox (figure.ViewportBoundingBox);
+                else
+                    box = new CartesianAxesBox (new Point3D (-5, -5, -5), new Point3D (5, 5, 5));
 
-                double dx = x2 - x1;
-                double dy = y2 - y1;
-                double dz = z2 - z1;
-
-                double d = Math.Min (dx, dy);
-                d = Math.Min (d, dz);
-
-                //CartesianAxisDescription xAxis = new CartesianAxisDescription (x1, x2, 3, d/10, d/12);
-                CartesianAxisDescription xAxis = new CartesianAxisDescription (x1, x2, new List<double> () {-3, -2, -1, 0, 1, 2, 3}, 0.2, 0.3);
-
-
-
-                CartesianAxisDescription yAxis = new CartesianAxisDescription (y1, y2, 3, d/10, d/12);
-                CartesianAxisDescription zAxis = new CartesianAxisDescription (z1, z2, 3, d/10, d/12);
-
-                CartesianAxesBox box = new CartesianAxesBox (xAxis, yAxis, zAxis);
                 figure.Plot (box);
             }
 

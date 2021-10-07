@@ -69,7 +69,6 @@
     <Compile Include="Basic\Point.cs" />
     <Compile Include="Basic\Text.cs" />
     <Compile Include="Composite\CartesianAxesBox.cs" />
-    <Compile Include="Composite\CartesianAxesBox2.cs" />
     <Compile Include="Composite\AxisLine.cs" />
     <Compile Include="Composite\Cylinder.cs" />
     <Compile Include="Composite\CartesianAxes.cs" />

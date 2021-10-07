@@ -10,116 +10,30 @@ using Petzold.Media3D;
 
 namespace Plot3D_Embedded
 {
-    public class CartesianAxisDescription
-    {
-        //***************************************************************************************
-
-        public CartesianAxisDescription (double _min, double _max, List<double> _ticsAt,
-                                         double _ticSize, double _textSize)
-        {
-            ticSize = _ticSize;
-            textSize = _textSize;
-
-            min = _min;
-            max = _max;
-            ticsAt = _ticsAt;
-        }
-
-        //***************************************************************************************
-
-        public CartesianAxisDescription (double _min, double _max, int numberTics,
-                                         double _ticSize, double _textSize)
-        {
-            ticSize = _ticSize;
-            textSize = _textSize;
-
-            min = _min;
-            max = _max;
-            ticsAt = new List<double> ();
-
-            double span = max - min;
-
-            if (numberTics == 1)
-            {
-                ticsAt.Add (min + firstTicAt * span);
-            }
-
-            else if (numberTics == 2)
-            {
-                ticsAt.Add (min + firstTicAt * span);
-                ticsAt.Add (min + lastTicAt  * span);
-            }
-
-            else if (numberTics > 2)
-            {
-                double step = (lastTicAt - firstTicAt) / (numberTics - 1);
-                double tic = firstTicAt;
-
-                while (tic <= lastTicAt)
-                {
-                    ticsAt.Add (min + tic * span);
-                    tic += step;
-                }
-            }
-        }
-
-        public double ticSize  {get; protected set;}
-        public double textSize {get; protected set;}
-
-        public double min {get; protected set;}
-        public double max {get; protected set;}
-        public List<double> ticsAt {get; protected set;}
-
-        public static double firstTicAt = 0.05;
-        public static double lastTicAt  = 0.95;
-    }
-
     //*********************************************************************************************
 
     public partial class CartesianAxesBoxGeometry : ViewportObjectGeometry
     {
-        public double MaxX { get; protected set; } = 1;
-        public double MinX { get; protected set; } = -1;
+        public Point3D Minimums;
+        public Point3D Maximums;
 
-        public double MaxY { get; protected set; } = 1;
-        public double MinY { get; protected set; } = -1;
+        public double MaxX {get {return Maximums.X;}}
+        public double MinX {get {return Minimums.X;}}
 
-        public double MaxZ { get; protected set; } = 1;
-        public double MinZ { get; protected set; } = -1;
+        public double MaxY {get {return Maximums.Y;}}
+        public double MinY {get {return Minimums.Y;}}
 
-        public List<Point3D> bottom = new List<Point3D> ();
-        public List<Point3D> top = new List<Point3D> ();
+        public double MaxZ {get {return Maximums.Z;}}
+        public double MinZ {get {return Minimums.Z;}}
 
-        public Point3D origin;
-
-        public Vector3D xAxis  = new Vector3D (1, 0, 0);
-        public Vector3D yAxis  = new Vector3D (0, 1, 0);
-        public Vector3D zAxis  = new Vector3D (0, 0, 1);
-
-        public CartesianAxesBoxGeometry (double minx, double maxx, double miny, double maxy, double minz, double maxz)
+        public CartesianAxesBoxGeometry (Point3D min, Point3D max)
         {
-            MinX = minx;
-            MaxX = maxx;
-            MinY = miny;
-            MaxY = maxy;
-            MinZ = minz;
-            MaxZ = maxz;
+            Minimums = min;
+            Maximums = max;
 
-            origin = new Point3D (MinX, MinY, MinZ);
-
-            bottom.Add (new Point3D (MinX, MinY, MinZ));
-            bottom.Add (new Point3D (MaxX, MinY, MinZ));
-            bottom.Add (new Point3D (MaxX, MaxY, MinZ));
-            bottom.Add (new Point3D (MinX, MaxY, MinZ));
-
-            top.Add (new Point3D (MinX, MinY, MaxZ));
-            top.Add (new Point3D (MaxX, MinY, MaxZ));
-            top.Add (new Point3D (MaxX, MaxY, MaxZ));
-            top.Add (new Point3D (MinX, MaxY, MaxZ));
-            
-            BoundingBox.Clear ();
-            foreach (Point3D pt in bottom) BoundingBox.Union (pt);
-            foreach (Point3D pt in top)    BoundingBox.Union (pt);
+            BoundingBox.Clear();
+            BoundingBox.Union (Minimums);
+            BoundingBox.Union (Maximums);
         }
     }
 
@@ -129,112 +43,124 @@ namespace Plot3D_Embedded
     {
         CartesianAxesBoxGeometry geometry;
 
-        public CartesianAxesBoxView (CartesianAxesBoxGeometry geom, CartesianAxisDescription xDesc, CartesianAxisDescription yDesc, CartesianAxisDescription zDesc)
+        public CartesianAxesBoxView (CartesianAxesBoxGeometry geom)
         {
-            geometry = geom;
+            geometry = geom; 
 
-            double t = 0.75; // wire thickness
-            Color color = Colors.Black;
+            // determine where to draw tic marks
+            int numberTics = 5; // along longest axis
+            double dx = geometry.MaxX - geometry.MinX;
+            double dy = geometry.MaxY - geometry.MinY;
+            double dz = geometry.MaxZ - geometry.MinZ;
 
-            List<WireLine> lines = new List<WireLine> (12);
+            double maxSpan = Math.Max (dx, dy);
+            maxSpan = Math.Max (maxSpan, dz);
+            double step = maxSpan / (numberTics + 1);
 
-            List<Point3D> top = geometry.top;
-            List<Point3D> bottom = geometry.bottom;
+            double anchorX = (geometry.MaxX + geometry.MinX) / 2;
+            double anchorY = (geometry.MaxY + geometry.MinY) / 2;
+            double anchorZ = (geometry.MaxZ + geometry.MinZ) / 2;
 
-            WireLine line;
-            line = new WireLine (); line.Point1 = top [0]; line.Point2 = top [1]; line.Color = color; line.Thickness = t; lines.Add (line);
-            line = new WireLine (); line.Point1 = top [1]; line.Point2 = top [2]; line.Color = color; line.Thickness = t; lines.Add (line);
-            line = new WireLine (); line.Point1 = top [2]; line.Point2 = top [3]; line.Color = color; line.Thickness = t; lines.Add (line);
-            line = new WireLine (); line.Point1 = top [3]; line.Point2 = top [0]; line.Color = color; line.Thickness = t; lines.Add (line);
 
-            line = new WireLine (); line.Point1 = bottom [0]; line.Point2 = bottom [1]; line.Color = color; line.Thickness = t; lines.Add (line); // gets X axis markings
-            line = new WireLine (); line.Point1 = bottom [1]; line.Point2 = bottom [2]; line.Color = color; line.Thickness = t; lines.Add (line);
-            line = new WireLine (); line.Point1 = bottom [2]; line.Point2 = bottom [3]; line.Color = color; line.Thickness = t; lines.Add (line);
-            line = new WireLine (); line.Point1 = bottom [0]; line.Point2 = bottom [3]; line.Color = color; line.Thickness = t; lines.Add (line); // gets Y axis markings
+            if (geometry.MaxX > 0 && geometry.MinX < 0) anchorX = 0;
+            if (geometry.MaxY > 0 && geometry.MinY < 0) anchorY = 0;
+            if (geometry.MaxZ > 0 && geometry.MinZ < 0) anchorZ = 0;
 
-            line = new WireLine (); line.Point1 = bottom [0]; line.Point2 = top [0]; line.Color = color; line.Thickness = t; lines.Add (line); // gets Z axis markings
-            line = new WireLine (); line.Point1 = bottom [1]; line.Point2 = top [1]; line.Color = color; line.Thickness = t; lines.Add (line);
-            line = new WireLine (); line.Point1 = bottom [2]; line.Point2 = top [2]; line.Color = color; line.Thickness = t; lines.Add (line);
-            line = new WireLine (); line.Point1 = bottom [3]; line.Point2 = top [3]; line.Color = color; line.Thickness = t; lines.Add (line);
 
-            Children.Clear ();
+            List<double> xTics = new List<double> () {anchorX};
+            List<double> yTics = new List<double> () {anchorY};
+            List<double> zTics = new List<double> () {anchorZ};
 
-            foreach (Visual3D l in lines)
-                Children.Add (l);
+            double q1 = anchorX + step;
+            double q2 = anchorX - step;
 
-            //************************************************************************************
-
-            XAxisDecorations xAxisMarkings = new XAxisDecorations (lines [4], xDesc);
-            DrawAxisTics (xAxisMarkings);
-            DrawAxisText (xAxisMarkings);
-
-            //YAxisDecorations yAxisMarkings = new YAxisDecorations (lines [7], yDesc);
-            //DrawAxisTics (yAxisMarkings);
-            //DrawAxisText (yAxisMarkings);
-
-            //ZAxisDecorations zAxisMarkings = new ZAxisDecorations (lines [8], zDesc);
-            //DrawAxisTics (zAxisMarkings);
-            //DrawAxisText (zAxisMarkings);
-        }
-
-        //*******************************************************************************************
-
-        void DrawAxisTics (AxisDecorations ad)
-        {
-            Point3D start = ad.hostLine.Point1;
-            Point3D end   = ad.hostLine.Point2;
-            Vector3D axisDir = end - start;
-            axisDir.Normalize ();
-
-            foreach (double tv in ad.ticValues)
+            while (true)
             {
-                // tic lines will pass through this point
-                Point3D axisPoint = start + (tv - ad.startValue) * axisDir;
+                if (xTics.Count < numberTics && q1 < geometry.MaxX) xTics.Add (q1);
+                if (xTics.Count < numberTics && q2 > geometry.MinX) xTics.Add (q2);
+                q1 += step;
+                q2 -= step;
 
-                // ensure axisPoint is between box line start and end
-                if (Vector3D.DotProduct (axisPoint - start, axisDir) > 0 && Vector3D.DotProduct (axisPoint - end, axisDir) < 0)
-                {
-                    foreach (Vector3D ticDir in ad.ticDirs)
-                    {
-                        Point3D p1 = axisPoint + ad.ticLength / 2 * ticDir;
-                        Point3D p2 = axisPoint - ad.ticLength / 2 * ticDir;
-
-                        WireLine tic = new WireLine
-                        {
-                            Point1 = p1,
-                            Point2 = p2,
-                            Color = ad.hostLine.Color,
-                            Thickness = ad.hostLine.Thickness
-                        };
-
-                        Children.Add (tic);
-                    }
-                }
+                if (xTics.Count >= numberTics) break;                
+                if (q1 > geometry.MaxX && q2 < geometry.MinX) break;
             }
-        }
 
-        void DrawAxisText (AxisDecorations ad)
-        {
-            Point3D start = ad.hostLine.Point1;
-            Point3D end   = ad.hostLine.Point2;
-            Vector3D axisDir = end - start;
-            axisDir.Normalize ();
 
-            foreach (double tv in ad.textValues)
+
+            List<double> commonTicsAt = new List<double> () {-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8};
+            AxisLineView.TicTextDisplayOptions commonTicTextDisplay = AxisLineView.TicTextDisplayOptions.Numbers;
+
+            double commonTicSize = maxSpan / 25; // 0.2;
+            double commonTicTextSize = commonTicSize; // 0.25;
+            double commonTicTextOffsetDistance = commonTicSize / 2; // 0.1;
+
+            XAxisLine xAxis1 = new XAxisLine ()
             {
-                // text will be near this point
-                Point3D axisPoint = start + (tv - ad.startValue) * axisDir;
+                ZeroPoint = new Point3D (0, geometry.MinY, geometry.MinZ), // spot where this line would pierce the x = 0 plane
+                TicsAt                = xTics, // commonTicsAt,
+                //TicsAt                = commonTicsAt,
+                TicTextDisplay        = commonTicTextDisplay,
+                TicSize               = commonTicSize,
+                TicTextSize           = commonTicTextSize,
+                TicTextOffsetDistance = commonTicTextOffsetDistance,
+                Color = Colors.LightGray,
+                TailCoordinate = geometry.MinX,
+                HeadCoordinate = geometry.MaxX,
+            };
 
-                // ensure axisPoint is between box line start and end
-                if (Vector3D.DotProduct (axisPoint - start, axisDir) >= 0 && Vector3D.DotProduct (axisPoint - end, axisDir) <= 0)
-                {
-                    Point3D p1 = axisPoint + ad.textOffset;
+            YAxisLine yAxis1 = new YAxisLine ()
+            {
+                ZeroPoint = new Point3D (geometry.MinX, 0, geometry.MinZ),
+                TicsAt                = yTics,
+                //TicsAt                = commonTicsAt,
+                TicTextDisplay        = commonTicTextDisplay,
+                TicSize               = commonTicSize,
+                TicTextSize           = commonTicTextSize,
+                TicTextOffsetDistance = commonTicTextOffsetDistance,
+                Color = Colors.LightGray,
+                TailCoordinate = geometry.MinY,
+                HeadCoordinate = geometry.MaxY,
+            };
 
-                    Text3D txt = new Text3D (p1, ad.textDir, ad.textUp, ad.textSize, string.Format ("{0:0.0}", tv));
-                    txt.TextView.Color = ad.hostLine.Color;
-                    Children.Add (txt.View);
-                }
-            }
+            ZAxisLine zAxis1 = new ZAxisLine ()
+            {
+                ZeroPoint = new Point3D (geometry.MinX, geometry.MinY, 0),
+                TicsAt                = zTics, // commonTicsAt,
+                TicTextDisplay        = commonTicTextDisplay,
+                TicSize               = commonTicSize,
+                TicTextSize           = commonTicTextSize,
+                TicTextOffsetDistance = commonTicTextOffsetDistance,
+                Color = Colors.LightGray,
+                TailCoordinate = geometry.MinZ,
+                HeadCoordinate = geometry.MaxZ,
+            };
+
+            XAxisLine xAxis2 = new XAxisLine (xAxis1) {ZeroPoint = new Point3D (0, geometry.MaxY, geometry.MinZ), TicsAt = null,};
+            XAxisLine xAxis3 = new XAxisLine (xAxis2) {ZeroPoint = new Point3D (0, geometry.MaxY, geometry.MaxZ)};
+            XAxisLine xAxis4 = new XAxisLine (xAxis2) {ZeroPoint = new Point3D (0, geometry.MinY, geometry.MaxZ)};
+
+            YAxisLine yAxis2 = new YAxisLine (yAxis1) {ZeroPoint = new Point3D (geometry.MaxX, 0, geometry.MinZ), TicsAt = null,};
+            YAxisLine yAxis3 = new YAxisLine (yAxis2) {ZeroPoint = new Point3D (geometry.MaxX, 0, geometry.MaxZ)};
+            YAxisLine yAxis4 = new YAxisLine (yAxis2) {ZeroPoint = new Point3D (geometry.MinX, 0, geometry.MaxZ)};
+
+            ZAxisLine zAxis2 = new ZAxisLine (zAxis1) {ZeroPoint = new Point3D (geometry.MaxX, geometry.MinY, 0), TicsAt = null};
+            ZAxisLine zAxis3 = new ZAxisLine (zAxis2) {ZeroPoint = new Point3D (geometry.MaxX, geometry.MaxY, 0)};
+            ZAxisLine zAxis4 = new ZAxisLine (zAxis2) {ZeroPoint = new Point3D (geometry.MinX, geometry.MaxY, 0)};
+
+            Children.Add (xAxis1.View);
+            Children.Add (xAxis2.View);
+            Children.Add (xAxis3.View);
+            Children.Add (xAxis4.View);
+
+            Children.Add (yAxis1.View);
+            Children.Add (yAxis2.View);
+            Children.Add (yAxis3.View);
+            Children.Add (yAxis4.View);
+
+            Children.Add (zAxis1.View);
+            Children.Add (zAxis2.View);
+            Children.Add (zAxis3.View);
+            Children.Add (zAxis4.View);
         }
     }
 
@@ -250,11 +176,16 @@ namespace Plot3D_Embedded
         override protected ModelVisual3D BoundingBoxView {get {return Geometry.BoundingBox.View;}}
         override public    BoundingBox3D BoundingBox     {get {return Geometry.BoundingBox;}}
 
-        public CartesianAxesBox (CartesianAxisDescription xAxis, CartesianAxisDescription yAxis, CartesianAxisDescription zAxis) 
+        public CartesianAxesBox (Point3D minimums, Point3D maximums)
         {
-            Geometry = new CartesianAxesBoxGeometry  (xAxis.min, xAxis.max, yAxis.min, yAxis.max, zAxis.min, zAxis.max);
+            Geometry = new CartesianAxesBoxGeometry (minimums, maximums);
+            BoxView = new CartesianAxesBoxView (Geometry);
+        }
 
-            BoxView = new CartesianAxesBoxView (Geometry, xAxis, yAxis, zAxis);
+        public CartesianAxesBox (BoundingBox3D box)
+        {
+            Geometry = new CartesianAxesBoxGeometry (new Point3D (box.MinX, box.MinY, box.MinZ), new Point3D (box.MaxX, box.MaxY, box.MaxZ));
+            BoxView = new CartesianAxesBoxView (Geometry);
         }
     }
 }
