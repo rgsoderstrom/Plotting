@@ -383,25 +383,39 @@ namespace Plot3D_Embedded_Driver
             }
         }
 
+        double scale = 1;
+        //double scale = 1e-4;
+        //double scale = 1e-5;
+        //double scale = 100;
+
         double xFunction (double t)
         {
-            return Math.Sin (2 * Math.PI * t);
+            return 5 * scale * Math.Sin (2 * Math.PI * t) + 10;
         }
 
         double yFunction (double t)
         {
-            return Math.Cos (2 * Math.PI * t);
+            return 4 * scale * Math.Cos (2 * Math.PI * t) + 20;
         }
 
         double zFunction (double t)
         {
-            return t;
+            return 2 * t * scale + 30;
         }
 
         void Polyline_Func_Clicked (object sender, RoutedEventArgs args)
         {
-            Polyline3D pl3 = new Polyline3D (xFunction, yFunction, zFunction, -3, 3, 1.0 / 32);
-            Polyline3DView pv = figure.Plot (pl3) as Polyline3DView;
+            try
+            {
+                Polyline3D pl3 = new Polyline3D (xFunction, yFunction, zFunction, -3, 3, 1.0 / 32);
+                pl3.PolylineView.Thickness = 2;
+                Polyline3DView pv = figure.Plot (pl3) as Polyline3DView;
+            }
+
+            catch (Exception ex)
+            {
+                Print ("Exception: " + ex.Message);
+            }
         }
 
         //*****************************************************************************************
@@ -510,6 +524,15 @@ namespace Plot3D_Embedded_Driver
         {
             double dist = Convert.ToDouble (Rho_Text.Text);
             figure.CenterDistance = dist;
+        }
+
+        private void Rho_Text_PreviewKeyDown (object sender, System.Windows.Input.KeyEventArgs args)
+        {
+            if (args.Key == System.Windows.Input.Key.Enter)
+            {
+                args.Handled = true;
+                SetRho_Clicked (null, null);
+            }
         }
 
         void GetPos_Clicked (object sender, RoutedEventArgs args)

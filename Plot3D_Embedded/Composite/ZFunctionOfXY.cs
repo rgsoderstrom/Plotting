@@ -24,9 +24,9 @@ namespace Plot3D_Embedded
         {
             BoundingBox.Clear ();
 
-            for (int yc=1; yc<yCoords.Count; yc++)
+            for (int yc=0; yc<yCoords.Count; yc++)
             {
-                for (int xc=1; xc<xCoords.Count; xc++)
+                for (int xc=0; xc<xCoords.Count; xc++)
                 {
                     BoundingBox.Union (new Point3D (xCoords [xc], yCoords [yc], zValues [yc, xc]));
                 }

@@ -181,6 +181,7 @@ namespace Plot3D_Embedded
         public void Clear ()
         {
             displayObjects.Clear ();
+            ViewportBoundingBox.Clear ();
             Draw ();
         }
 

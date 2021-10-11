@@ -27,8 +27,8 @@ namespace Plot3D_Embedded
             lights.Direction = Camera3D.Direction;
 
             Camera3D.Width = 16;
-            Camera3D.Camera.NearPlaneDistance = 0.1;
-            Camera3D.Camera.FarPlaneDistance = 1000;
+            Camera3D.Camera.NearPlaneDistance = 1e-9;
+            Camera3D.Camera.FarPlaneDistance = 1e8;
             Camera3D.Rho = 10; // 150;
 
             ThetaScrollbar.Value = Camera3D.Theta;

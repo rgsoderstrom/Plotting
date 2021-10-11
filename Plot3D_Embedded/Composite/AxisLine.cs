@@ -174,7 +174,7 @@ namespace Plot3D_Embedded
                         {
                             if (CustomTicText != null)
                             {
-                                Vector3D textOffset = TicTextOffsetDistance * TicTextOffsetDirection - (TicTextSize / 2) * TicTextDir;
+                                Vector3D textOffset = TicTextOffsetDistance * TicTextOffsetDirection - TicTextSize / 2 * TicTextDir;
                                 Text3D txt = new Text3D (axisPoint + textOffset, TicTextDir, TicTextUp, TicTextSize, CustomTicText [i]);
                                 txt.TextView.Color = Color;
                                 Children.Add (txt.View);
@@ -183,8 +183,21 @@ namespace Plot3D_Embedded
 
                         else if (TicTextDisplay == TicTextDisplayOptions.Numbers)
                         {
-                            Vector3D textOffset = TicTextOffsetDistance * TicTextOffsetDirection - (TicTextSize / 2) * TicTextDir;
-                            string tvs = string.Format ("{0:0.0}", tv);
+                            Vector3D textOffset = TicTextOffsetDistance * TicTextOffsetDirection - TicTextSize / 2 * TicTextDir;
+
+                            string tvs = string.Format ("{0:G2}", tv);
+
+                            // remove the exponent field of all but the last one
+                            if (i < TicsAt.Count - 1)
+                            {
+                                int z = tvs.IndexOf ('E');
+
+                                if (z != -1)
+                                {
+                                    tvs = tvs.Remove (z);
+                                }
+                            }
+
                             Text3D txt = new Text3D (axisPoint + textOffset, TicTextDir, TicTextUp, TicTextSize, tvs);
                             txt.TextView.Color = Color;
                             Children.Add (txt.View);
@@ -305,6 +318,35 @@ namespace Plot3D_Embedded
 
         public double TicTextOffsetDistance  {get {return AxisView.TicTextOffsetDistance;}
                                               set {AxisView.TicTextOffsetDistance = value; AxisView.Children.Clear ();}}
+
+
+
+
+
+        public static List<double> CalculateTicLocations (int maxNumberTics, double min, double step, double max)
+        {
+            double anchor = max > 0 && min < 0 ? 0 : (max + min) / 2;
+
+            List<double> tics = new List<double> () {anchor};
+
+            double q1 = tics [0] + step;
+            double q2 = tics [0] - step;
+
+            while (true)
+            {
+                if (tics.Count < maxNumberTics && q1 < max) tics.Add (q1);
+                if (tics.Count < maxNumberTics && q2 > min) tics.Add (q2);
+                q1 += step;
+                q2 -= step;
+
+                if (tics.Count >= maxNumberTics) break;                
+                if (q1 > max && q2 < min) break;
+            }
+
+            tics.Sort ();
+            return tics;
+        }
+
 
     }
 

@@ -39,6 +39,7 @@ namespace Plot3D_Embedded
 
     //****************************************************************************************************
 
+
     public partial class CartesianAxesBoxView : ModelVisual3D
     {
         CartesianAxesBoxGeometry geometry;
@@ -48,57 +49,29 @@ namespace Plot3D_Embedded
             geometry = geom; 
 
             // determine where to draw tic marks
-            int numberTics = 5; // along longest axis
+            int maxNumberTics = 5; // along longest axis
             double dx = geometry.MaxX - geometry.MinX;
             double dy = geometry.MaxY - geometry.MinY;
             double dz = geometry.MaxZ - geometry.MinZ;
 
             double maxSpan = Math.Max (dx, dy);
             maxSpan = Math.Max (maxSpan, dz);
-            double step = maxSpan / (numberTics + 1);
+            double step = maxSpan / (maxNumberTics + 1);
 
-            double anchorX = (geometry.MaxX + geometry.MinX) / 2;
-            double anchorY = (geometry.MaxY + geometry.MinY) / 2;
-            double anchorZ = (geometry.MaxZ + geometry.MinZ) / 2;
-
-
-            if (geometry.MaxX > 0 && geometry.MinX < 0) anchorX = 0;
-            if (geometry.MaxY > 0 && geometry.MinY < 0) anchorY = 0;
-            if (geometry.MaxZ > 0 && geometry.MinZ < 0) anchorZ = 0;
-
-
-            List<double> xTics = new List<double> () {anchorX};
-            List<double> yTics = new List<double> () {anchorY};
-            List<double> zTics = new List<double> () {anchorZ};
-
-            double q1 = anchorX + step;
-            double q2 = anchorX - step;
-
-            while (true)
-            {
-                if (xTics.Count < numberTics && q1 < geometry.MaxX) xTics.Add (q1);
-                if (xTics.Count < numberTics && q2 > geometry.MinX) xTics.Add (q2);
-                q1 += step;
-                q2 -= step;
-
-                if (xTics.Count >= numberTics) break;                
-                if (q1 > geometry.MaxX && q2 < geometry.MinX) break;
-            }
-
-
-
-            List<double> commonTicsAt = new List<double> () {-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8};
             AxisLineView.TicTextDisplayOptions commonTicTextDisplay = AxisLineView.TicTextDisplayOptions.Numbers;
 
-            double commonTicSize = maxSpan / 25; // 0.2;
-            double commonTicTextSize = commonTicSize; // 0.25;
-            double commonTicTextOffsetDistance = commonTicSize / 2; // 0.1;
+            List<double> xTics = AxisLine.CalculateTicLocations (maxNumberTics, geometry.MinX, step, geometry.MaxX);
+            List<double> yTics = AxisLine.CalculateTicLocations (maxNumberTics, geometry.MinY, step, geometry.MaxY);
+            List<double> zTics = AxisLine.CalculateTicLocations (maxNumberTics, geometry.MinZ, step, geometry.MaxZ);
+
+            double commonTicSize = maxSpan / 25;
+            double commonTicTextSize = commonTicSize;
+            double commonTicTextOffsetDistance = commonTicSize / 2;
 
             XAxisLine xAxis1 = new XAxisLine ()
             {
                 ZeroPoint = new Point3D (0, geometry.MinY, geometry.MinZ), // spot where this line would pierce the x = 0 plane
-                TicsAt                = xTics, // commonTicsAt,
-                //TicsAt                = commonTicsAt,
+                TicsAt                = xTics,
                 TicTextDisplay        = commonTicTextDisplay,
                 TicSize               = commonTicSize,
                 TicTextSize           = commonTicTextSize,
@@ -112,7 +85,6 @@ namespace Plot3D_Embedded
             {
                 ZeroPoint = new Point3D (geometry.MinX, 0, geometry.MinZ),
                 TicsAt                = yTics,
-                //TicsAt                = commonTicsAt,
                 TicTextDisplay        = commonTicTextDisplay,
                 TicSize               = commonTicSize,
                 TicTextSize           = commonTicTextSize,
@@ -125,7 +97,7 @@ namespace Plot3D_Embedded
             ZAxisLine zAxis1 = new ZAxisLine ()
             {
                 ZeroPoint = new Point3D (geometry.MinX, geometry.MinY, 0),
-                TicsAt                = zTics, // commonTicsAt,
+                TicsAt                = zTics,
                 TicTextDisplay        = commonTicTextDisplay,
                 TicSize               = commonTicSize,
                 TicTextSize           = commonTicTextSize,
@@ -135,6 +107,7 @@ namespace Plot3D_Embedded
                 HeadCoordinate = geometry.MaxZ,
             };
 
+            // three more of each.tics only drawn on the first (i.e. xAxis1, yAxis1,...)
             XAxisLine xAxis2 = new XAxisLine (xAxis1) {ZeroPoint = new Point3D (0, geometry.MaxY, geometry.MinZ), TicsAt = null,};
             XAxisLine xAxis3 = new XAxisLine (xAxis2) {ZeroPoint = new Point3D (0, geometry.MaxY, geometry.MaxZ)};
             XAxisLine xAxis4 = new XAxisLine (xAxis2) {ZeroPoint = new Point3D (0, geometry.MinY, geometry.MaxZ)};

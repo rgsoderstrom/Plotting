@@ -46,5 +46,16 @@ namespace Plot3D_Embedded
             return !nanZ;
         }
 
+
+
+
+        public static Vector3D ToUnit (this Vector3D v)
+        {
+            Vector3D vcopy = v;
+            vcopy.Normalize ();
+            return vcopy;
+        }
+
+
     }
 }

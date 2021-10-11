@@ -11,9 +11,11 @@ namespace Plot3D_Embedded
     public partial class Bare3DPlot
     {
         List<ViewportObject> displayObjects = new List<ViewportObject> ();
-        BoundingBox3D ViewportBoundingBox = new BoundingBox3D ();
 
-        void AddToViewport (ViewportObject vo)
+        protected BoundingBox3D viewportBoundingBox = new BoundingBox3D ();
+        public    BoundingBox3D ViewportBoundingBox {get {return viewportBoundingBox;} protected set {viewportBoundingBox = value;}}
+
+        protected void AddToViewport (ViewportObject vo)
         {
             if (Hold == false)
                 displayObjects.Clear ();
