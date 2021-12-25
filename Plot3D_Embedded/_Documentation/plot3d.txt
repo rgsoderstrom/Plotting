@@ -1,0 +1,116 @@
+
+Draw Surfaces
+=============
+	Z as a function of (x, y)
+	=========================
+	
+	List<double> xCoords, yCoords;
+	double [,] zValues = new double [yCoords.Count, xCoords.Count];
+	
+	ZFunctionOfXY ZFunc = new ZFunctionOfXY (xCoords, yCoords, zValues);
+	Surface3DView h = figure.Plot (ZFunc) as Surface3DView;
+	
+	SurfaceOptions
+	==============
+	ZFunc.ShowTraceLines = true;
+	h.Color = Colors.Red;
+	
+	
+	Cylinders
+	=========
+	not currently supported
+	
+	
+Draw Vectors
+============
+	Single Vector
+	=============
+	PlotVector3D pv = new PlotVector3D (Vector3D d);
+    PlotVector3D pv = new PlotVector3D (Point3D p, Vector3D d);
+    PlotVector3D pv = new PlotVector3D (Vector3D d, List<Vector3D> b);
+    PlotVector3D pv = new PlotVector3D (Point3D p, Vector3D d, List<Vector3D> b);
+	
+		// where:
+		// d = direction
+		// p = starting point
+		// b = basis vectors
+	
+	PlotVector3DView vv = figure.Plot (pv) as PlotVector3DView;
+	
+	Vector Options
+	==============
+	vv.ShowComponents       = true;
+	vv.Color                = Colors.Black;
+	vv.XComponentView.Color = Colors.Red;
+	vv.YComponentView.Color = Colors.Green;
+	vv.ZComponentView.Color = Colors.Blue;
+	
+	
+	
+	
+	Vector field
+	============
+	no special functions. must draw each individually
+
+
+
+
+Draw lines
+==========
+
+	between 2 points
+	================	
+	Line3D l3d = new Line3D (pt1, pt2);
+	Line3DView h =  figure.Plot (l3d) as Line3DView;
+
+	polyline
+	========
+	List<Point3D> arcPoints = new List<Point3D> ();
+
+	Polyline3D pl3   = new Polyline3D (arcPoints);
+	Polyline3DView h = figure.Plot (pl3) as Polyline3DView;
+	
+
+	Line Options
+	============
+	h.Color       = Colors.MediumAquamarine;
+	h.Thickness   = 1;
+	h.ArrowEnds   = Petzold.Media2D.ArrowEnds.End;
+	h.ArrowLength = 5;
+	h.Decimation  = 1;
+
+
+
+Draw points
+===========
+
+	single
+	======
+	PlottedPoint3D p3d = new PlottedPoint3D (Point3D pt);
+	Point3DView h = figure.Plot (p3d) as Point3DView;
+
+
+	set of points
+	=============
+	PointCloud3D pc = new PointCloud3D (List<Point3D> points);
+	PointCloud3DView h =  figure.Plot (pc) as PointCloud3DView;
+
+
+	Point Options
+	=============
+	h.Color = Colors.Coral;
+	h.Diameter = 2 * radius;
+	
+	
+
+Draw text
+=========
+
+
+
+
+
+
+
+
+

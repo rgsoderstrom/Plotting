@@ -1,0 +1,78 @@
+
+Contour plot
+============
+
+
+
+
+
+
+Vector
+======
+	Single vector
+	=============
+	
+	
+	
+	
+	Vector Field
+	============
+	
+	
+
+
+
+
+Draw a line between 2 points
+============================
+	LineView h  = new LineView (Point p1, Point p2);
+	
+	
+Draw a polyline
+===============
+	
+	List<Point> parabola = new List<Point> ();
+
+	for (double x=-2; x<=2; x+=0.125)
+		parabola.Add (CurveFunction (x));
+
+	LineView h  = new LineView (parabola);
+
+
+	Line Options
+	============
+	h.LineStyle = LineView.DrawingStyle.Dashes;
+	h.Thickness = 3;
+	h.Color     = Brushes.LightSteelBlue;
+	h.arrowheadatstart = true;
+	h.arrowheadatend   = true;
+
+	figure.Plot (h);
+
+
+Draw one or more points
+=======================
+	PointView h = new PointView (Point pt);
+	PointView h = new PointView (list_of_points, DrawingStyle);
+
+	Point Options
+	=============
+	h.Size            = 1.0 / 16;
+	h.BorderColor     = Brushes.DarkSlateBlue;
+	h.BorderThickness = 3;
+	h.Thickness       = 3;
+	h.FillColor       = Brushes.BlueViolet;
+
+	figure.Plot (h);
+
+
+Draw text
+=========
+	TextView text = new TextView (Point pt, "Hello");
+	
+	text.Color              = Brushes.MediumOrchid;
+	text.FontSizeAppInUnits = 0.25;
+	text.Angle              = -10;
+
+	figure.Plot (text);
+
