@@ -105,9 +105,17 @@ Draw points
 
 Draw text
 =========
+	Text3D txt = new Text3D (Point3D pos, double size, string txt);
+	Text3D txt = new Text3D (Point3D pos, Vector3D dir, Vector3D up, double size, string txt);
+   
+	Text3DView h = figure.Plot (txt) as Text3DView;
 
-
-
+	Text Options
+	============
+	h.Size = 0.5;
+	h.Color -------- doesn't work
+	txt.Orientation (Vector3D up, Vector3D right);
+	
 
 
 

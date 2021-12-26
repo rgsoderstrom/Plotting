@@ -1,25 +1,65 @@
 
-Contour plot
+Contour plot - contours of Z (X, Y)
 ============
 
+	Generate Z data with a function delegate
+	========================================
+	public delegate double ZFromXYFunction (double x, double y);
+	
+	ContourPlotView h = new ContourPlotView (ZFromXYFunction _z,       // calculate z from any (x, y)
+                                             List<double> contValues,  // draw these contours
+											 double minX,              // plot limit
+											 double maxX,              //  "     "
+											 double minY,              //  "     "
+											 double maxY,              //  "     "
+											 int    numberXSamples,
+											 int    numberYSamples);	
+    figure.Plot (h);
 
-
-
-
+	
+	Z data passed in
+	================
+	ContourPlotView h = new ContourPlotView (xValues,		 // List<double>
+	                                         yValues,		 //  "
+											 zValues, 		 // CommonMath.Matrix
+											 contourValues); // List<double>
+	figure.Plot (h);
+	
+	Contour Options
+	===============
+	Note that these are static. They must be set to desired value before calling constructor.
+	
+	ContourPlotView.DrawLines             = false;
+	ContourPlotView.DrawLinesInColor      = false;
+	ContourPlotView.LabelLines            = false;
+	ContourPlotView.ShowGradientArrows    = true;
+	ContourPlotView.GradientArrowSize     = 0.1;
+	ContourPlotView.ShowColoredBackground = true;
+	
 
 Vector
 ======
 	Single vector
 	=============
-	
-	
-	
+	VectorView v = new VectorView (Vector v1);
+	VectorView v = new VectorView (Point p1, Vector v1);
+	VectorView v = new  VectorView (Vector v1, List<Vector> basis);
+	VectorView v = new VectorView (Point p, Vector v, List<Vector> basis); 
+
+	figure.Plot (v);
+
 	
 	Vector Field
 	============
+	VectorFieldView v = new VectorFieldView (List<Point> positions, List<Vector> vectors) 
+	figure.Plot (v);
 	
-	
-
+	Vector Options
+	==============
+	v.Color          = Brushes.Green;
+    v.Thickness      = 2;
+	v.ShowComponents = false;                       // single vector only
+	v.LineStyle      = LineView.DrawingStyle.Solid; //   "      "     "
 
 
 
