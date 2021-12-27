@@ -1,0 +1,57 @@
+
+PlottingLib combines functionality of plot2D and plot3D and adds a wrapper for standalone use
+
+Figures
+=======
+	
+	
+	
+	
+Plot2D objects
+==============
+	Canvas Object
+	=============
+	single point
+	list of points
+	single line 
+	polyline
+
+	SetCurrentFigureTo2D ();
+	CanvasObject h = new LineView (new Point (1, 2), new Point (2, 3)); 
+	(CurrentFigure as Plot2D).Plot (h);
+		
+	ContourPlotView
+	===============
+	
+	
+	VectorView
+	==========
+	SetCurrentFigureTo2D ();
+	VectorView h = new VectorView (pt, v);
+	(CurrentFigure as Plot2D).Plot (h);	
+
+	VectorFieldView
+	===============
+	SetCurrentFigureTo2D ();
+	VectorFieldView h = new VectorFieldView (points, vects);
+	(CurrentFigure as Plot2D).Plot (h);
+
+
+Plot3D objects
+=============
+	Point
+	=====
+	
+		
+	Line
+	====
+	SetCurrentFigureTo3D ();
+	Line3D l3d = new Line3D (pt1, pt2);
+	Line3DView h = (CurrentFigure as Plot3D).Plot (l3d) as Line3DView;
+
+
+
+
+
+
+
