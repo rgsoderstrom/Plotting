@@ -54,14 +54,14 @@
                 </StackPanel>
             </Expander>
 
-            <Expander Style="{StaticResource B}" Header="Composite 2D Objects" IsExpanded="True">
+            <Expander Style="{StaticResource B}" Header="Composite 2D Objects" IsExpanded="False">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Composite2D">
                     <Button Style="{StaticResource A}" Click="VectorButton_Click">Vector</Button>
                     <Button Style="{StaticResource A}" Click="VectorFieldButton_Click">Vector Field</Button>
                 </StackPanel>
             </Expander>
 
-            <Expander Style="{StaticResource B}" Header="Basic 3D Objects" IsExpanded="False">
+            <Expander Style="{StaticResource B}" Header="Basic 3D Objects" IsExpanded="True">
                 <StackPanel Orientation="Vertical" Name="Basic3D">
                     <Button Style="{StaticResource A}" Click="Point_Clicked">One Point</Button>
                     <Button Style="{StaticResource A}" Click="PointCloud_Clicked">Point Cloud</Button>

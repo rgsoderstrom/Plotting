@@ -235,22 +235,41 @@ namespace Plot3D_Embedded_Driver
             try
             {
                 Point3D pt = Utils.RandomPoint (5);
-                double radius = 0.15 + Utils.RandomDouble (0.25);
+                double radius = 1 + Utils.RandomDouble (1);
 
-                PlottedPoint3D p3d = new PlottedPoint3D (pt);
 
-                p3d.Radius = radius;
-                Point3DView h = figure.Plot (p3d) as Point3DView;
-                h.Color = Colors.Coral;
+                PointMarker s1 = new Cube (pt);
+                figure.Plot (s1);
+                s1.Color = Colors.Red;
+                s1.Radius = radius;
 
-                Text3D txt = new Text3D (pt, 0.5, string.Format ("P{0}", cnt++));
-                Text3DView h1 = figure.Plot (txt) as Text3DView;
-                h1.Size = 0.8;
 
-                if ((cnt & 1) == 1)
-                    txt.TextView.OrientationFrozen = true;
+                pt += new Vector3D (2 * radius, 0, 0);
+                PointMarker s2 = new Tetrahedron (pt);
+                figure.Plot (s2);
+                s2.Diameter = 2 * radius;
+                s2.Opacity = 0.5;
 
-                figure.AxesTight = false;
+
+
+                pt += new Vector3D (2 * radius, 0, 0);
+                PointMarker s3 = new Sphere (pt);
+                figure.Plot (s3);
+                s3.Radius = radius;
+
+
+
+
+
+                //Text3D txt = new Text3D (pt, 0.5, string.Format ("P{0}", cnt++));
+                //Text3DView h1 = figure.Plot (txt) as Text3DView;
+
+                //if ((cnt & 1) == 1)
+                //    txt.TextView.OrientationFrozen = true;
+
+
+
+                figure.AxesTight = true;
                 figure.DataAreaTitle = "One Point";
             }
 
@@ -259,6 +278,62 @@ namespace Plot3D_Embedded_Driver
                 Print (string.Format ("Exception: {0}", ex.Message));
             }
         }
+
+        //****************************************************************************************
+
+        private Point3D f_of_t (double t)
+        {
+            double x = t * t;
+            double y = t * Math.Sin (t);
+            double z = 2 * t + 3;
+
+            return new Point3D (x, y, z);
+        }
+
+        private Vector3D D_f_of_t (double t)
+        {
+            double x = 2 * t;
+            double y = t * Math.Cos (t) + Math.Sin (t);
+            double z = 2;
+
+            return new Vector3D (x, y, z);
+        }
+
+        void Points_In_Line_Clicked (object sender, RoutedEventArgs args)
+        {
+            List<double> t = new List<double> ();
+
+            for (int i=0; i<50; i++)
+                t.Add (2.0 * Math.PI * i / 50);
+
+            List<Point3D> points = new List<Point3D> ();
+
+            for (int i=0; i<50; i++)
+                points.Add (f_of_t (t [i]));
+
+
+            PointCloud3D pc = new PointCloud3D (points);
+            PointCloud3DView h =  figure.Plot (pc) as PointCloud3DView;
+
+            h.Color = Colors.Red;
+            h.Diameter = 0.4;
+           
+
+            //Polyline3D pl3 = new Polyline3D (points);
+            //Polyline3DView pv = figure.Plot (pl3) as Polyline3DView;
+
+            //int j = 40;
+            //PlottedPoint3D pt = new PlottedPoint3D (points [j]);
+            //Point3DView p3v = figure.Plot (pt) as Point3DView;
+
+            //p3v.Color = Colors.Black;
+            //p3v.Diameter = 0.45;
+
+            //PlotVector3D vect = new PlotVector3D (points [j], D_f_of_t (t [j]));
+            //PlotVector3DView vv = figure.Plot (vect) as PlotVector3DView;
+        }
+
+        //****************************************************************************************
 
         private double range = 10;
 
@@ -297,6 +372,12 @@ namespace Plot3D_Embedded_Driver
             Line3D l3d = new Line3D (pt1, pt2);
 
             Line3DView h =  figure.Plot (l3d) as Line3DView;
+
+            Line3DView.DashParameters dp = new Line3DView.DashParameters ();
+            dp.OnPercent = 60;
+            dp.Cycles = 10;
+            h.SetDashParameters (dp);
+
             h.Color = Colors.MediumAquamarine;
         }
 
@@ -344,37 +425,45 @@ namespace Plot3D_Embedded_Driver
 
         void Polyline_Points_Clicked (object sender, RoutedEventArgs args)
         {
-            double r = Utils.RandomDouble (20);
+            //double r = 10 + Utils.RandomDouble (20);
 
-            PlottedPoint3D p1 = new PlottedPoint3D (new Point3D ( r, 0, 0));
-            PlottedPoint3D p2 = new PlottedPoint3D (new Point3D (-r, 0, 0));
+            //PlottedPoint3D p1 = new PlottedPoint3D (new Point3D (r, 0, 0));
+            //PlottedPoint3D p2 = new PlottedPoint3D (new Point3D (-r, 0, 0));
 
-            Point3DView p1View = figure.Plot (p1) as Point3DView;
-            Point3DView p2View = figure.Plot (p2) as Point3DView;
+            //Point3DView p1View = figure.Plot (p1) as Point3DView;
+            //Point3DView p2View = figure.Plot (p2) as Point3DView;
 
-            p1View.Color = Colors.Red;
-            p2View.Color = Colors.Black;
+            //p1View.Color = Colors.Red;
+            //p2View.Color = Colors.Black;
+
 
             List<Point3D> arcPoints = new List<Point3D> ();
 
-            double dt = Math.PI / 32;
+            arcPoints.Add (new Point3D (0, 0, 0));
+            arcPoints.Add (new Point3D (-1, 1, 1));
+            arcPoints.Add (new Point3D (10, 12, 14));
 
-            for (double t = dt; t<Math.PI-dt; t+=dt)
-            {
-                Point3D pt = new Point3D (r * Math.Cos (t), r * Math.Sin (t), 0);
-                arcPoints.Add (pt);
-            }
+            //double dt = Math.PI / 8;
+
+            //for (double t = dt; t<Math.PI-dt; t+=dt)
+            //{
+            //    Point3D pt = new Point3D (r * Math.Cos (t), r * Math.Sin (t), 0);
+            //    arcPoints.Add (pt);
+            //}
 
             try
             {
-                Polyline3D pl3 = new Polyline3D (arcPoints);
+
+                Polyline3D pl3 = new Polyline3D (CommonMath.Interpolation.Linear (arcPoints, 16));
+                //Polyline3D pl3 = new Polyline3D (arcPoints);
+
                 Polyline3DView pv = figure.Plot (pl3) as Polyline3DView;
                 pv.Color = Colors.Red;
                 pv.Thickness = 1;
 
                 pv.ArrowEnds = Petzold.Media2D.ArrowEnds.End;
                 pv.ArrowLength = 5;
-                pv.Decimation = 1;
+                pv.Decimation = 2;
             }
 
             catch (Exception ex)
@@ -431,12 +520,12 @@ namespace Plot3D_Embedded_Driver
 
             Print (string.Format ("Point: {0:0.0} Normal: {1:0.0}", p1, v1));
 
-            Point3DView h1 = figure.Plot (new PlottedPoint3D (p1)) as Point3DView;
+            SphereView h1 = figure.Plot (new Sphere (p1)) as SphereView;
             Line3DView  h2 = figure.Plot (new Line3D (p1, v1)) as Line3DView;
             Plane3DView h3 = figure.Plot (new Plane3D (p1, v1)) as Plane3DView;
 
-            h1.Diameter = 0.1;
-            h1.Color = Colors.Red;
+           // h1.Diameter = 0.1;
+         //   h1.Color = Colors.Red;
 
             h2.Color = Colors.Green;
             h2.ArrowEnds = Petzold.Media2D.ArrowEnds.End;
@@ -461,7 +550,7 @@ namespace Plot3D_Embedded_Driver
             Plane3DView h3 = figure.Plot (new Plane3D (p1 + 1.0 * v1, v1)) as Plane3DView;
             Plane3DView h4 = figure.Plot (new Plane3D (p1 + 1.5 * v1, v1)) as Plane3DView;
 
-            Point3DView h5 = figure.Plot (new PlottedPoint3D (p1 + 0.75 * v1)) as Point3DView;
+            SphereView h5 = figure.Plot (new Sphere (p1 + 0.75 * v1)) as SphereView;
 
             h1.Color = h2.Color = h3.Color = h4.Color = Colors.Red;
             h1.BackColor = h2.BackColor = h3.BackColor = h4.BackColor = Colors.Green;
@@ -469,7 +558,7 @@ namespace Plot3D_Embedded_Driver
             h1.BackOpacity = h2.BackOpacity = h3.BackOpacity = h4.BackOpacity = 0.5;
             h1.Opacity = h2.Opacity = h3.Opacity = h4.Opacity = 0.5;
 
-            h5.Diameter = 0.2;
+           // h5.Diameter = 0.2;
 
             figure.SortByDistance ();
         }

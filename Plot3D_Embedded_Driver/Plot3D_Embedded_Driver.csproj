@@ -8,12 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Plot3D_Embedded_Driver</RootNamespace>
     <AssemblyName>Plot3D_Embedded_Driver</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,7 +39,8 @@
     <Reference Include="Common">
       <HintPath>..\..\Common\bin\Debug\Common.dll</HintPath>
     </Reference>
-    <Reference Include="CommonMath">
+    <Reference Include="CommonMath, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\CommonMath\bin\Debug\CommonMath.dll</HintPath>
     </Reference>
     <Reference Include="Petzold.Media3D, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">

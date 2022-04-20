@@ -117,8 +117,8 @@ namespace Plot3D_Embedded
 
                 for (int col=0; col<cols; col+=1)
                 {
-                    above.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] + 0.01));
-                    below.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] - 0.01));
+                    above.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] + 0.001));
+                    below.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] - 0.001));
                 }
 
                 Polyline3D pl3 = new Polyline3D (above);
@@ -140,8 +140,8 @@ namespace Plot3D_Embedded
 
                 for (int row=0; row<rows; row+=1)
                 {
-                    above.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] + 0.01));
-                    below.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] - 0.01));
+                    above.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] + 0.001));
+                    below.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] - 0.001));
                 }
 
                 Polyline3D pl3 = new Polyline3D (above);

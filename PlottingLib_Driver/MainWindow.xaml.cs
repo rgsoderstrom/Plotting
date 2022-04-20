@@ -206,7 +206,8 @@ namespace PlottingLib_Driver
 
         private void EllipseButton_Click (object sender, RoutedEventArgs e) 
         {
-            EllipseView h = new EllipseView () {Center = new Point (-1, 2), Width = 2, Height = 1, Angle = 10};
+            CanvasObject h = new EllipseView () {Center = new Point (-1, 2), Width = 2, Height = 1, Angle = 10};
+            //EllipseView h = new EllipseView () {Center = new Point (-1, 2), Width = 2, Height = 1, Angle = 10};
 
             SetCurrentFigureTo2D ();
             (CurrentFigure as Plot2D).Hold = true;
@@ -233,10 +234,10 @@ namespace PlottingLib_Driver
 
         private void SmoothCurveButton_Click (object sender, RoutedEventArgs e) 
         {
-            LineView h = new LineView (new Point (1, 2), new Point (2, 3)); 
+            CanvasObject h = new LineView (new Point (1, 2), new Point (2, 3)); 
             SetCurrentFigureTo2D ();
             (CurrentFigure as Plot2D).Plot (h);
-            h.Color = Brushes.Red;
+            (h as LineView).Color = Brushes.Red;
         }
 
 
@@ -275,7 +276,7 @@ namespace PlottingLib_Driver
             PointCloud3D pc = new PointCloud3D (points);
             SetCurrentFigureTo3D ();
             PointCloud3DView h = (CurrentFigure as Plot3D).Plot (pc) as PointCloud3DView;
-
+           
             h.Diameter = 2 * radius;
             h.Color = Colors.Tomato;
         }

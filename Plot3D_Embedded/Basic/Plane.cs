@@ -102,7 +102,7 @@ namespace Plot3D_Embedded
 
         public Plane3D (Point3D pt0, Point3D pt1, Point3D pt2, Point3D pt3)
         {
-            Geometry = new Plane3DGeometry (new List<Point3D> {pt0, pt1, pt2, pt3});
+            Geometry = new Plane3DGeometry (new List<Point3D> { pt0, pt1, pt2 }); //, pt3});
             PlaneView = new Plane3DView (Geometry);
         }
 
