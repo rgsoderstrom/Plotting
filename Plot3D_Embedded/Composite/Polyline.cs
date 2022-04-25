@@ -60,6 +60,18 @@ namespace Plot3D_Embedded
             //Children.Add (geom.BoundingBox.View);
         }
 
+        new public int Decimation
+        {
+            set 
+            { 
+                EventLog.WriteLine ("Dec = " + value);
+                EventLog.WriteLine ("count = " + Points.Count);
+
+
+                base.Decimation = value;  
+            }
+        }
+
         new public Color Color
         {
             set {base.Color = value;}
