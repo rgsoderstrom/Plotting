@@ -29,19 +29,19 @@ namespace Plot3D_Embedded
             Camera3D.Width = 16;
             Camera3D.Camera.NearPlaneDistance = 1e-9;
             Camera3D.Camera.FarPlaneDistance = 1e8;
-            Camera3D.Rho = 10; // 150;
+            Camera3D.RelPositionRho = 10; // 150;
 
             ThetaScrollbar.Value = Camera3D.Theta;
             PhiScrollbar.Value   = Camera3D.Phi;
             WidthScrollbar.Value = Camera3D.Width;
-            RhoScrollbar.Value   = Camera3D.Rho;
+            RhoScrollbar.Value   = Camera3D.RelPositionRho;
             FovScrollbar.Value   = Camera3D.FOV;
 
-            ThetaScrollbar.Maximum = 360; ThetaScrollbar.Minimum = 0;
-            PhiScrollbar.Maximum   = 360; PhiScrollbar.Minimum   = 0;
-            WidthScrollbar.Maximum = 250; WidthScrollbar.Minimum = 5;
-            RhoScrollbar.Maximum   = 280; RhoScrollbar.Minimum   = 3;
-            FovScrollbar.Maximum   = 70; FovScrollbar.Minimum    = 1;
+            ThetaScrollbar.Maximum = 360;   ThetaScrollbar.Minimum = 0; ThetaScrollbar.SmallChange = 1; ThetaScrollbar.LargeChange = 5;
+            PhiScrollbar.Maximum   = 179;   PhiScrollbar.Minimum   = 1; PhiScrollbar.SmallChange = 1;   PhiScrollbar.LargeChange = 5;
+            WidthScrollbar.Maximum = 250;   WidthScrollbar.Minimum = 5;
+            RhoScrollbar.Maximum   = 280;   RhoScrollbar.Minimum   = 3; RhoScrollbar.SmallChange = 0.5; RhoScrollbar.LargeChange = 5;
+            FovScrollbar.Maximum   = 70;    FovScrollbar.Minimum    = 1;
 
             ThetaScrollbar.ToolTip = "Theta";
             PhiScrollbar.ToolTip   = "Phi";

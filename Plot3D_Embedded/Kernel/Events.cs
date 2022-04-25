@@ -80,10 +80,40 @@ namespace Plot3D_Embedded
             Camera3D.Width = e.NewValue;
         }
 
+
+
+
         private void RhoScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Camera3D.Rho = e.NewValue;
+            //if (e.NewValue < RhoScrollbar.Minimum)
+            //    RhoScrollbar.Minimum = 0.95 * e.NewValue;
+
+            //if (e.NewValue > RhoScrollbar.Maximum)
+            //    RhoScrollbar.Maximum = 1.05 * e.NewValue;
+
+
+
+            //if (e.NewValue == RhoScrollbar.Minimum)
+            //{ 
+            //    RhoScrollbar.Minimum *= 0.95;
+            //    RhoScrollbar.Maximum *= 0.95;
+            //}
+
+            //if (e.NewValue == RhoScrollbar.Maximum)
+            //{
+            //    RhoScrollbar.Minimum *= 1.05;
+            //    RhoScrollbar.Maximum *= 1.05;
+            //}
+
+            EventLog.WriteLine ("Rho scrollbar changed");
+            Camera3D.RelPositionRho = e.NewValue;
         }
+
+
+
+
+
+
 
         private void FovScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -113,7 +143,15 @@ namespace Plot3D_Embedded
         protected override void OnKeyDown (KeyEventArgs args)
         {
             base.OnKeyDown (args);
-            Camera3D.OnKeyDown (args);
+            args.Handled = true;
+
+            // Camera3D.OnKeyDown (args);
+
+            //Point3D  CamAt = Camera3D.Position;
+            //Vector3D LookAt = Camera3D.Direction;
+
+            //Console.WriteLine ("At = {0:0.00}", CamAt);
+            //Console.WriteLine ("Dir = {0:0.00}", LookAt);
         }
 
         //***********************************************************************************************************
@@ -125,9 +163,37 @@ namespace Plot3D_Embedded
         }
 
         //***********************************************************************************************************
-       
+
+        Point3D Center = new Point3D ();
+
         protected override void OnMouseDown (MouseButtonEventArgs args)
         {
+            if (args.ChangedButton == MouseButton.Right)
+            {
+                Console.WriteLine ("right button down");
+
+               
+
+                //Console.WriteLine ("Camera At   = {0:0.00}", Camera3D.Position);
+                //Console.WriteLine ("Camera On   = {0:0.00}", Camera3D.Center);
+                //Console.WriteLine ("Looking Dir = {0:0.00}", Camera3D.Direction);
+
+                //  Vector3D up = Camera3D.Up;
+                // Vector3D right = Camera3D.Right;
+
+                // Console.WriteLine ("Up = {0:0.00}", up);
+                //  Console.WriteLine ("right = {0:0.00}", right);
+
+
+
+                //Camera3D.CenterOn (new Point3D (0, 0, 0));// (Center);
+              //  Center += new Vector3D (0.2, 0, 0);
+
+
+               // Camera3D.Camera.Position += right;
+            }
+
+
             base.OnMouseDown (args);
             mouseTracking.OnMouseDown (args);
         }
@@ -147,3 +213,11 @@ namespace Plot3D_Embedded
         }
     }
 }
+
+
+
+
+
+
+
+

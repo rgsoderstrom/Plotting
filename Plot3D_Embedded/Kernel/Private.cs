@@ -108,11 +108,11 @@ namespace Plot3D_Embedded
             //    }
             //}
 
-            if (AxesTight == true)
-            {
-                CenterOn (ViewportBoundingBox.Center);
-                CenterDistance = ViewportBoundingBox.DiagonalSize * 2;
-            }
+            //if (AxesTight == true)
+            //{
+            //    CenterOn (ViewportBoundingBox.Center);
+            //    CenterDistance = ViewportBoundingBox.DiagonalSize * 2;
+            //}
         }
 
     }

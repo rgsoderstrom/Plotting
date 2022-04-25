@@ -36,8 +36,8 @@ namespace Plot3D_Embedded
 
         //************************************************************************************************************
         //
-        // Plot ViewportObject
-        //  - most pre-defined objects
+        // Plot anything derived from ViewportObject
+        //  - includes most pre-defined objects
         //
 
         public ModelVisual3D Plot (ViewportObject viewObj)
@@ -60,25 +60,37 @@ namespace Plot3D_Embedded
 
         public void CenterOn (Point3D point)
         {
-            Camera3D.LookAt (point);
+            Camera3D.ViewCenter = point;
         }
 
 
-        public double CenterDistance
-        {
-            get {return RhoScrollbar.Value;}
+        //public double CenterDistance
+        //{
+        //    get {return RhoScrollbar.Value;}
 
-            set
-            {
-                RhoScrollbar.Minimum = value / 4;
-                RhoScrollbar.Maximum = value * 2;
-                RhoScrollbar.Value = value;
-            }
-        }
+        //    set
+        //    {
+        //        //RhoScrollbar.Minimum = value / 4;
+        //        //RhoScrollbar.Maximum = value * 2;
+        //        RhoScrollbar.Value = value;
+        //    }
+        //}
 
-        public Point3D CameraPosition 
+        //public double CenterDistance
+        //{
+        //    get { return Camera3D.Distance; }
+
+        //    set
+        //    {
+        //        //RhoScrollbar.Minimum = value / 4;
+        //        //RhoScrollbar.Maximum = value * 2;
+        //        Camera3D.Distance = value;
+        //    }
+        //}
+
+        public Point3D CameraPosition
         {
-            get {return Camera3D.Position;}
+            get { return Camera3D.AbsPosition; }
             //set {Camera3D.Position = value;}
         }
 

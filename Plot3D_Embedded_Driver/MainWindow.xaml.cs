@@ -228,14 +228,14 @@ namespace Plot3D_Embedded_Driver
         //*****************************************************************************************
         //*****************************************************************************************
 
-        int cnt = 1;
+        //int cnt = 1;
 
         void Point_Clicked (object sender, RoutedEventArgs args)
         {
             try
             {
-                Point3D pt = Utils.RandomPoint (5);
-                double radius = 1 + Utils.RandomDouble (1);
+                Point3D pt = new Point3D (); // Utils.RandomPoint (5);
+                double radius = 0.25; // 1 + Utils.RandomDouble (1);
 
 
                 PointMarker s1 = new Cube (pt);
@@ -244,18 +244,44 @@ namespace Plot3D_Embedded_Driver
                 s1.Radius = radius;
 
 
-                pt += new Vector3D (2 * radius, 0, 0);
-                PointMarker s2 = new Tetrahedron (pt);
+                PointMarker s2 = new Cube (new Point3D (1, 0, 0), radius);   // Radius doesn't work
                 figure.Plot (s2);
-                s2.Diameter = 2 * radius;
-                s2.Opacity = 0.5;
+                s2.Color = Colors.Green;
+                s2.Radius = radius;
 
-
-
-                pt += new Vector3D (2 * radius, 0, 0);
-                PointMarker s3 = new Sphere (pt);
+                PointMarker s3 = new Cube (new Point3D (2, 0, 0), radius);
                 figure.Plot (s3);
+                s3.Color = Colors.Blue;
                 s3.Radius = radius;
+
+
+                PointMarker s4 = new Cube (new Point3D (0, 1, 0), radius);
+                figure.Plot (s4);
+                s4.Color = Colors.GreenYellow;
+                s4.Radius = radius;
+
+                PointMarker s5 = new Cube (new Point3D (0, 0, 1), radius);
+                figure.Plot (s5);
+                s5.Color = Colors.IndianRed;
+                s5.Radius = radius;
+
+
+                figure.CenterOn (s2.BoundingBox.Center);
+
+
+
+                //pt += new Vector3D (2 * radius, 0, 0);
+                //PointMarker s2 = new Tetrahedron (pt);
+                //figure.Plot (s2);
+                //s2.Diameter = 2 * radius;
+                //s2.Opacity = 0.5;
+
+
+
+                //pt += new Vector3D (2 * radius, 0, 0);
+                //PointMarker s3 = new Sphere (pt);
+                //figure.Plot (s3);
+                //s3.Radius = radius;
 
 
 
@@ -606,13 +632,13 @@ namespace Plot3D_Embedded_Driver
 
         void GetRho_Clicked (object sender, RoutedEventArgs args)
         {
-            Rho_Text.Text = string.Format ("{0:#.##}", figure.CenterDistance);
+            //Rho_Text.Text = string.Format ("{0:#.##}", figure.CenterDistance);
         }
 
         void SetRho_Clicked (object sender, RoutedEventArgs args)
         {
-            double dist = Convert.ToDouble (Rho_Text.Text);
-            figure.CenterDistance = dist;
+            //double dist = Convert.ToDouble (Rho_Text.Text);
+            //figure.CenterDistance = dist;
         }
 
         private void Rho_Text_PreviewKeyDown (object sender, System.Windows.Input.KeyEventArgs args)
