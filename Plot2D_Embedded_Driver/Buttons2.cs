@@ -76,6 +76,27 @@ namespace Plot2D_Embedded_Driver
 
         //**********************************************************************************
 
+        private void MobileChassisButton_Click (object sender, RoutedEventArgs e)
+        {
+            try
+            { 
+                MobileChassisV2 rc = new MobileChassisV2 (new Point (0, 0), 0, 0);
+
+                rc.Position = new Point (-10 + (20 * random.NextDouble ()), -10 + (20 * random.NextDouble ()));
+                rc.Angle = 0; // 360 * random.NextDouble ();
+                rc.Size = 1; // 0.2 + random.NextDouble ();
+
+                figure.Plot (rc);
+            }
+
+            catch (Exception ex)
+            {
+                Print (string.Format ("MobileChassisButton Exception: " + ex.Message));
+            }
+        }
+
+        //**********************************************************************************
+
         private void VectorButton_Click (object sender, RoutedEventArgs e)
         {
             try
