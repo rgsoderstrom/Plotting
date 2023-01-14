@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
@@ -21,38 +22,41 @@ namespace Plot3D_Embedded
         {
             InitializeComponent ();
 
-            Camera3D = new ProjectionCameraWrapper (ProjectionType.Perspective, lights);
-            //Camera3D = new ProjectionCameraWrapper (ProjectionType.Orthograpic, lights);
+            Camera3D = new ProjectionCameraWrapper (ProjectionType.Perspective);
+            //Camera3D = new ProjectionCameraWrapper (ProjectionType.Orthograpic);
             mouseTracking = new MouseTracking (Viewport, Camera3D);
-            lights.Direction = Camera3D.Direction;
 
-            Camera3D.Width = 16;
-            Camera3D.Camera.NearPlaneDistance = 1e-9;
-            Camera3D.Camera.FarPlaneDistance = 1e8;
-            Camera3D.RelPositionRho = 10; // 150;
+            //lights.Direction = Camera3D.Direction;
+
+            //Camera3D.RelPositionRho = 10; // 150;
 
             ThetaScrollbar.Value = Camera3D.Theta;
             PhiScrollbar.Value   = Camera3D.Phi;
-            WidthScrollbar.Value = Camera3D.Width;
-            RhoScrollbar.Value   = Camera3D.RelPositionRho;
-            FovScrollbar.Value   = Camera3D.FOV;
+            RhoScrollbar.Value   = Camera3D.Rho;
+
+            if (Camera3D.Camera is OrthographicCamera)
+            {
+                WidthScrollbar.Value = Camera3D.Width;
+                FovScrollbar.Visibility = Visibility.Collapsed;
+            }
+
+            if (Camera3D.Camera is PerspectiveCamera)
+            {
+                FovScrollbar.Value   = Camera3D.FOV;
+                WidthScrollbar.Visibility = Visibility.Collapsed;
+            }
 
             ThetaScrollbar.Maximum = 360;   ThetaScrollbar.Minimum = 0; ThetaScrollbar.SmallChange = 1; ThetaScrollbar.LargeChange = 5;
-            PhiScrollbar.Maximum   = 179;   PhiScrollbar.Minimum   = 1; PhiScrollbar.SmallChange = 1;   PhiScrollbar.LargeChange = 5;
+            PhiScrollbar.Maximum   = 180;   PhiScrollbar.Minimum   = 0; PhiScrollbar.SmallChange = 1;   PhiScrollbar.LargeChange = 5;
             WidthScrollbar.Maximum = 250;   WidthScrollbar.Minimum = 5;
-            RhoScrollbar.Maximum   = 280;   RhoScrollbar.Minimum   = 3; RhoScrollbar.SmallChange = 0.5; RhoScrollbar.LargeChange = 5;
-            FovScrollbar.Maximum   = 70;    FovScrollbar.Minimum    = 1;
+            RhoScrollbar.Maximum   = 100;   RhoScrollbar.Minimum   = 3; RhoScrollbar.SmallChange = 0.5; RhoScrollbar.LargeChange = 5;
+            FovScrollbar.Maximum   = 70;    FovScrollbar.Minimum   = 1;
 
             ThetaScrollbar.ToolTip = "Theta";
             PhiScrollbar.ToolTip   = "Phi";
             WidthScrollbar.ToolTip = "Width";
             RhoScrollbar.ToolTip   = "Rho";
             FovScrollbar.ToolTip   = "FOV";
-
-            if (Camera3D.Camera is PerspectiveCamera)
-                WidthScrollbar.Visibility = Visibility.Collapsed; // not needed for perspective camera
-            else
-                FovScrollbar.Visibility = Visibility.Collapsed; // not needed for orthographic camera
 
             PhiScrollbar.ValueChanged   += PhiScrollbar_ValueChanged;
             ThetaScrollbar.ValueChanged += ThetaScrollbar_ValueChanged;
@@ -70,6 +74,11 @@ namespace Plot3D_Embedded
             bind.Source = Camera3D;
             bind.Path = new PropertyPath (ProjectionCameraWrapper.ThetaProperty);
             ThetaScrollbar.SetBinding (ScrollBar.ValueProperty, bind);
+
+            bind = new Binding ();
+            bind.Source = Camera3D;
+            bind.Path = new PropertyPath (ProjectionCameraWrapper.RhoProperty);
+            RhoScrollbar.SetBinding (ScrollBar.ValueProperty, bind);
         }
 
         public Brush AnotationBackground {get {return OuterCanvas.Background;} set {OuterCanvas.Background = value;}}

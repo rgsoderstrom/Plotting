@@ -306,6 +306,59 @@ namespace Plot3D_Embedded_Driver
         }
 
         //****************************************************************************************
+        //****************************************************************************************
+        //****************************************************************************************
+
+        // Points_In_Line
+
+        void Points_In_Line_Clicked (object sender, RoutedEventArgs args)
+        {
+            List<double> t = new List<double> ();
+
+            for (int i = 0; i<50; i++)
+                t.Add (2.0 * Math.PI * i / 50);
+
+            List<Point3D> points = new List<Point3D> ();
+
+            for (int i = 0; i<50; i++)
+                points.Add (f_of_t (t [i]));
+
+
+            if (false)
+            {
+                PointCloud3D pc = new PointCloud3D (points);
+                PointCloud3DView h = figure.Plot (pc) as PointCloud3DView;
+
+                h.Color = Colors.Red;
+                h.Diameter = 0.4;
+            }
+
+            else
+            {
+                Polyline3D pl3 = new Polyline3D (points);
+                Polyline3DView pv = figure.Plot (pl3) as Polyline3DView;
+
+                int j = 20;
+                Sphere pt = new Sphere (points [j]);
+                SphereView p3v = figure.Plot (pt) as SphereView;
+                pt.Radius = 0.1;
+
+                //p3v.Color = Colors.Black;
+                //p3v.Diameter = 0.45;
+
+                PlotVector3D vect = new PlotVector3D (points [j], D_f_of_t (t [j]));
+                PlotVector3DView vv = figure.Plot (vect) as PlotVector3DView;
+                vv.Color = Colors.Red;
+
+                figure.DataAreaTitle = "Points_In_Line";
+             //   figure.AxesTight = true;
+
+
+                figure.CenterOn (points [j]);
+                //figure.ViewportBoundingBox.DiagonalSize;
+                
+            }
+        }
 
         private Point3D f_of_t (double t)
         {
@@ -323,40 +376,6 @@ namespace Plot3D_Embedded_Driver
             double z = 2;
 
             return new Vector3D (x, y, z);
-        }
-
-        void Points_In_Line_Clicked (object sender, RoutedEventArgs args)
-        {
-            List<double> t = new List<double> ();
-
-            for (int i=0; i<50; i++)
-                t.Add (2.0 * Math.PI * i / 50);
-
-            List<Point3D> points = new List<Point3D> ();
-
-            for (int i=0; i<50; i++)
-                points.Add (f_of_t (t [i]));
-
-
-            PointCloud3D pc = new PointCloud3D (points);
-            PointCloud3DView h =  figure.Plot (pc) as PointCloud3DView;
-
-            h.Color = Colors.Red;
-            h.Diameter = 0.4;
-           
-
-            //Polyline3D pl3 = new Polyline3D (points);
-            //Polyline3DView pv = figure.Plot (pl3) as Polyline3DView;
-
-            //int j = 40;
-            //PlottedPoint3D pt = new PlottedPoint3D (points [j]);
-            //Point3DView p3v = figure.Plot (pt) as Point3DView;
-
-            //p3v.Color = Colors.Black;
-            //p3v.Diameter = 0.45;
-
-            //PlotVector3D vect = new PlotVector3D (points [j], D_f_of_t (t [j]));
-            //PlotVector3DView vv = figure.Plot (vect) as PlotVector3DView;
         }
 
         //****************************************************************************************
@@ -646,7 +665,11 @@ namespace Plot3D_Embedded_Driver
             if (args.Key == System.Windows.Input.Key.Enter)
             {
                 args.Handled = true;
-                SetRho_Clicked (null, null);
+
+                if (double.TryParse (Rho_Text.Text, out double rho))
+                {
+                    figure.CenterDistance = rho;
+                }
             }
         }
 

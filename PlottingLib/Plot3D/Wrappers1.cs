@@ -22,11 +22,11 @@ namespace PlottingLib
 
         public void CenterOn (Point3D pt)     {PlotArea.CenterOn (pt);}
 
-        public double CenterDistance
-        {
-            get {return PlotArea.CenterDistance;}
-            set {PlotArea.CenterDistance = value;}
-        }
+        //public double CenterDistance
+        //{
+        //    get {return PlotArea.CenterDistance;}
+        //    set {PlotArea.CenterDistance = value;}
+        //}
 
        // public void CameraPosition (Point3D pt) {PlotArea.CameraPosition = pt;}
 

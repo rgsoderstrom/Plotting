@@ -60,38 +60,25 @@ namespace Plot3D_Embedded
 
         public void CenterOn (Point3D point)
         {
-            Camera3D.ViewCenter = point;
+            Camera3D.CenterOn = point;
         }
 
+        public double CenterDistance
+        {
+            get {return RhoScrollbar.Value;}
 
-        //public double CenterDistance
-        //{
-        //    get {return RhoScrollbar.Value;}
-
-        //    set
-        //    {
-        //        //RhoScrollbar.Minimum = value / 4;
-        //        //RhoScrollbar.Maximum = value * 2;
-        //        RhoScrollbar.Value = value;
-        //    }
-        //}
-
-        //public double CenterDistance
-        //{
-        //    get { return Camera3D.Distance; }
-
-        //    set
-        //    {
-        //        //RhoScrollbar.Minimum = value / 4;
-        //        //RhoScrollbar.Maximum = value * 2;
-        //        Camera3D.Distance = value;
-        //    }
-        //}
+            set
+            {
+                RhoScrollbar.Minimum = value / 4;
+                RhoScrollbar.Maximum = value * 2;
+                RhoScrollbar.Value = value;
+            }
+        }
 
         public Point3D CameraPosition
         {
-            get { return Camera3D.AbsPosition; }
-            //set {Camera3D.Position = value;}
+            get {return Camera3D.AbsPosition;}
+            set {Camera3D.AbsPosition = value;}
         }
 
         //************************************************************************************************************

@@ -51,7 +51,7 @@ namespace Plot3D_Embedded
         //***********************************************************************************************
 
         // debug flag, not intended for client use
-        readonly bool ShowCompositeBoundingBox = false;
+        readonly bool ShowCompositeBoundingBox = true;
 
         private void Draw ()
         {
@@ -84,6 +84,9 @@ namespace Plot3D_Embedded
                 Viewport.Children.Add (ViewportBoundingBox.View);
 
 
+
+            Camera3D.CenterOn = ViewportBoundingBox.Center;
+            Camera3D.Rho = ViewportBoundingBox.DiagonalSize * 3;   
 
 
 

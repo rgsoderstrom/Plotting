@@ -85,35 +85,8 @@ namespace Plot3D_Embedded
 
         private void RhoScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //if (e.NewValue < RhoScrollbar.Minimum)
-            //    RhoScrollbar.Minimum = 0.95 * e.NewValue;
-
-            //if (e.NewValue > RhoScrollbar.Maximum)
-            //    RhoScrollbar.Maximum = 1.05 * e.NewValue;
-
-
-
-            //if (e.NewValue == RhoScrollbar.Minimum)
-            //{ 
-            //    RhoScrollbar.Minimum *= 0.95;
-            //    RhoScrollbar.Maximum *= 0.95;
-            //}
-
-            //if (e.NewValue == RhoScrollbar.Maximum)
-            //{
-            //    RhoScrollbar.Minimum *= 1.05;
-            //    RhoScrollbar.Maximum *= 1.05;
-            //}
-
-            EventLog.WriteLine ("Rho scrollbar changed");
-            Camera3D.RelPositionRho = e.NewValue;
+            Camera3D.Rho = e.NewValue;
         }
-
-
-
-
-
-
 
         private void FovScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
