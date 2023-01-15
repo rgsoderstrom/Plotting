@@ -29,6 +29,7 @@ namespace Plot3D_Embedded_Driver
 
         private void Window_Loaded (object sender, RoutedEventArgs e)
         {
+            figure.Register_RhoChanged_Callback (RhoChanged_Callback);
             //EventLog.WriteLine ("Main Window_Loaded");
         }
 
@@ -649,15 +650,9 @@ namespace Plot3D_Embedded_Driver
 
         // change camera's distance to center and change the range of the rho slider
 
-        void GetRho_Clicked (object sender, RoutedEventArgs args)
+        void RhoChanged_Callback (object sender, double rho)
         {
-            //Rho_Text.Text = string.Format ("{0:#.##}", figure.CenterDistance);
-        }
-
-        void SetRho_Clicked (object sender, RoutedEventArgs args)
-        {
-            //double dist = Convert.ToDouble (Rho_Text.Text);
-            //figure.CenterDistance = dist;
+            Rho_Text.Text = string.Format ("{0:#.##}", rho);
         }
 
         private void Rho_Text_PreviewKeyDown (object sender, System.Windows.Input.KeyEventArgs args)

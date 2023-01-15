@@ -11,6 +11,7 @@ using WPF3D.Lighting;
 using WPF3D.Cameras;
 using WPF3D.MouseTracking;
 using Common;
+using static Plot3D_Embedded.Bare3DPlot;
 
 namespace Plot3D_Embedded
 {
@@ -83,8 +84,17 @@ namespace Plot3D_Embedded
 
 
 
+        //*******************************************************************************************
+        
+        public delegate void RhoChanged_Callback (object sender, double rho); // Signature of application callbacks looks like this
+        private event RhoChanged_Callback RhoChangedCallbacks;    // list of all the callbacks
+
+        public void Register_RhoChanged_Callback   (RhoChanged_Callback cb) {RhoChangedCallbacks += cb;}
+        public void Unregister_RhoChanged_Callback (RhoChanged_Callback cb) {RhoChangedCallbacks -= cb;}
+
         private void RhoScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            RhoChangedCallbacks?.Invoke (sender, e.NewValue);
             Camera3D.Rho = e.NewValue;
         }
 
@@ -93,7 +103,7 @@ namespace Plot3D_Embedded
             Camera3D.FOV = e.NewValue;
         }
 
-        //******************************************************************************************
+        //*******************************************************************************************
 
         protected override void OnMouseWheel (MouseWheelEventArgs args)
         {
@@ -136,8 +146,6 @@ namespace Plot3D_Embedded
         }
 
         //***********************************************************************************************************
-
-        Point3D Center = new Point3D ();
 
         protected override void OnMouseDown (MouseButtonEventArgs args)
         {

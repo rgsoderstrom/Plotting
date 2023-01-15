@@ -31,90 +31,84 @@
             </Style>
         </DockPanel.Resources>
 
-        <Border Margin="1,2,0,1" BorderBrush="Black" BorderThickness="2" DockPanel.Dock="Left">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MinWidth="250">
+        <Border BorderBrush="Black" BorderThickness="2">
+            <ScrollViewer Margin="1,2,0,1" DockPanel.Dock="Left">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MinWidth="250">
                 
-                <Button Click="Clear_Clicked"         Style="{StaticResource A}" Background="LightGray">Clear</Button>
-                <Button Click="CartesianAxis_Clicked" Style="{StaticResource A}" Background="LightGray">Cartesian Axis</Button>
-                <Button Click="CartesianBox_Clicked"  Style="{StaticResource A}" Background="LightGray">Cartesian Box</Button>
-                <Button Click="Surface_Clicked"       Style="{StaticResource A}" Background="LightGray">Surface, z = f (x, y)</Button>
+                    <Button Click="Clear_Clicked"         Style="{StaticResource A}" Background="LightGray">Clear</Button>
+                    <Button Click="CartesianAxis_Clicked" Style="{StaticResource A}" Background="LightGray">Cartesian Axis</Button>
+                    <Button Click="CartesianBox_Clicked"  Style="{StaticResource A}" Background="LightGray">Cartesian Box</Button>
+                    <Button Click="Surface_Clicked"       Style="{StaticResource A}" Background="LightGray">Surface, z = f (x, y)</Button>
 
 
-                <Expander Style="{StaticResource B}" FontSize="16" Header="Camera" HorizontalContentAlignment="Left" IsExpanded="True">
-                    <StackPanel Orientation="Vertical">
-
-                        <StackPanel Orientation="Horizontal">
-                            <Label>Rho</Label>
-                            <TextBox Name="Rho_Text" MinWidth="60" BorderBrush="Black" BorderThickness="2" PreviewKeyDown="Rho_Text_PreviewKeyDown"/>
-
-                            <!--
-                            <Button Content="Get Rho" Click="GetRho_Clicked" Style="{StaticResource A}"/>
-                            <Button Content="Set Rho" Click="SetRho_Clicked" Style="{StaticResource A}"/>
-                            -->
-                        </StackPanel>
-                        
-                        
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Name="CameraPosX_Text" MinWidth="100" BorderBrush="Black" BorderThickness="2" Margin="2"/>
-                            <Label Content="X Pos"/>
-                        </StackPanel>
+                    <Expander Style="{StaticResource B}" FontSize="16" Header="Camera" HorizontalContentAlignment="Left" IsExpanded="True">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Rho</Label>
+                                <TextBox Name="Rho_Text" MinWidth="60" BorderBrush="Black" BorderThickness="2" PreviewKeyDown="Rho_Text_PreviewKeyDown"/>
+                            </StackPanel>
+                                                
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Name="CameraPosX_Text" MinWidth="100" BorderBrush="Black" BorderThickness="2" Margin="2"/>
+                                <Label Content="X Pos"/>
+                            </StackPanel>
                     
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Name="CameraPosY_Text" MinWidth="100" BorderBrush="Black" BorderThickness="2" Margin="2"/>
-                            <Label Content="Y Pos"/>
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Name="CameraPosY_Text" MinWidth="100" BorderBrush="Black" BorderThickness="2" Margin="2"/>
+                                <Label Content="Y Pos"/>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Name="CameraPosZ_Text" MinWidth="100" BorderBrush="Black" BorderThickness="2" Margin="2"/>
-                            <Label Content="Z Pos"/>
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Name="CameraPosZ_Text" MinWidth="100" BorderBrush="Black" BorderThickness="2" Margin="2"/>
+                                <Label Content="Z Pos"/>
+                            </StackPanel>
 
-                        <Button Content="Get Pos" Click="GetPos_Clicked" Style="{StaticResource A}"/>
-                        <Button Content="Set Pos" Click="SetPos_Clicked" Style="{StaticResource A}"/>
+                            <Button Content="Get Pos" Click="GetPos_Clicked" Style="{StaticResource A}"/>
+                            <Button Content="Set Pos" Click="SetPos_Clicked" Style="{StaticResource A}"/>
                         
                         
                         
                         
-                    </StackPanel>
-                </Expander>
+                        </StackPanel>
+                    </Expander>
                 
-                <Expander Style="{StaticResource B}" FontSize="16" Header="Basic" HorizontalContentAlignment="Left" IsExpanded="True">
-                    <StackPanel Orientation="Vertical">
+                    <Expander Style="{StaticResource B}" FontSize="16" Header="Basic" HorizontalContentAlignment="Left" IsExpanded="True">
+                        <StackPanel Orientation="Vertical">
 
-                        <Expander Style="{StaticResource B}" Header="Points" IsExpanded="True">
-                            <StackPanel Orientation="Vertical">
-                                <Button Style="{StaticResource A}" Click="Point_Clicked">One Point</Button>
-                                <Button Style="{StaticResource A}" Click="Points_In_Line_Clicked">String of Points</Button>
-                                <Button Style="{StaticResource A}" Click="PointCloud_Clicked">Point Cloud</Button>
-                            </StackPanel>
-                        </Expander>
+                            <Expander Style="{StaticResource B}" Header="Points" IsExpanded="True">
+                                <StackPanel Orientation="Vertical">
+                                    <Button Style="{StaticResource A}" Click="Point_Clicked">One Point</Button>
+                                    <Button Style="{StaticResource A}" Click="Points_In_Line_Clicked">String of Points</Button>
+                                    <Button Style="{StaticResource A}" Click="PointCloud_Clicked">Point Cloud</Button>
+                                </StackPanel>
+                            </Expander>
                         
-                        <Expander Style="{StaticResource B}" Header="Lines" IsExpanded="False">
-                            <StackPanel Orientation="Vertical">
-                                <Button Style="{StaticResource A}" Click="Polyline_Points_Clicked">Polyline, Points</Button>
-                                <Button Style="{StaticResource A}" Click="Line_PP_Clicked">Two End Points</Button>
-                                <Button Style="{StaticResource A}" Click="Line_PV_Clicked">Point and Vector</Button>
-                                <Button Style="{StaticResource A}" Click="Polyline_Func_Clicked">Polyline, Functions</Button>
-                            </StackPanel>
-                        </Expander>
+                            <Expander Style="{StaticResource B}" Header="Lines" IsExpanded="False">
+                                <StackPanel Orientation="Vertical">
+                                    <Button Style="{StaticResource A}" Click="Polyline_Points_Clicked">Polyline, Points</Button>
+                                    <Button Style="{StaticResource A}" Click="Line_PP_Clicked">Two End Points</Button>
+                                    <Button Style="{StaticResource A}" Click="Line_PV_Clicked">Point and Vector</Button>
+                                    <Button Style="{StaticResource A}" Click="Polyline_Func_Clicked">Polyline, Functions</Button>
+                                </StackPanel>
+                            </Expander>
 
-                        <Expander Style="{StaticResource B}" Header="Planes">
-                            <StackPanel Orientation="Vertical">
-                                <Button Style="{StaticResource A}" Click="Plane_PV_Clicked">Point / Normal</Button>
-                                <Button Style="{StaticResource A}" Click="Plane_Stack_Clicked">Plane Stack</Button>
-                            </StackPanel>
-                        </Expander>
+                            <Expander Style="{StaticResource B}" Header="Planes">
+                                <StackPanel Orientation="Vertical">
+                                    <Button Style="{StaticResource A}" Click="Plane_PV_Clicked">Point / Normal</Button>
+                                    <Button Style="{StaticResource A}" Click="Plane_Stack_Clicked">Plane Stack</Button>
+                                </StackPanel>
+                            </Expander>
                         
-                    </StackPanel>
-                </Expander>
+                        </StackPanel>
+                    </Expander>
 
-                <Button Style="{StaticResource A}" Click="Vainchtein_Clicked">Vainchtein</Button>
+                    <Button Style="{StaticResource A}" Click="Vainchtein_Clicked">Vainchtein</Button>
 
-            </StackPanel>
+                </StackPanel>
 
 
+            </ScrollViewer>
         </Border>
-
 
         <TextBox DockPanel.Dock="Bottom" Name="TxtBox" FontSize="14" Margin="1,0,1,1" MinHeight="150" AcceptsReturn="True" BorderBrush="Black" BorderThickness="2" MaxHeight="150"
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
