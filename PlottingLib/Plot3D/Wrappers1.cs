@@ -20,7 +20,7 @@ namespace PlottingLib
         //public string XAxisLabel    {get {return PlotArea.XAxisLabel;}     set {PlotArea.XAxisLabel = value;}}
         //public string YAxisLabel    {get {return PlotArea.YAxisLabel;}     set {PlotArea.YAxisLabel = value;}}
 
-        public void CenterOn (Point3D pt)     {PlotArea.CenterOn (pt);}
+        public void CenterOn (Point3D pt)     {PlotArea.CenterOn = pt;}
 
         //public double CenterDistance
         //{

@@ -58,9 +58,16 @@ namespace Plot3D_Embedded
 
         //************************************************************************************************************
 
-        public void CenterOn (Point3D point)
+        public Point3D CenterOn
         {
-            Camera3D.CenterOn = point;
+            get {return Camera3D.CenterOn;}
+
+            set
+            {
+                Camera3D.CenterOn = value;
+                CenterChangedCallbacks?.Invoke (Camera3D, value);
+                AbsPositionChangedCallbacks?.Invoke (Camera3D, Camera3D.AbsPosition);
+            }
         }
 
         public double CenterDistance
@@ -79,6 +86,12 @@ namespace Plot3D_Embedded
         {
             get {return Camera3D.AbsPosition;}
             set {Camera3D.AbsPosition = value;}
+        }
+
+        public Point3D CameraRelPosition
+        {
+            get {return Camera3D.RelPosition;}
+            set {Camera3D.RelPosition = value;}
         }
 
         //************************************************************************************************************

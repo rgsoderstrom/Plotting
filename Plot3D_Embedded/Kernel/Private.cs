@@ -85,8 +85,11 @@ namespace Plot3D_Embedded
 
 
 
-            Camera3D.CenterOn = ViewportBoundingBox.Center;
-            Camera3D.Rho = ViewportBoundingBox.DiagonalSize * 3;   
+            //Camera3D.CenterOn = ViewportBoundingBox.Center;
+            //Camera3D.Rho = ViewportBoundingBox.DiagonalSize * 3;   
+
+
+
 
 
 

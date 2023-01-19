@@ -51,9 +51,44 @@ namespace Plot3D_Embedded
             PhiScrollbar.VerticalAlignment = VerticalAlignment.Top;
         }
 
+        //**************************************************************************************
+
+        // Callbacks for Camera position spherical coordinates
+
+        public delegate void RhoChanged_Callback         (object sender, double rho); // Signature of application callbacks looks like this
+        public delegate void ThetaChanged_Callback       (object sender, double rho); 
+        public delegate void PhiChanged_Callback         (object sender, double rho); 
+        public delegate void CenterChanged_Callback      (object sender, Point3D center); 
+        public delegate void AbsPositionChanged_Callback (object sender, Point3D cameraPosition); 
+        public delegate void RelPositionChanged_Callback (object sender, Point3D cameraPosition); 
+
+        private event RhoChanged_Callback         RhoChangedCallbacks;    // list of all the callbacks
+        private event ThetaChanged_Callback       ThetaChangedCallbacks; 
+        private event PhiChanged_Callback         PhiChangedCallbacks;
+        private event CenterChanged_Callback      CenterChangedCallbacks;
+        private event AbsPositionChanged_Callback AbsPositionChangedCallbacks;
+        private event RelPositionChanged_Callback RelPositionChangedCallbacks;
+
+        public void Register_RhoChanged_Callback         (RhoChanged_Callback    cb)      {RhoChangedCallbacks         += cb; cb (RhoScrollbar,   RhoScrollbar.Value); }
+        public void Register_ThetaChanged_Callback       (ThetaChanged_Callback  cb)      {ThetaChangedCallbacks       += cb; cb (ThetaScrollbar, ThetaScrollbar.Value); }
+        public void Register_PhiChanged_Callback         (PhiChanged_Callback    cb)      {PhiChangedCallbacks         += cb; cb (PhiScrollbar,   PhiScrollbar.Value); }
+        public void Register_CenterChanged_Callback      (CenterChanged_Callback cb)      {CenterChangedCallbacks      += cb; cb (Camera3D,       Camera3D.CenterOn); }
+        public void Register_AbsPositionChanged_Callback (AbsPositionChanged_Callback cb) {AbsPositionChangedCallbacks += cb; cb (Camera3D,       Camera3D.AbsPosition); }
+        public void Register_RelPositionChanged_Callback (RelPositionChanged_Callback cb) {RelPositionChangedCallbacks += cb; cb (Camera3D,       Camera3D.RelPosition); }
+
+        public void Unregister_RhoChanged_Callback         (RhoChanged_Callback    cb)      {RhoChangedCallbacks         -= cb;}
+        public void Unregister_ThetaChanged_Callback       (ThetaChanged_Callback  cb)      {ThetaChangedCallbacks       -= cb;}
+        public void Unregister_PhiChanged_Callback         (PhiChanged_Callback    cb)      {PhiChangedCallbacks         -= cb;}
+        public void UnRegister_CenterChanged_Callback      (CenterChanged_Callback cb)      {CenterChangedCallbacks      -= cb;}
+        public void Unregister_AbsPositionChanged_Callback (AbsPositionChanged_Callback cb) {AbsPositionChangedCallbacks -= cb;}
+        public void Unregister_RelPositionChanged_Callback (RelPositionChanged_Callback cb) {RelPositionChangedCallbacks -= cb;}
+
         private void PhiScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Camera3D.Phi = e.NewValue;
+            PhiChangedCallbacks?.Invoke (sender, e.NewValue);
+            RelPositionChangedCallbacks?.Invoke (sender, Camera3D.RelPosition);
+            AbsPositionChangedCallbacks?.Invoke (sender, Camera3D.AbsPosition);
             //SortByDistance ();
 
             /**
@@ -73,31 +108,25 @@ namespace Plot3D_Embedded
         private void ThetaScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Camera3D.Theta = e.NewValue;
+            ThetaChangedCallbacks?.Invoke (sender, e.NewValue);
+            RelPositionChangedCallbacks?.Invoke (sender, Camera3D.RelPosition);
+            AbsPositionChangedCallbacks?.Invoke (sender, Camera3D.AbsPosition);
             //SortByDistance ();
+        }
+
+        private void RhoScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Camera3D.Rho = e.NewValue;
+            RhoChangedCallbacks?.Invoke (sender, e.NewValue);
+            RelPositionChangedCallbacks?.Invoke (sender, Camera3D.RelPosition);
+            AbsPositionChangedCallbacks?.Invoke (sender, Camera3D.AbsPosition);
         }
 
         private void WidthScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Camera3D.Width = e.NewValue;
         }
-
-
-
-
-        //*******************************************************************************************
         
-        public delegate void RhoChanged_Callback (object sender, double rho); // Signature of application callbacks looks like this
-        private event RhoChanged_Callback RhoChangedCallbacks;    // list of all the callbacks
-
-        public void Register_RhoChanged_Callback   (RhoChanged_Callback cb) {RhoChangedCallbacks += cb;}
-        public void Unregister_RhoChanged_Callback (RhoChanged_Callback cb) {RhoChangedCallbacks -= cb;}
-
-        private void RhoScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            RhoChangedCallbacks?.Invoke (sender, e.NewValue);
-            Camera3D.Rho = e.NewValue;
-        }
-
         private void FovScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Camera3D.FOV = e.NewValue;
