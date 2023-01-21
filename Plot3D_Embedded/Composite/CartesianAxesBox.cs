@@ -76,7 +76,7 @@ namespace Plot3D_Embedded
                 TicSize               = commonTicSize,
                 TicTextSize           = commonTicTextSize,
                 TicTextOffsetDistance = commonTicTextOffsetDistance,
-                Color = Colors.LightGray,
+                Color = Colors.Gray,
                 TailCoordinate = geometry.MinX,
                 HeadCoordinate = geometry.MaxX,
             };
@@ -89,7 +89,7 @@ namespace Plot3D_Embedded
                 TicSize               = commonTicSize,
                 TicTextSize           = commonTicTextSize,
                 TicTextOffsetDistance = commonTicTextOffsetDistance,
-                Color = Colors.LightGray,
+                Color = Colors.Gray,
                 TailCoordinate = geometry.MinY,
                 HeadCoordinate = geometry.MaxY,
             };
@@ -102,7 +102,7 @@ namespace Plot3D_Embedded
                 TicSize               = commonTicSize,
                 TicTextSize           = commonTicTextSize,
                 TicTextOffsetDistance = commonTicTextOffsetDistance,
-                Color = Colors.LightGray,
+                Color = Colors.Gray,
                 TailCoordinate = geometry.MinZ,
                 HeadCoordinate = geometry.MaxZ,
             };

@@ -9,7 +9,7 @@
 
     <Border Name="OuterBorder" BorderBrush="Black" BorderThickness="2" Margin="2" DockPanel.Dock="Right">
         <Canvas Name="OuterCanvas" Background="Cornsilk">
-            <TextBlock x:Name="DataTitle" FontSize="18">Data area title</TextBlock>
+            <TextBlock x:Name="DataTitle" FontSize="18">DataTitle</TextBlock>
             <Border Name="InnerBorder" Background="White" BorderBrush="Green" BorderThickness="2" Margin="2">
                 <DockPanel MinHeight="200" MinWidth="300">
                     <ScrollBar Name="PhiScrollbar"   Margin="0,0,2,0" DockPanel.Dock="Right"/>
@@ -22,5 +22,4 @@
             </Border>
         </Canvas>
     </Border>
-
 </UserControl>

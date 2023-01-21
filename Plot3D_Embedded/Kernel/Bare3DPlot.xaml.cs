@@ -26,7 +26,7 @@ namespace Plot3D_Embedded
             //Camera3D = new ProjectionCameraWrapper (ProjectionType.Orthograpic);
             mouseTracking = new MouseTracking (Viewport, Camera3D);
 
-            //lights.Direction = Camera3D.Direction;
+            lights.Direction = Camera3D.CenterOn - Camera3D.AbsPosition;
 
             //Camera3D.RelPositionRho = 10; // 150;
 
