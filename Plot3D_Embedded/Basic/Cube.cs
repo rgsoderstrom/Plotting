@@ -52,8 +52,10 @@ namespace Plot3D_Embedded
             PointView = new CubeView (Geometry);
         }
 
-        // these adjust for Petzold's CubeMesh being width 2, others are width 1
-        public override double Radius   {get {return base.Diameter;} set {base.Diameter = value;}}
-        public override double Diameter {get {return base.Diameter * 2;} set {base.Diameter = value / 2;}}
+        // these adjust for Petzold's CubeMesh being width 2, others are width 1 ?????????
+        //public override double Radius   {get {return base.Diameter;} set {base.Diameter = value;}}
+        //public override double Diameter {get {return base.Diameter * 2;} set {base.Diameter = value / 2;}}
+        public override double Radius   {get {return base.Diameter / 2;} set {base.Diameter = value * 2;}}
+        public override double Diameter {get {return base.Diameter;} set {base.Diameter = value;}}
     }
 }

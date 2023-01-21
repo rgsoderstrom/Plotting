@@ -67,7 +67,7 @@ namespace Plot3D_Embedded
             gm.Geometry = mesh.Geometry;
             Content = gm;
             Color = Color; // runs Color setter
-            scale.ScaleX = scale.ScaleY = scale.ScaleZ = geometry.Radius * 2; // Diameter;
+            scale.ScaleX = scale.ScaleY = scale.ScaleZ = geometry.Radius;// * 2; // Diameter;
 
             TranslateTransform3D xlate = new TranslateTransform3D (new Vector3D (geometry.point.X, geometry.point.Y, geometry.point.Z));
 
