@@ -202,76 +202,51 @@ namespace Plot3D_Embedded_Driver
         //*****************************************************************************************
         //*****************************************************************************************
 
-        //int cnt = 1;
+        int cnt = 1;
 
         void Point_Clicked (object sender, RoutedEventArgs args)
         {
             try
             {
-                Point3D pt = new Point3D (); // Utils.RandomPoint (5);
-                double radius = 0.25; // 1 + Utils.RandomDouble (1);
+                figure.AxesTight = false;
 
+                double radius = 0.25;
 
-                PointMarker s1 = new Cube (pt);
+                PointMarker s1 = new Cube (new Point3D (0, 0, 0), radius);
                 figure.Plot (s1);
                 s1.Color = Colors.Red;
-                s1.Radius = radius;
+                //s1.Radius = 0.2;
 
-
-                PointMarker s2 = new Cube (new Point3D (1, 0, 0), radius);   // Radius doesn't work
+                PointMarker s2 = new Cube (new Point3D (1, 0, 0), radius);  
                 figure.Plot (s2);
                 s2.Color = Colors.Green;
-                s2.Radius = radius;
 
                 PointMarker s3 = new Cube (new Point3D (2, 0, 0), radius);
                 figure.Plot (s3);
                 s3.Color = Colors.Blue;
-                s3.Radius = radius;
 
 
                 PointMarker s4 = new Cube (new Point3D (0, 1, 0), radius);
                 figure.Plot (s4);
                 s4.Color = Colors.GreenYellow;
-                s4.Radius = radius;
 
-                PointMarker s5 = new Cube (new Point3D (0, 0, 1), radius);
+                PointMarker s5 = new Tetrahedron (new Point3D (0, 0, 1), radius);
+                //PointMarker s5 = new Cube (new Point3D (0, 0, 1), radius);
                 figure.Plot (s5);
                 s5.Color = Colors.IndianRed;
-                s5.Radius = radius;
 
+                figure.CenterOn = s2.BoundingBox.Center;
 
-                figure.CenterOn = new Point3D (3.1, 4.2, 5.3);
-                //figure.CenterOn = s2.BoundingBox.Center;
+                Text3D txt = new Text3D (new Point3D (0,0,2), 0.5, string.Format ("P{0}", cnt++));
+                Text3DView h1 = figure.Plot (txt) as Text3DView;
 
-
-
-                //pt += new Vector3D (2 * radius, 0, 0);
-                //PointMarker s2 = new Tetrahedron (pt);
-                //figure.Plot (s2);
-                //s2.Diameter = 2 * radius;
-                //s2.Opacity = 0.5;
+                txt = new Text3D (new Point3D (2,2,2), new Vector3D (1,0,0), new Vector3D (0,0,1), 0.5, string.Format ("P{0}", cnt++));
+                h1 = figure.Plot (txt) as Text3DView;
 
 
 
-                //pt += new Vector3D (2 * radius, 0, 0);
-                //PointMarker s3 = new Sphere (pt);
-                //figure.Plot (s3);
-                //s3.Radius = radius;
-
-
-
-
-
-                //Text3D txt = new Text3D (pt, 0.5, string.Format ("P{0}", cnt++));
-                //Text3DView h1 = figure.Plot (txt) as Text3DView;
-
-                //if ((cnt & 1) == 1)
-                //    txt.TextView.OrientationFrozen = true;
-
-
-
-               // figure.AxesTight = true;
-                figure.DataAreaTitle = "One Point";
+                //figure.AxesTight = true;
+                figure.DataAreaTitle = "Point Markers";
             }
 
             catch (Exception ex)
@@ -329,15 +304,7 @@ namespace Plot3D_Embedded_Driver
                 figure.DataAreaTitle = "Points_In_Line";
              //   figure.AxesTight = true;
 
-
                 figure.CenterOn = points [j];
-
-                //centerX.Text = String.Format ("{0:0.00}", points [j].X);
-                //centerY.Text = String.Format ("{0:0.00}", points [j].Y);
-                //centerZ.Text = String.Format ("{0:0.00}", points [j].Z);
-
-                //figure.ViewportBoundingBox.DiagonalSize;
-                
             }
         }
 
@@ -374,7 +341,7 @@ namespace Plot3D_Embedded_Driver
 
             double radius = 0.5 + Utils.RandomDouble (range / 50);
 
-            range *= 2;
+            //range *= 2;
 
             PointCloud3D pc = new PointCloud3D (points); //, radius);
 
@@ -571,12 +538,13 @@ namespace Plot3D_Embedded_Driver
             Point3D p1 = Utils.RandomPoint (5);
             Vector3D v1 = Utils.RandomVector (5);
 
+            figure.AxesBoxOn = false;
             Plane3DView h1 = figure.Plot (new Plane3D (p1 +   0 * v1, v1)) as Plane3DView;
             Plane3DView h2 = figure.Plot (new Plane3D (p1 + 0.5 * v1, v1)) as Plane3DView;
             Plane3DView h3 = figure.Plot (new Plane3D (p1 + 1.0 * v1, v1)) as Plane3DView;
             Plane3DView h4 = figure.Plot (new Plane3D (p1 + 1.5 * v1, v1)) as Plane3DView;
 
-            SphereView h5 = figure.Plot (new Sphere (p1 + 0.75 * v1)) as SphereView;
+            //SphereView h5 = figure.Plot (new Sphere (p1 + 0.75 * v1)) as SphereView;
 
             h1.Color = h2.Color = h3.Color = h4.Color = Colors.Red;
             h1.BackColor = h2.BackColor = h3.BackColor = h4.BackColor = Colors.Green;
@@ -586,7 +554,8 @@ namespace Plot3D_Embedded_Driver
 
            // h5.Diameter = 0.2;
 
-            figure.SortByDistance ();
+            figure.AxesTight = true;
+            figure.AxesBoxOn = true;
         }
 
         //*****************************************************************************************

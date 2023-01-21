@@ -53,43 +53,13 @@ namespace Plot3D_Embedded
 
         //**************************************************************************************
 
-        // Callbacks for Camera position spherical coordinates
-
-        public delegate void RhoChanged_Callback         (object sender, double rho); // Signature of application callbacks looks like this
-        public delegate void ThetaChanged_Callback       (object sender, double rho); 
-        public delegate void PhiChanged_Callback         (object sender, double rho); 
-        public delegate void CenterChanged_Callback      (object sender, Point3D center); 
-        public delegate void AbsPositionChanged_Callback (object sender, Point3D cameraPosition); 
-        public delegate void RelPositionChanged_Callback (object sender, Point3D cameraPosition); 
-
-        private event RhoChanged_Callback         RhoChangedCallbacks;    // list of all the callbacks
-        private event ThetaChanged_Callback       ThetaChangedCallbacks; 
-        private event PhiChanged_Callback         PhiChangedCallbacks;
-        private event CenterChanged_Callback      CenterChangedCallbacks;
-        private event AbsPositionChanged_Callback AbsPositionChangedCallbacks;
-        private event RelPositionChanged_Callback RelPositionChangedCallbacks;
-
-        public void Register_RhoChanged_Callback         (RhoChanged_Callback    cb)      {RhoChangedCallbacks         += cb; cb (RhoScrollbar,   RhoScrollbar.Value); }
-        public void Register_ThetaChanged_Callback       (ThetaChanged_Callback  cb)      {ThetaChangedCallbacks       += cb; cb (ThetaScrollbar, ThetaScrollbar.Value); }
-        public void Register_PhiChanged_Callback         (PhiChanged_Callback    cb)      {PhiChangedCallbacks         += cb; cb (PhiScrollbar,   PhiScrollbar.Value); }
-        public void Register_CenterChanged_Callback      (CenterChanged_Callback cb)      {CenterChangedCallbacks      += cb; cb (Camera3D,       Camera3D.CenterOn); }
-        public void Register_AbsPositionChanged_Callback (AbsPositionChanged_Callback cb) {AbsPositionChangedCallbacks += cb; cb (Camera3D,       Camera3D.AbsPosition); }
-        public void Register_RelPositionChanged_Callback (RelPositionChanged_Callback cb) {RelPositionChangedCallbacks += cb; cb (Camera3D,       Camera3D.RelPosition); }
-
-        public void Unregister_RhoChanged_Callback         (RhoChanged_Callback    cb)      {RhoChangedCallbacks         -= cb;}
-        public void Unregister_ThetaChanged_Callback       (ThetaChanged_Callback  cb)      {ThetaChangedCallbacks       -= cb;}
-        public void Unregister_PhiChanged_Callback         (PhiChanged_Callback    cb)      {PhiChangedCallbacks         -= cb;}
-        public void UnRegister_CenterChanged_Callback      (CenterChanged_Callback cb)      {CenterChangedCallbacks      -= cb;}
-        public void Unregister_AbsPositionChanged_Callback (AbsPositionChanged_Callback cb) {AbsPositionChangedCallbacks -= cb;}
-        public void Unregister_RelPositionChanged_Callback (RelPositionChanged_Callback cb) {RelPositionChangedCallbacks -= cb;}
-
         private void PhiScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Camera3D.Phi = e.NewValue;
             PhiChangedCallbacks?.Invoke (sender, e.NewValue);
             RelPositionChangedCallbacks?.Invoke (sender, Camera3D.RelPosition);
             AbsPositionChangedCallbacks?.Invoke (sender, Camera3D.AbsPosition);
-            //SortByDistance ();
+            SortByDistance ();
 
             /**
             foreach (ViewportObject v in displayObjects)
@@ -111,7 +81,7 @@ namespace Plot3D_Embedded
             ThetaChangedCallbacks?.Invoke (sender, e.NewValue);
             RelPositionChangedCallbacks?.Invoke (sender, Camera3D.RelPosition);
             AbsPositionChangedCallbacks?.Invoke (sender, Camera3D.AbsPosition);
-            //SortByDistance ();
+            SortByDistance ();
         }
 
         private void RhoScrollbar_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -203,6 +173,7 @@ namespace Plot3D_Embedded
                // Camera3D.Camera.Position += right;
             }
 
+            //Print ("down");
 
             base.OnMouseDown (args);
             mouseTracking.OnMouseDown (args);
@@ -212,13 +183,13 @@ namespace Plot3D_Embedded
 
         protected override void OnMouseMove (MouseEventArgs args)
         {
+            //Print ("move");
             base.OnMouseMove (args);
             mouseTracking.OnMouseMove (args);
 
             if (args.LeftButton == MouseButtonState.Pressed)
             {
                 OrientTextToCamera ();
-                SortByDistance (); // only needed if translucent objects in Viewport
             }
         }
     }

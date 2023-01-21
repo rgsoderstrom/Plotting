@@ -24,7 +24,7 @@ namespace Plot3D_Embedded
             Draw ();
         }
 
-        bool RemoveFromViewport (ViewportObject vo)
+        protected bool RemoveFromViewport (ViewportObject vo)
         {
             bool found = displayObjects.Remove (vo);
             if (found) Draw ();
@@ -51,11 +51,11 @@ namespace Plot3D_Embedded
         //***********************************************************************************************
 
         // debug flag, not intended for client use
-        readonly bool ShowCompositeBoundingBox = true;
+        readonly bool ShowCompositeBoundingBox = false;
 
         private void Draw ()
         {
-            /***/
+            // Orient text to the camera
             Vector3D Up = Camera3D.Up;
             Vector3D Right = Camera3D.Right;
 
@@ -67,59 +67,44 @@ namespace Plot3D_Embedded
                         (viewObj as Text3D).Orientation (Up, Right);
                 }
             }
-            /***/
 
             Viewport.Children.Clear ();
             ViewportBoundingBox.Clear ();
 
             Viewport.Children.Add (lights.Visual);
 
+            bool hasTranslucent = false;
+
             foreach (ViewportObject viewObj in displayObjects)
             {
+                if (viewObj.View is Surface3DView)
+                {
+                    if ((viewObj.View as Surface3DView).Opacity != 1)
+                        hasTranslucent = true;
+                }
+
                 Viewport.Children.Add (viewObj.View);
                 ViewportBoundingBox.Union (viewObj.BoundingBox);
             }
-            
+
             if (ShowCompositeBoundingBox)
                 Viewport.Children.Add (ViewportBoundingBox.View);
 
 
+            if (AxesTight == true)
+            {
+                Camera3D.CenterOn = ViewportBoundingBox.Center;
+                Camera3D.Rho = ViewportBoundingBox.DiagonalSize * 3;   
+            }
 
-            //Camera3D.CenterOn = ViewportBoundingBox.Center;
-            //Camera3D.Rho = ViewportBoundingBox.DiagonalSize * 3;   
+            if (AxesBoxOn == true)
+            {
+                CartesianAxesBox axes = new CartesianAxesBox (ViewportBoundingBox);  //<<<<<<<<<< SLOW
+                Viewport.Children.Add (axes.View);
+            }
 
-
-
-
-
-
-            //if (RectangularGridOn == true)
-            //{
-            //    if (axes3D == null)
-            //        axes3D = new CartesianAxes3D (); // new Point3D (), CartesianAxes3DGeometry.EulerAngleConventions.Fixed,0,0,0);
-
-
-            //    //axes3D.XMin = -1;
-            //    //axes3D.YMin = -1;
-            //   // axes3D.ZMin = -1;
-
-            //    Viewport.Children.Add (axes3D.View);
-            //}
-            //else
-            //{
-            //    if (axes3D != null)
-            //    {
-            //        Viewport.Children.Remove (axes3D.View);
-            //        axes3D = null;
-            //    }
-            //}
-
-            //if (AxesTight == true)
-            //{
-            //    CenterOn (ViewportBoundingBox.Center);
-            //    CenterDistance = ViewportBoundingBox.DiagonalSize * 2;
-            //}
+            if (hasTranslucent) 
+                SortByDistance ();
         }
-
     }
 }

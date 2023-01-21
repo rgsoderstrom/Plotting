@@ -37,6 +37,8 @@ namespace Plot3D_Embedded_Driver
             figure.Register_CenterChanged_Callback      (CenterChanged_Callback);
             figure.Register_AbsPositionChanged_Callback (AbsPosChanged_Callback);
             figure.Register_RelPositionChanged_Callback (RelPosChanged_Callback);
+
+            figure.Register_PrintFunction (Print);
         }
 
         private void Window_Closed (object sender, EventArgs e)
@@ -48,12 +50,6 @@ namespace Plot3D_Embedded_Driver
         //*****************************************************************************************
         //*****************************************************************************************
         //*****************************************************************************************
-
-        // change camera's distance to center and change the range of the rho slider
-
-
-
-
 
         void CenterChanged_Callback (object sender, Point3D newCenter)
         {
@@ -182,18 +178,45 @@ namespace Plot3D_Embedded_Driver
 
         private void AbsX_PreviewKeyDown (object sender, System.Windows.Input.KeyEventArgs args)
         {
+            if (args.Key == System.Windows.Input.Key.Enter)
+            {
+                args.Handled = true;
+
+                if (double.TryParse (absPositionX.Text, out double px))
+                {                    
+                    Point3D pos = figure.CameraPosition;
+                    figure.CameraPosition = new Point3D (px, pos.X, pos.Y);
+                }
+            }
         }
 
         private void AbsY_PreviewKeyDown (object sender, System.Windows.Input.KeyEventArgs args)
         {
+            if (args.Key == System.Windows.Input.Key.Enter)
+            {
+                args.Handled = true;
+
+                if (double.TryParse (absPositionY.Text, out double py))
+                {
+                    Point3D pos = figure.CameraPosition;
+                    figure.CameraPosition = new Point3D (pos.X, py, pos.Z);
+                }
+            }
         }
 
         private void AbsZ_PreviewKeyDown (object sender, System.Windows.Input.KeyEventArgs args)
         {
+            if (args.Key == System.Windows.Input.Key.Enter)
+            {
+                args.Handled = true;
+
+                if (double.TryParse (absPositionZ.Text, out double pz))
+                {
+                    Point3D pos = figure.CameraPosition;
+                    figure.CameraPosition = new Point3D (pos.X, pos.Y, pz);
+                }
+            }
         }
-
-
-
 
         private void Rho_Text_PreviewKeyDown (object sender, System.Windows.Input.KeyEventArgs args)
         {
@@ -213,18 +236,6 @@ namespace Plot3D_Embedded_Driver
         }
 
         private void Phi_Text_PreviewKeyDown (object sender, System.Windows.Input.KeyEventArgs args)
-        {
-        }
-
-        void GetPos_Clicked (object sender, RoutedEventArgs args)
-        {
-            //Point3D pos = figure.CameraPosition;
-            //CameraPosX_Text.Text = string.Format ("{0:#.##}", pos.X);
-            //CameraPosY_Text.Text = string.Format ("{0:#.##}", pos.Y);
-            //CameraPosZ_Text.Text = string.Format ("{0:#.##}", pos.Z);
-        }
-
-        void SetPos_Clicked (object sender, RoutedEventArgs args)
         {
         }
 

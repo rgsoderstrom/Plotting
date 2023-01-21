@@ -40,9 +40,9 @@
                     <Button Click="CartesianBox_Clicked"  Style="{StaticResource A}" Background="LightGray">Cartesian Box</Button>
                     <Button Click="Surface_Clicked"       Style="{StaticResource A}" Background="LightGray">Surface, z = f (x, y)</Button>
 
-                    <Expander Style="{StaticResource B}" FontSize="16" Header="Camera" HorizontalContentAlignment="Left" IsExpanded="True">
+                    <Expander Style="{StaticResource B}" FontSize="16" Header="Camera" HorizontalContentAlignment="Left" IsExpanded="False">
                         <StackPanel Orientation="Vertical">
-                            <Expander Style="{StaticResource B}" FontSize="16" Header="Center On" HorizontalContentAlignment="Left" IsExpanded="True">
+                            <Expander Style="{StaticResource B}" FontSize="16" Header="Center On" HorizontalContentAlignment="Left" IsExpanded="False">
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
                                         <Label FontSize="14">X</Label>
@@ -61,7 +61,7 @@
                                 </StackPanel>
                             </Expander>
 
-                            <Expander Style="{StaticResource B}" FontSize="16" Header="Position" HorizontalContentAlignment="Left" IsExpanded="True">
+                            <Expander Style="{StaticResource B}" FontSize="16" Header="Position" HorizontalContentAlignment="Left" IsExpanded="False">
                                 <StackPanel Orientation="Vertical" Margin="0,0,20,0">
                                     <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
                                         <Label FontSize="14">Rel X</Label>
@@ -104,37 +104,6 @@
                         </StackPanel>
                     </Expander>
 
-
-
-                    <!--
-                    <Expander Style="{StaticResource B}" FontSize="16" Header="Camera" HorizontalContentAlignment="Left" IsExpanded="True">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <Label>Rho</Label>
-                                <TextBox Name="Rho_Text" MinWidth="60" BorderBrush="Black" BorderThickness="2" PreviewKeyDown="Rho_Text_PreviewKeyDown"/>
-                            </StackPanel>
-                                                
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Name="CameraPosX_Text" MinWidth="100" BorderBrush="Black" BorderThickness="2" Margin="2"/>
-                                <Label Content="X Pos"/>
-                            </StackPanel>
-                    
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Name="CameraPosY_Text" MinWidth="100" BorderBrush="Black" BorderThickness="2" Margin="2"/>
-                                <Label Content="Y Pos"/>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Name="CameraPosZ_Text" MinWidth="100" BorderBrush="Black" BorderThickness="2" Margin="2"/>
-                                <Label Content="Z Pos"/>
-                            </StackPanel>
-
-                            <Button Content="Get Pos" Click="GetPos_Clicked" Style="{StaticResource A}"/>
-                            <Button Content="Set Pos" Click="SetPos_Clicked" Style="{StaticResource A}"/>
-                        </StackPanel>
-                    </Expander>
-                    -->
-                    
                     <Expander Style="{StaticResource B}" FontSize="16" Header="Basic" HorizontalContentAlignment="Left" IsExpanded="True">
                         <StackPanel Orientation="Vertical">
 

@@ -19,11 +19,21 @@ namespace Plot3D_Embedded
         protected bool axesTight = true;
         public bool AxesTight
         {get {return axesTight;}
-         set {axesTight = value;}}
+         set {axesTight = value; Draw (); }}
 
         public string DataAreaTitle
         {get {return DataTitle.Text;}
          set {DataTitle.Text = value; Draw ();}}
+
+        public bool axesBoxOn = false;
+        public bool AxesBoxOn
+        {get {return axesBoxOn;} 
+         set {axesBoxOn = value; Draw ();}}
+
+        //public bool containsTranslucent = false;
+        //public bool ContainsTranslucent
+        //{get {return containsTranslucent;} 
+        // set {containsTranslucent = value; if (value == true) Draw (); }}
 
         public void MatlabStyle ()
         {
@@ -58,6 +68,47 @@ namespace Plot3D_Embedded
 
         //************************************************************************************************************
 
+        // Callbacks for Camera parameters
+
+        public delegate void RhoChanged_Callback         (object sender, double rho); // Signature of application callbacks looks like this
+        public delegate void ThetaChanged_Callback       (object sender, double rho); 
+        public delegate void PhiChanged_Callback         (object sender, double rho); 
+        public delegate void CenterChanged_Callback      (object sender, Point3D center); 
+        public delegate void AbsPositionChanged_Callback (object sender, Point3D cameraPosition); 
+        public delegate void RelPositionChanged_Callback (object sender, Point3D cameraPosition); 
+
+        private event RhoChanged_Callback         RhoChangedCallbacks;    // list of all the callbacks
+        private event ThetaChanged_Callback       ThetaChangedCallbacks; 
+        private event PhiChanged_Callback         PhiChangedCallbacks;
+        private event CenterChanged_Callback      CenterChangedCallbacks;
+        private event AbsPositionChanged_Callback AbsPositionChangedCallbacks;
+        private event RelPositionChanged_Callback RelPositionChangedCallbacks;
+
+        public void Register_RhoChanged_Callback         (RhoChanged_Callback    cb)      {RhoChangedCallbacks         += cb; cb (RhoScrollbar,   RhoScrollbar.Value); }
+        public void Register_ThetaChanged_Callback       (ThetaChanged_Callback  cb)      {ThetaChangedCallbacks       += cb; cb (ThetaScrollbar, ThetaScrollbar.Value); }
+        public void Register_PhiChanged_Callback         (PhiChanged_Callback    cb)      {PhiChangedCallbacks         += cb; cb (PhiScrollbar,   PhiScrollbar.Value); }
+        public void Register_CenterChanged_Callback      (CenterChanged_Callback cb)      {CenterChangedCallbacks      += cb; cb (Camera3D,       Camera3D.CenterOn); }
+        public void Register_AbsPositionChanged_Callback (AbsPositionChanged_Callback cb) {AbsPositionChangedCallbacks += cb; cb (Camera3D,       Camera3D.AbsPosition); }
+        public void Register_RelPositionChanged_Callback (RelPositionChanged_Callback cb) {RelPositionChangedCallbacks += cb; cb (Camera3D,       Camera3D.RelPosition); }
+
+        public void Unregister_RhoChanged_Callback         (RhoChanged_Callback    cb)      {RhoChangedCallbacks         -= cb;}
+        public void Unregister_ThetaChanged_Callback       (ThetaChanged_Callback  cb)      {ThetaChangedCallbacks       -= cb;}
+        public void Unregister_PhiChanged_Callback         (PhiChanged_Callback    cb)      {PhiChangedCallbacks         -= cb;}
+        public void UnRegister_CenterChanged_Callback      (CenterChanged_Callback cb)      {CenterChangedCallbacks      -= cb;}
+        public void Unregister_AbsPositionChanged_Callback (AbsPositionChanged_Callback cb) {AbsPositionChangedCallbacks -= cb;}
+        public void Unregister_RelPositionChanged_Callback (RelPositionChanged_Callback cb) {RelPositionChangedCallbacks -= cb;}
+
+        //************************************************************************************************************
+
+        // Print callback
+
+        private event PrintFunction Print;
+
+        public void Register_PrintFunction   (PrintFunction pf) {Print += pf;}
+        public void Unregister_PrintFunction (PrintFunction pf) {Print -= pf;}
+
+        //************************************************************************************************************
+
         public Point3D CenterOn
         {
             get {return Camera3D.CenterOn;}
@@ -85,7 +136,7 @@ namespace Plot3D_Embedded
         public Point3D CameraPosition
         {
             get {return Camera3D.AbsPosition;}
-            set {Camera3D.AbsPosition = value;}
+            set {AxesTight = false;  Camera3D.AbsPosition = value;}
         }
 
         public Point3D CameraRelPosition
@@ -102,11 +153,11 @@ namespace Plot3D_Embedded
         {
             public int index;
             public double distance;
-        }
+        };
 
         List<ID> ids;
 
-        public void SortByDistance ()
+        private void SortByDistance ()
         {
             try
             {
@@ -192,6 +243,7 @@ namespace Plot3D_Embedded
 
         public void Clear ()
         {
+            //ContainsTranslucent = false;
             displayObjects.Clear ();
             ViewportBoundingBox.Clear ();
             Draw ();
