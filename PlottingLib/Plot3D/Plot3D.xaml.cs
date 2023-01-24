@@ -62,12 +62,53 @@ namespace PlottingLib
 
         //***************************************************************************************
 
-        public void xDataAreaTitle (string txt)
+        private void cartesianBox_Click (object sender, RoutedEventArgs args)
+        {
+            MenuItem b1 = args.OriginalSource as MenuItem;
+            PlotArea.AxesBoxOn = b1.IsChecked;
+        }
+
+        private void menuAxisTight_Click (object sender, RoutedEventArgs args)
+        {
+            MenuItem b1 = args.OriginalSource as MenuItem;
+            PlotArea.AxesTight = b1.IsChecked;
+        }
+
+        private void menuAxisFreeze_Click (object sender, RoutedEventArgs args)
+        {
+            //MenuItem b1 = args.OriginalSource as MenuItem;
+            //PlotArea.AxesFrozen = b1.IsChecked;
+        }
+
+        private void cameraCenterMenu_Click (object sender, RoutedEventArgs e)
+        {
+            CameraCenterDlg dlg = new CameraCenterDlg ();
+            dlg.Owner = this;
+
+            Point3D WasCenter = PlotArea.CenterOn;
+            dlg.CenterXCoord.Text = WasCenter.X.ToString ();
+            dlg.CenterYCoord.Text = WasCenter.Y.ToString ();
+            dlg.CenterZCoord.Text = WasCenter.Z.ToString ();
+
+            bool? accepted = dlg.ShowDialog ();
+
+            if (accepted == true)
+            {
+                PlotArea.CenterOn = new Point3D (dlg.X, dlg.Y, dlg.Z);
+            }
+        }
+
+        private void cameraAbsPos_Click (object sender, RoutedEventArgs e)
         {
 
         }
 
-        public void xAxesTight ()
+        private void cameraRelCart_Click (object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cameraRelSph_Click (object sender, RoutedEventArgs e)
         {
 
         }

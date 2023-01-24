@@ -1,0 +1,46 @@
+﻿<Window x:Class="PlottingLib.CameraCenterDlg"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PlottingLib"
+             mc:Ignorable="d" 
+             SizeToContent="Height" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" FontSize="16"
+             Title="Camera Center-on Point" Width="250">
+    
+    <StackPanel Orientation="Vertical">
+        <Grid Margin="10,10,30,10">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center" FontSize="16">X</Label>
+            <TextBox Name="CenterXCoord" Grid.Row="0" Grid.Column="1" FontSize="16" TextChanged="CenterXCoord_TextChanged">123</TextBox>
+
+            <Label Grid.Row="1" Grid.Column="0" HorizontalContentAlignment="Center" FontSize="16">Y</Label>
+            <TextBox Name="CenterYCoord" Grid.Row="1" Grid.Column="1" FontSize="16" TextChanged="CenterYCoord_TextChanged">456</TextBox>
+
+            <Label Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Center" FontSize="16">Z</Label>
+            <TextBox Name="CenterZCoord" Grid.Row="2" Grid.Column="1" FontSize="16" TextChanged="CenterZCoord_TextChanged">789</TextBox>
+        </Grid>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Margin="3" IsDefault="True" Name="CenterAcceptButton" Click="CenterOnAcceptButton_Click">Accept</Button>
+            <Button Grid.Column="2" Margin="3" IsCancel="True">Cancel</Button>
+        </Grid>
+        
+    </StackPanel>
+</Window>

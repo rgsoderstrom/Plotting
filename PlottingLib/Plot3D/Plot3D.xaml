@@ -10,41 +10,22 @@
     <!-- --> 
     <DockPanel>
         <Menu Name="MainMenu" DockPanel.Dock="Top" Background="White">
-            <MenuItem Header="Labels">
-                <MenuItem Name="XAxisLabelFormat" Header="X Axis">
-                    <RadioButton Content="Automatic" Name="XAxisLabelAutomatic" Tag="Auto"></RadioButton>
-                    <RadioButton Content="integer"                              Tag="0"></RadioButton>
-                    <RadioButton Content="float, 1 digit after decimal"         Tag="0.0"></RadioButton>
-                    <RadioButton Content="float, 2 digits"                      Tag="0.00"></RadioButton>
-                    <RadioButton Content="float, 3 digits"                      Tag="0.000"></RadioButton>
-                    <RadioButton Content="Exponential, 1 digit"                 Tag="0.0e+00"></RadioButton>
-                    <RadioButton Content="Exponential, 2 digits"                Tag="0.00e+00"></RadioButton>
-                    <RadioButton Content="Exponential, 3 digits"                Tag="0.000e+00"></RadioButton>
+            <MenuItem Name="CameraMenu" Header="Camera" FontSize="16">
+                <MenuItem Name="cameraPositionMenu" Header="Position">
+                    <MenuItem Name="cameraAbsPos"  Header="Absolute..."            Click="cameraAbsPos_Click"/>
+                    <MenuItem Name="cameraRelCart" Header="Relative, Cartesian..." Click="cameraRelCart_Click"/>
+                    <MenuItem Name="cameraRelSph"  Header="Relative, Spherical..." Click="cameraRelSph_Click"/>
                 </MenuItem>
-                <MenuItem Name="YAxisLabelFormat" Header="Y Axis">
-                    <RadioButton Content="Automatic" Name="YAxisLabelAutomatic" Tag="Auto"></RadioButton>
-                    <RadioButton Content="integer"                              Tag="0"></RadioButton>
-                    <RadioButton Content="float, 1 digit after decimal"         Tag="0.0"></RadioButton>
-                    <RadioButton Content="float, 2 digits"                      Tag="0.00"></RadioButton>
-                    <RadioButton Content="float, 3 digits"                      Tag="0.000"></RadioButton>
-                    <RadioButton Content="Exponential, 1 digit"                 Tag="0.0e+00"></RadioButton>
-                    <RadioButton Content="Exponential, 2 digits"                Tag="0.00e+00"></RadioButton>
-                    <RadioButton Content="Exponential, 3 digits"                Tag="0.000e+00"></RadioButton>
-                </MenuItem>
-                <MenuItem Header="Rho"/>
-                <MenuItem Header="Theta"/>
+                
+                <MenuItem Name="cameraCenterMenu"   Header="Center On..." Click="cameraCenterMenu_Click"/>
             </MenuItem>
-
-            <MenuItem Header="Grid">
-                <MenuItem Name="menuRectangularGrid" Header="Rectangular" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Name="menuPolarGrid"       Header="Polar"       IsCheckable="True" IsChecked="False"/>
-            </MenuItem>
-
-            <MenuItem Name="menuAxis" Header="Axis">
-                <MenuItem Name="menuAxisFreeze" Header="Freeze" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Name="menuAxisEqual"  Header="Equal"  IsCheckable="True" IsChecked="False"/>
-                <MenuItem Name="menuAxisTight"  Header="Tight"  IsCheckable="True" IsChecked="False"/>
-                <MenuItem Name="manualAxes"     Header="Manual ..."/>
+            
+            <MenuItem Name="menuAxis" Header="Axes" FontSize="16">
+                <!--MenuItem Name="menuAxisFreeze" Header="Freeze" IsCheckable="True" IsChecked="False" Click="menuAxisFreeze_Click"/-->
+                <!-- MenuItem Name="menuAxisEqual"  Header="Equal"  IsCheckable="True" IsChecked="False"/-->
+                <MenuItem Name="menuAxisTight"  Header="Tight"  IsCheckable="True" IsChecked="False" Click="menuAxisTight_Click"/>
+                <MenuItem Name="cartesianBox"   Header="Cartesian Box" IsCheckable="True" IsChecked="False" Click="cartesianBox_Click"/>
+                <!-- MenuItem Name="manualAxes"     Header="Manual ..."/-->
             </MenuItem>
         </Menu>
 
