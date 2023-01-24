@@ -19,7 +19,12 @@ namespace Plot3D_Embedded
         protected bool axesTight = true;
         public bool AxesTight
         {get {return axesTight;}
-         set {axesTight = value; Draw (); }}
+         set {axesTight = value; if (axesTight == true) Draw (); }}
+
+        protected bool axesFrozen = false;
+        public bool AxesFrozen
+        {get {return axesFrozen;}
+         set {axesFrozen = value; if (AxesFrozen == true) AxesTight = false; }}
 
         public string DataAreaTitle
         {get {return DataTitle.Text;}
@@ -29,11 +34,6 @@ namespace Plot3D_Embedded
         public bool AxesBoxOn
         {get {return axesBoxOn;} 
          set {axesBoxOn = value; Draw ();}}
-
-        //public bool containsTranslucent = false;
-        //public bool ContainsTranslucent
-        //{get {return containsTranslucent;} 
-        // set {containsTranslucent = value; if (value == true) Draw (); }}
 
         public void MatlabStyle ()
         {

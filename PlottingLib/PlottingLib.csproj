@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PlottingLib</RootNamespace>
     <AssemblyName>PlottingLib</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,6 +64,9 @@
       <DependentUpon>Plot2D.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plot2D\Wrappers1.cs" />
+    <Compile Include="Plot3D\CameraCenterDlg.xaml.cs">
+      <DependentUpon>CameraCenterDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plot3D\Plot3D.xaml.cs">
       <DependentUpon>Plot3D.xaml</DependentUpon>
     </Compile>
@@ -73,6 +77,10 @@
     <Page Include="Plot2D\Plot2D.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plot3D\CameraCenterDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Plot3D\Plot3D.xaml">
       <Generator>MSBuild:Compile</Generator>

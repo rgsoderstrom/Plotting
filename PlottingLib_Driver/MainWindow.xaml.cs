@@ -255,7 +255,7 @@ namespace PlottingLib_Driver
         void Point_Clicked (object sender, RoutedEventArgs e) 
         {
             Point3D pt = Plot3D_Embedded.Utils.RandomPoint (2.0);
-            PlottedPoint3D ppt = new PlottedPoint3D (pt);
+            PointMarker ppt = new Sphere (pt);
             ppt.Diameter = 0.2;
             
             SetCurrentFigureTo3D ();
@@ -271,10 +271,13 @@ namespace PlottingLib_Driver
             for (int i=0; i<50; i++)
                 points.Add (Utils.RandomPoint (15));
 
-            double radius = 0.2 + Utils.RandomDouble (0.3);
+            double radius = 0.2 + Utils.RandomDouble (1);
 
             PointCloud3D pc = new PointCloud3D (points);
             SetCurrentFigureTo3D ();
+
+            (CurrentFigure as Plot3D).AxesTight = false;
+            (CurrentFigure as Plot3D).Hold = false;
             PointCloud3DView h = (CurrentFigure as Plot3D).Plot (pc) as PointCloud3DView;
            
             h.Diameter = 2 * radius;
@@ -318,14 +321,18 @@ namespace PlottingLib_Driver
             SetCurrentFigureTo3D ();
             double r = Utils.RandomDouble (20);
 
-            PlottedPoint3D p1 = new PlottedPoint3D (new Point3D ( r, 0, 0));
-            PlottedPoint3D p2 = new PlottedPoint3D (new Point3D (-r, 0, 0));
+            PointMarker p1 = new Sphere (new Point3D ( r, 0, 0));
+            PointMarker p2 = new Sphere (new Point3D (-r, 0, 0));
 
-            Point3DView p1View = (CurrentFigure as Plot3D).Plot (p1) as Point3DView;
-            Point3DView p2View = (CurrentFigure as Plot3D).Plot (p2) as Point3DView;
+            (CurrentFigure as Plot3D).Plot (p1);
+            var qq = (CurrentFigure as Plot3D).Plot (p2);
 
-            p1View.Color = Colors.Red;
-            p2View.Color = Colors.Black;
+            
+            //PointMarker p1View = (CurrentFigure as Plot3D).Plot (p1) as PointMarker;
+            //PointMarker p2View = (CurrentFigure as Plot3D).Plot (p2) as Sphere;
+
+            //p1View.Color = Colors.Red;
+            //p2View.Color = Colors.Black;
 
             List<Point3D> arcPoints = new List<Point3D> ();
 

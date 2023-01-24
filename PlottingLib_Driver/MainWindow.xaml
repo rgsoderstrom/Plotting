@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlottingLib_Driver"
         mc:Ignorable="d"
-        Title="PlottingLib Test Driver" Width="100" SizeToContent="WidthAndHeight" Loaded="DriverWindow_Loaded" Closed="DriverWindow_Closed">
+        Title="PlottingLib Test Driver" SizeToContent="Width" Loaded="DriverWindow_Loaded" Closed="DriverWindow_Closed">
     <DockPanel>
 
         <DockPanel.Resources>
@@ -30,54 +30,55 @@
             </Style>
         </DockPanel.Resources>
 
-        <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="10">
-            <Button Style="{StaticResource A}" Click="NewFigButton_Click">New Figure</Button>
-            <Button Style="{StaticResource A}" Click="New2DFigButton_Click">New 2D Figure</Button>
-            <Button Style="{StaticResource A}" Click="New3DFigButton_Click">New 3D Figure</Button>
+        <ScrollViewer DockPanel.Dock="Left">
+            <StackPanel Orientation="Vertical" Margin="10">
+                <Button Style="{StaticResource A}" Click="NewFigButton_Click">New Figure</Button>
+                <Button Style="{StaticResource A}" Click="New2DFigButton_Click">New 2D Figure</Button>
+                <Button Style="{StaticResource A}" Click="New3DFigButton_Click">New 3D Figure</Button>
 
-            <Button Style="{StaticResource A}" Click="ClearFigButton_Click">Clear</Button>
+                <Button Style="{StaticResource A}" Click="ClearFigButton_Click">Clear</Button>
 
-            <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="1" Margin="8,4,8,0" Background="OldLace" MaxWidth="140">
-                <CheckBox x:Name="HoldBox" Style="{StaticResource A}" 
-                          Margin="10,3,10,3" FontSize="16" Background="Gainsboro" Click="Hold_Click">Hold</CheckBox>
-            </Border>
+                <Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="1" Margin="8,4,8,0" Background="OldLace" MaxWidth="140">
+                    <CheckBox x:Name="HoldBox" Style="{StaticResource A}" 
+                              Margin="10,3,10,3" FontSize="16" Background="Gainsboro" Click="Hold_Click">Hold</CheckBox>
+                </Border>
 
-            <Expander Style="{StaticResource B}" Header="Basic 2D Objects" IsExpanded="false">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Basic2D">
-                    <Button Style="{StaticResource A}" Click="CircleButton_Click">Circle</Button>
-                    <Button Style="{StaticResource A}" Click="EllipseButton_Click">Ellipse</Button>
-                    <Button Style="{StaticResource A}" Click="RectangleButton_Click">Rectangle</Button>
-                    <Button Style="{StaticResource A}" Click="RotateRectButton_Click" IsEnabled="False" Name="RotateButton">Rotate Rectangle</Button>
-                    <Button Style="{StaticResource A}" Click="MoveRectButton_Click" IsEnabled="False" Name="MoveButton">Move Rectangle</Button>
-                    <Button Style="{StaticResource A}" Click="SmoothCurveButton_Click">Smooth Curve</Button>
-                    <Button Style="{StaticResource A}" Click="PointCurveButton_Click">Point Curve</Button>
-                </StackPanel>
-            </Expander>
+                <Expander Style="{StaticResource B}" Header="Basic 2D Objects" IsExpanded="false">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Basic2D">
+                        <Button Style="{StaticResource A}" Click="CircleButton_Click">Circle</Button>
+                        <Button Style="{StaticResource A}" Click="EllipseButton_Click">Ellipse</Button>
+                        <Button Style="{StaticResource A}" Click="RectangleButton_Click">Rectangle</Button>
+                        <Button Style="{StaticResource A}" Click="RotateRectButton_Click" IsEnabled="False" Name="RotateButton">Rotate Rectangle</Button>
+                        <Button Style="{StaticResource A}" Click="MoveRectButton_Click" IsEnabled="False" Name="MoveButton">Move Rectangle</Button>
+                        <Button Style="{StaticResource A}" Click="SmoothCurveButton_Click">Smooth Curve</Button>
+                        <Button Style="{StaticResource A}" Click="PointCurveButton_Click">Point Curve</Button>
+                    </StackPanel>
+                </Expander>
 
-            <Expander Style="{StaticResource B}" Header="Composite 2D Objects" IsExpanded="False">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Composite2D">
-                    <Button Style="{StaticResource A}" Click="VectorButton_Click">Vector</Button>
-                    <Button Style="{StaticResource A}" Click="VectorFieldButton_Click">Vector Field</Button>
-                </StackPanel>
-            </Expander>
+                <Expander Style="{StaticResource B}" Header="Composite 2D Objects" IsExpanded="False">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Composite2D">
+                        <Button Style="{StaticResource A}" Click="VectorButton_Click">Vector</Button>
+                        <Button Style="{StaticResource A}" Click="VectorFieldButton_Click">Vector Field</Button>
+                    </StackPanel>
+                </Expander>
 
-            <Expander Style="{StaticResource B}" Header="Basic 3D Objects" IsExpanded="True">
-                <StackPanel Orientation="Vertical" Name="Basic3D">
-                    <Button Style="{StaticResource A}" Click="Point_Clicked">One Point</Button>
-                    <Button Style="{StaticResource A}" Click="PointCloud_Clicked">Point Cloud</Button>
-                    <Button Style="{StaticResource A}" Click="Line_PP_Clicked">Two End Points</Button>
-                    <Button Style="{StaticResource A}" Click="Line_PV_Clicked">Point and Vector</Button>
-                    <Button Style="{StaticResource A}" Click="Polyline_Points_Clicked">Polyline, Points</Button>
-                    <Button Style="{StaticResource A}" Click="Polyline_Func_Clicked">Polyline, Functions</Button>
-                </StackPanel>
-            </Expander>
+                <Expander Style="{StaticResource B}" Header="Basic 3D Objects" IsExpanded="True">
+                    <StackPanel Orientation="Vertical" Name="Basic3D">
+                        <Button Style="{StaticResource A}" Click="Point_Clicked">One Point</Button>
+                        <Button Style="{StaticResource A}" Click="PointCloud_Clicked">Point Cloud</Button>
+                        <Button Style="{StaticResource A}" Click="Line_PP_Clicked">Two End Points</Button>
+                        <Button Style="{StaticResource A}" Click="Line_PV_Clicked">Point and Vector</Button>
+                        <Button Style="{StaticResource A}" Click="Polyline_Points_Clicked">Polyline, Points</Button>
+                        <Button Style="{StaticResource A}" Click="Polyline_Func_Clicked">Polyline, Functions</Button>
+                    </StackPanel>
+                </Expander>
 
-            <TextBox DockPanel.Dock="Bottom" MinHeight="100" MaxHeight="300" Name="TextPane" FontSize="14" VerticalScrollBarVisibility="Visible" 
-                 HorizontalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap">
-            </TextBox>
+                <TextBox DockPanel.Dock="Bottom" MinHeight="100" MaxHeight="300" Name="TextPane" FontSize="14" VerticalScrollBarVisibility="Visible" 
+                     HorizontalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap">
+                </TextBox>
             
-        </StackPanel>
-
+            </StackPanel>
+        </ScrollViewer>
 
     </DockPanel>
 </Window>

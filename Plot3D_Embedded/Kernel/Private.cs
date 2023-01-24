@@ -80,7 +80,10 @@ namespace Plot3D_Embedded
                 if (viewObj.View is Surface3DView)
                 {
                     if ((viewObj.View as Surface3DView).Opacity != 1)
+                    {
                         hasTranslucent = true;
+                        break;
+                    }
                 }
 
                 Viewport.Children.Add (viewObj.View);
