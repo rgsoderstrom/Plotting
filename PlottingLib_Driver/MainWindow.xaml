@@ -59,6 +59,7 @@
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Composite2D">
                         <Button Style="{StaticResource A}" Click="VectorButton_Click">Vector</Button>
                         <Button Style="{StaticResource A}" Click="VectorFieldButton_Click">Vector Field</Button>
+                        <Button Style="{StaticResource A}" Click="ContourPlotButton_Click">Contour Plot</Button>
                     </StackPanel>
                 </Expander>
 

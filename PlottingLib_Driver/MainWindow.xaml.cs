@@ -9,6 +9,7 @@ using Common;
 using PlottingLib;
 using Plot2D_Embedded;
 using Plot3D_Embedded;
+using System.Windows.Documents;
 
 
 namespace PlottingLib_Driver
@@ -176,6 +177,8 @@ namespace PlottingLib_Driver
             (CurrentFigure as Plot2D).DataAreaTitle = "Vector";
         }
 
+        //**********************************************************************************
+
         private void VectorFieldButton_Click (object sender, RoutedEventArgs e)
         {
             int N = 10;
@@ -196,6 +199,79 @@ namespace PlottingLib_Driver
             (CurrentFigure as Plot2D).AxesEqual = true;
             (CurrentFigure as Plot2D).Plot (vfv);
         }
+
+        //**********************************************************************************
+
+        double ZForContours1 (double x, double y)
+        {
+            return (x - 2) * (y - 1);
+        }
+
+        private void ContourPlotButton_Click (object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SetCurrentFigureTo2D ();
+                (CurrentFigure as Plot2D).Hold = true;
+                (CurrentFigure as Plot2D).AxesEqual = true;
+                Plot2D figure = CurrentFigure as Plot2D;
+
+                figure.Clear ();
+
+                double minX = -3, maxX = 3, minY = -2, maxY = 2;
+                int numberXSamples = 50;
+                int numberYSamples = 40;
+
+                List<double> contourValues = new List<double> () {-4, -2, 2, 4, 6, 8};
+
+                List<double> xValues = new List<double> (numberXSamples);
+                List<double> yValues = new List<double> (numberYSamples);
+                CommonMath.Matrix zValues = new CommonMath.Matrix (numberYSamples, numberXSamples);
+
+                double dx = (maxX - minX) / (numberXSamples - 1);
+                double dy = (maxY - minY) / (numberYSamples - 1);
+
+                for (int i = 0; i<numberXSamples; i++)
+                    xValues.Add (minX + i * dx);
+
+                for (int i = 0; i<numberYSamples; i++)
+                    yValues.Add (minY + i * dy);
+
+                for (int xi = 0; xi<numberXSamples; xi++)
+                {
+                    for (int yi = 0; yi<numberYSamples; yi++)
+                    {
+                        try
+                        {
+                            zValues [yi, xi] = ZForContours1 (xValues [xi], yValues [yi]);
+                        }
+
+                        catch (NotFiniteNumberException)
+                        {
+                            zValues [yi, xi] = Double.NaN;
+                        }
+                    }
+                }
+                
+                ContourPlotView.DrawLines = true;
+                ContourPlotView.LabelLines = false;
+                ContourPlotView.ShowGradientArrows = true;
+                ContourPlotView.ShowColoredBackground = true;
+                ContourPlotView cp = new ContourPlotView (xValues, yValues, zValues, contourValues);
+                figure.Plot (cp);
+
+                figure.SetAxes (minX, maxX, minY, maxY);
+                figure.AxesEqual = true;
+            }
+
+            catch (Exception ex)
+            {
+                Print ("Exception: " + ex.Message);
+            }
+
+        }
+
+        //**********************************************************************************
 
         private void CircleButton_Click (object sender, RoutedEventArgs e) 
         {
