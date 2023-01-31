@@ -31,7 +31,8 @@ namespace PlottingLib
             set { PlotArea.CenterDistance = value; }
         }
 
-        public void CameraPosition (Point3D pt) {PlotArea.CameraPosition = pt;}
+        public void CameraPosition    (Point3D pt) {PlotArea.CameraPosition = pt;}
+        public void CameraRelPosition (Point3D pt) {PlotArea.CameraRelPosition = pt;}
 
         //****************************************************************************************************
 
