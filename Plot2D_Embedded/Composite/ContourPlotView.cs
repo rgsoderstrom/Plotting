@@ -312,7 +312,7 @@ namespace Plot2D_Embedded
                                 boundingBox.Union (P + gradient); // these can cause gap between border and contours
                             }
 
-                            catch (Exception _)
+                            catch (Exception)
                             {
 
                             }
