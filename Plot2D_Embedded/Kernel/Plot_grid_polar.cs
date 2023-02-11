@@ -52,8 +52,8 @@ namespace Plot2D_Embedded
             minTheta = viewport.MinThetaFromOrigin;
             maxTheta = viewport.MaxThetaFromOrigin;
            
-            CalculateTicValues (ref rhoValues,   minRho,   maxRho,   numberRangeMarks);
-            CalculateTicValues (ref thetaValues, minTheta, maxTheta, numberThetaMarks);
+          //  CalculateTicValues (ref rhoValues,   minRho,   maxRho,   numberRangeMarks);
+          //  CalculateTicValues (ref thetaValues, minTheta, maxTheta, numberThetaMarks);
 
             if (rhoValues.Count > 1)
                 dr = rhoValues [1] - rhoValues [0];

@@ -96,8 +96,11 @@ namespace Plot2D_Embedded_Driver
             {
                 List<Point> parabola = new List<Point> ();
 
-                for (double x=-2; x<=2; x+=0.125)
+                for (double x = -5; x<=5; x+=1)
                     parabola.Add (CurveFunction (x));
+
+                //for (double x = -2; x<=2; x+=0.125)
+                //    parabola.Add (CurveFunction (x));
 
                 LineView h = new LineView (parabola);
                 h.LineStyle = LineView.DrawingStyle.Dashes;
@@ -112,6 +115,10 @@ namespace Plot2D_Embedded_Driver
                 figure.Plot (h);
                 figure.AxesEqual = true;
                 figure.RectangularGridOn = true;
+
+                figure.FixedGridLines = false;
+                figure.FixedGridValues = true;
+              //  figure.NumberXAxisTics = 2;
             }
 
             catch (Exception ex)

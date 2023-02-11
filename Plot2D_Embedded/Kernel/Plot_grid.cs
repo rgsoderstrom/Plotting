@@ -29,61 +29,61 @@ namespace Plot2D_Embedded
         //
         // Axis Markers
         //
-        protected void CalculateTicValues (ref List<double> values, double min, double max, int numberTics)
+        protected void CalculateTicValues (ref List<double> values, double min, double max, double anchor, double ticStep)
         {
            //EventLog.WriteLine (string.Format ("CalculateTicValues: {0:0.0}, {1:0.0}, {2}, {3}", min, max, numberTics, values.Count));
 
             if (min == max)
                 throw new Exception ("Plot2D.CalculateTicValues: min == max in CalculateTicValues");
 
+
+            int numberTics = (int) ((max - min) / ticStep); // approximate
+
+            if (numberTics > 10)
+                ticStep = (max - min) / 10;
+
+            else if (numberTics < 2)
+                ticStep = (max - min) / 2;
+
+
+
+             // if list is empty build the whole list
             if (values.Count == 0)
             {
-                double start = (max + min) / 2;
-                double range = max - min;
-                double step = range / (numberTics + 1);
+                double NMin = (min - anchor) / ticStep;
+                double NMax = (max - anchor) / ticStep;
 
-                // if 0 is in the range of values, this will ensure it appears
-                if (max > 0 && min < 0) start = 0;
+                int N0 = (int)(NMin - 1);
+                int N1 = (int)(NMax + 1);
 
-                if (step <= 0)                 throw new Exception ("Plot2D.CalculateTicValues: step error");
-                if (double.IsNaN (range))      throw new Exception ("Plot2D.CalculateTicValues: Range NAN");
-                if (double.IsInfinity (range)) throw new Exception ("Plot2D.CalculateTicValues: Range infinite");
-                if (double.IsNaN (step))       throw new Exception ("Plot2D.CalculateTicValues: step NAN");
-                if (double.IsInfinity (step))  throw new Exception ("Plot2D.CalculateTicValues: step infinite");
+                for (int N = N0; N <= N1; N++)
+                {
+                    double val = anchor + N * ticStep;
 
-                for (double x = start; x <= max; x += step)
-                    values.Add (x);
-
-                for (double x = start - step; x >= min; x -= step)
-                    values.Add (x);
-
-                values.Sort ();
+                    if (val >= min && val <= max)
+                        values.Add (val);
+                }
             }
             else
             {
-                double step = 0;
-
-                if (values.Count > 1)
-                    step = values [1] - values [0];
-
                 if (values [0] < min)
                 {
                     values.RemoveAt (0);
-
-                    double next = values [values.Count - 1] + step;
-
-                    if (next <= max)
-                        values.Add (next);
                 }
 
-                else if (values [values.Count - 1] > max)
+                if (min + ticStep < values [0])
+                {
+                    values.Insert (0, values [0] - ticStep);
+                }
+
+                if (values [values.Count - 1] > max)
                 {
                     values.RemoveAt (values.Count - 1);
+                }
 
-                    double prev = values [0] - step;
-
-                    if (prev >= min)
-                        values.Insert (0, prev);
+                if (values [values.Count - 1] < max - ticStep)
+                {
+                    values.Add (values [values.Count - 1] + ticStep);
                 }
             }
         }        

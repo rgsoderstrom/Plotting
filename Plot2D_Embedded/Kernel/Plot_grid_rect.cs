@@ -26,17 +26,23 @@ namespace Plot2D_Embedded
         
         public void CalculateTicValues (Viewport2D viewPort)
         {
+            double xAnchor = 0;
+            double yAnchor = 0;
 
-            //xAxisTicValues.Clear ();
+            double xStep = 1;
+            double yStep = 0.5;
 
-            //for (double x = 0; x<7; x+=1)
-            //    xAxisTicValues.Add (x);
+            //int DesiredXLineCount = 5;
+            //int DesiredYLineCount = 4;
+
+
+            //xAxisTicValues.Clear (); // initial test only
+            //yAxisTicValues.Clear ();
 
 
 
-
-            CalculateTicValues (ref xAxisTicValues, viewPort.Left,   viewPort.Right, numberXAxisMarks);
-            CalculateTicValues (ref yAxisTicValues, viewPort.Bottom, viewPort.Top,   numberYAxisMarks);
+            CalculateTicValues (ref xAxisTicValues, viewPort.Left,   viewPort.Right, xAnchor, xStep);
+            CalculateTicValues (ref yAxisTicValues, viewPort.Bottom, viewPort.Top,   yAnchor, yStep);
         }
 
         public void ClearTicValues ()
