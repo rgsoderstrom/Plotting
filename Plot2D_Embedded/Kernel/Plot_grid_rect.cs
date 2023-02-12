@@ -29,7 +29,7 @@ namespace Plot2D_Embedded
             double xAnchor = 0;
             double yAnchor = 0;
 
-            double xStep = 1;
+            double xStep = 0.5;
             double yStep = 0.5;
 
             //int DesiredXLineCount = 5;
