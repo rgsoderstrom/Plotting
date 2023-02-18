@@ -13,6 +13,10 @@ namespace PlottingLib
     {
         int ID {get; set;}
         bool Hold {set; get;}
+        double Left   {set; get;}
+        double Top    {set; get;}
+        double Width  {set; get;}
+        double Height {set; get;}
     }
 
     /// <summary>

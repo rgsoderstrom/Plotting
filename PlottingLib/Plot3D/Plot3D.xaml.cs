@@ -22,6 +22,11 @@ namespace PlottingLib
     {
         public int ID {get; set;}
 
+        public new double Left   {get { return base.Left; }   set { base.Left = value; } }
+        public new double Top    {get { return base.Top; }    set { base.Top = value; } }
+        public new double Width  {get { return base.Width; }  set { base.Width = value; } }
+        public new double Height {get { return base.Height; } set { base.Height = value; } }
+
         public Plot3D ()
         {
             Common.WindowLoaded (this);
