@@ -36,16 +36,19 @@ namespace Plot2D_Embedded
             if (min == max)
                 throw new Exception ("Plot2D.CalculateTicValues: min == max in CalculateTicValues");
 
-
             int numberTics = (int) ((max - min) / ticStep); // approximate
 
-            if (numberTics > 10)
-                ticStep = (max - min) / 10;
+            while (numberTics > 10)
+            {
+                ticStep *= 2;
+                numberTics = (int) ((max - min) / ticStep);
+            }
 
-            else if (numberTics < 2)
-                ticStep = (max - min) / 2;
-
-
+            while (numberTics < 3)
+            {
+                ticStep /= 2;
+                numberTics = (int) ((max - min) / ticStep);
+            }
 
              // if list is empty build the whole list
             if (values.Count == 0)
