@@ -32,14 +32,8 @@ namespace Plot2D_Embedded
             double xStep = 0.5;
             double yStep = 0.5;
 
-            //int DesiredXLineCount = 5;
-            //int DesiredYLineCount = 4;
-
-
             //xAxisTicValues.Clear (); // initial test only
             //yAxisTicValues.Clear ();
-
-
 
             CalculateTicValues (ref xAxisTicValues, viewPort.Left,   viewPort.Right, xAnchor, xStep);
             CalculateTicValues (ref yAxisTicValues, viewPort.Bottom, viewPort.Top,   yAnchor, yStep);
@@ -148,41 +142,42 @@ namespace Plot2D_Embedded
 
         public void DrawAxisNumericLabels (double DataAreaX0, double DataAreaX1, double DataAreaY0, double DataAreaY1)
         {
-            if (yAxisTicValues.Count > 0)
-            {
-                if (XAxisFormatAuto == true)
-                {
-                    double range = Math.Abs (xAxisTicValues [xAxisTicValues.Count - 1] - xAxisTicValues [0]);
-                    double logRange = Math.Log10 (range);
-                    int numberDigits = (int)Math.Round (logRange);
+            //if (xAxisTicValues.Count > 0)
+            //{
+            //    if (XAxisFormatAuto == true)
+            //    {
+            //        double range = Math.Abs (xAxisTicValues [xAxisTicValues.Count - 1] - xAxisTicValues [0]);
+            //        double logRange = Math.Log10 (range);
+            //        int numberDigits = (int)Math.Round (logRange);
 
-                    XAxisFormat = "{0:0.0}"; // restore default
-                    if (numberDigits == -3) XAxisFormat = "{0:0.0000}";
-                    if (numberDigits == -2) XAxisFormat = "{0:0.000}";
-                    if (numberDigits == -1) XAxisFormat = "{0:0.00}";
-                }
-            }
+            //        XAxisFormat = "{0:0.0}"; // restore default
+            //        if (numberDigits == -3) XAxisFormat = "{0:0.0000}";
+            //        if (numberDigits == -2) XAxisFormat = "{0:0.000}";
+            //        if (numberDigits == -1) XAxisFormat = "{0:0.00}";
+            //    }
+            //}
 
-            if (yAxisTicValues.Count > 0)
-            {
-                if (YAxisFormatAuto == true)
-                {
-                    double range = Math.Abs (yAxisTicValues [yAxisTicValues.Count - 1] - yAxisTicValues [0]);
-                    double logRange = Math.Log10 (range);
-                    int numberDigits = (int)Math.Round (logRange);
+            //if (yAxisTicValues.Count > 0)
+            //{
+            //    if (YAxisFormatAuto == true)
+            //    {
+            //        double range = Math.Abs (yAxisTicValues [yAxisTicValues.Count - 1] - yAxisTicValues [0]);
+            //        double logRange = Math.Log10 (range);
+            //        int numberDigits = (int)Math.Round (logRange);
 
-                    YAxisFormat = "{0:0.0}"; // restore default
-                    if (numberDigits == -3) YAxisFormat = "{0:0.0000}";
-                    if (numberDigits == -2) YAxisFormat = "{0:0.000}";
-                    if (numberDigits == -1) YAxisFormat = "{0:0.00}";
-                }
-            }
+            //        YAxisFormat = "{0:0.0}"; // restore default
+            //        if (numberDigits == -3) YAxisFormat = "{0:0.0000}";
+            //        if (numberDigits == -2) YAxisFormat = "{0:0.000}";
+            //        if (numberDigits == -1) YAxisFormat = "{0:0.00}";
+            //    }
+            //}
 
             foreach (double x in xAxisTicValues)
             {
                 double cx = WorldXToCanvasX (x);
                 double cy = DataAreaY1;
-                string str = string.Format (XAxisFormat, x);
+                //string str = string.Format (XAxisFormat, x);
+                string str = string.Format ("{0:0.0##}", x);                
 
                 TextBlock tb1 = new TextBlock ();
                 tb1.FontSize = 16;
@@ -196,7 +191,8 @@ namespace Plot2D_Embedded
             {
                 double cy = WorldYToCanvasY (y);
                 double cx = DataAreaX0;
-                string str = string.Format (YAxisFormat, y);
+                //string str = string.Format (YAxisFormat, y);
+                string str = string.Format ("{0:0.0##}", y);                
 
                 TextBlock tb1 = new TextBlock ();
                 tb1.FontSize = 16;
