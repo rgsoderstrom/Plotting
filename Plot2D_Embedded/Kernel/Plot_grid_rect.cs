@@ -32,11 +32,20 @@ namespace Plot2D_Embedded
             double xStep = 0.5;
             double yStep = 0.5;
 
-            //xAxisTicValues.Clear (); // initial test only
-            //yAxisTicValues.Clear ();
+            xAxisTicValues.Clear ();
+            yAxisTicValues.Clear ();
 
             CalculateTicValues (ref xAxisTicValues, viewPort.Left,   viewPort.Right, xAnchor, xStep);
             CalculateTicValues (ref yAxisTicValues, viewPort.Bottom, viewPort.Top,   yAnchor, yStep);
+
+            //EventLog.WriteLine ("x axis tics");
+            //EventLog.WriteLine ("left = " + viewPort.Left.ToString ());
+            //EventLog.WriteLine ("right = " + viewPort.Right.ToString ());
+            //EventLog.WriteLine ("anchor = " + xAnchor.ToString ());
+            //EventLog.WriteLine ("step = " + xStep.ToString ());
+
+            //foreach (double v in xAxisTicValues)
+            //    EventLog.WriteLine (v.ToString ());
         }
 
         public void ClearTicValues ()
