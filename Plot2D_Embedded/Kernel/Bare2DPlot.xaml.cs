@@ -45,8 +45,8 @@ namespace Plot2D_Embedded
                                  set {polarGridOn = value; Draw ();}}
 
 
-        public int NumberXAxisTics {get {return rectangularGrid.numberXAxisMarks;} set {rectangularGrid.numberXAxisMarks = value; Draw ();}}
-        public int NumberYAxisTics {get {return rectangularGrid.numberYAxisMarks;} set {rectangularGrid.numberYAxisMarks = value; Draw ();}}
+        //public int NumberXAxisTics {get {return rectangularGrid.numberXAxisMarks;} set {rectangularGrid.numberXAxisMarks = value; Draw ();}}
+        //public int NumberYAxisTics {get {return rectangularGrid.numberYAxisMarks;} set {rectangularGrid.numberYAxisMarks = value; Draw ();}}
 
         public Brush AnootationBackground {get {return OuterCanvas.Background;} set {OuterCanvas.Background = value;}}
 
