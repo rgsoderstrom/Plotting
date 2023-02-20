@@ -63,8 +63,7 @@ namespace Plot2D_Embedded
                 {
                     if (RectangularGridOn)
                     {
-                        if (FixedGridLines)
-                            rectangularGrid.ClearTicValues ();
+                      //rectangularGrid.ClearTicValues ();
                         rectangularGrid.CalculateTicValues (Viewport);
                         rectangularGrid.DrawGridLines ();
                         rectangularGrid.DrawTicMarks ();
@@ -74,8 +73,7 @@ namespace Plot2D_Embedded
 
                 if (PolarGridOn)
                 {
-                    if (FixedGridLines)
-                        polarGrid.ClearTicValues ();
+                    //polarGrid.ClearTicValues ();
                     polarGrid.CalculateTicValues (Viewport);
 
                     polarGrid.DrawGridLines ();
@@ -234,7 +232,7 @@ namespace Plot2D_Embedded
                 DataBoundingBox.Clear ();
 
                 if (AxesFrozen == false)
-                   AxesTight = true;
+                  AxesTight = true;
             }
         }
     }

@@ -100,8 +100,8 @@ namespace Plot2D_Embedded_Driver
             RectGrid_Button.IsChecked = figure.RectangularGridOn;
             PolarGrid_Button.IsChecked = figure.PolarGridOn;
 
-            GridLinesFixed_Button.IsChecked = figure.FixedGridLines;
-            GridValuesFixed_Button.IsChecked = figure.FixedGridValues;
+            //GridLinesFixed_Button.IsChecked = figure.FixedGridLines;
+            //GridValuesFixed_Button.IsChecked = figure.FixedGridValues;
 
             AxesEqual_Button.IsChecked = figure.AxesEqual;
             AxesTight_Button.IsChecked = figure.AxesTight;
@@ -113,12 +113,12 @@ namespace Plot2D_Embedded_Driver
 
         private void GridLinesFixed_Click (object sender, RoutedEventArgs args)
         {
-            figure.FixedGridLines = (bool) GridLinesFixed_Button.IsChecked;
+//            figure.FixedGridLines = (bool) GridLinesFixed_Button.IsChecked;
         }
 
         private void GridValuesFixed_Click (object sender, RoutedEventArgs args)
         {
-             figure.FixedGridValues = (GridLinesFixed_Button.IsChecked == false);
+  //           figure.FixedGridValues = (GridLinesFixed_Button.IsChecked == false);
         }
 
         //*****************************************************************************************
@@ -130,8 +130,8 @@ namespace Plot2D_Embedded_Driver
             Title = "Plot2D Kernel Test Driver";
             figure.DataAreaTitle = "Plot2D Kernel";
 
-            GridLinesFixed_Button.IsChecked = figure.FixedGridLines;
-            GridValuesFixed_Button.IsChecked = figure.FixedGridValues;
+            //GridLinesFixed_Button.IsChecked = figure.FixedGridLines;
+            //GridValuesFixed_Button.IsChecked = figure.FixedGridValues;
 
             figure.ControlFlagChangeHandlers += CheckButtonStates;
             CheckButtonStates ();
