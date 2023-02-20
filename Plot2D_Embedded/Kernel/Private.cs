@@ -120,7 +120,7 @@ namespace Plot2D_Embedded
                 {
                     TextBlock tb1 = new TextBlock
                     {
-                        FontSize = 18,
+                        FontSize = 24,// 18,
                         Text = DataAreaTitle
                     };
 
@@ -130,14 +130,13 @@ namespace Plot2D_Embedded
                 }
             }
 
-            /******
             // X Axis Label
             if (XAxisLabel != null)
             {
                 if (XAxisLabel.Length > 0)
                 {
                     TextBlock tb1 = new TextBlock ();
-                    tb1.FontSize = 18;
+                    tb1.FontSize = 24;// 18;
                     tb1.Text = XAxisLabel;
                     Canvas.SetTop (tb1, DataAreaY1 + 24);
                     Canvas.SetLeft (tb1, (DataAreaX1 + DataAreaX0 - 8 * XAxisLabel.Length) / 2);
@@ -151,14 +150,14 @@ namespace Plot2D_Embedded
                 if (YAxisLabel.Length > 0)
                 {
                     TextBlock tb1 = new TextBlock ();
-                    tb1.FontSize = 18;
+                    tb1.FontSize = 24;// 18;
                     tb1.Text = YAxisLabel;
                     tb1.RenderTransform = new RotateTransform (90);
                     Canvas.SetTop (tb1, (DataAreaY1 + DataAreaY0 - 8 * YAxisLabel.Length) / 2);
-                    Canvas.SetLeft (tb1, DataAreaX0 - 48);
+                    Canvas.SetLeft (tb1, DataAreaX0 - 32); // 48);
                     OuterCanvas.Children.Add (tb1);
                 }
-            }****/
+            }
         }
         
         protected void CalculateTransformSlopes ()
