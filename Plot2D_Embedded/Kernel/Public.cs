@@ -33,6 +33,26 @@ namespace Plot2D_Embedded
                                      if (change)
                                          FlagChangeRedraw ();}}
 
+        //*******************************************************************************
+
+        //protected double xAnchor = 0;
+        //protected double xStep = 1;
+        //protected bool   xForced = false;
+
+        //public double XAxisAnchor { get { return xAnchor; } set { xAnchor = value; Refresh (); } }   // DON'T REFRESH ON EVERY CHANGE
+        //public double XAxisStep { get { return xStep; } set { xStep = value; Refresh (); } }
+        //public bool   XAxisForced { get { return xForced; } set { xForced = value; Refresh (); } }
+
+        //protected double yAnchor = 0;
+        //protected double yStep = 1;
+        //protected bool   yForced = false;
+
+        //public double YAxisAnchor { get { return yAnchor; } set { yAnchor = value; Refresh (); } }
+        //public double YStep { get { return yStep; } set { yStep = value; Refresh (); } }
+        //public bool   YAxisForced { get { return yForced; } set { yForced = value; Refresh (); } }
+
+        //*******************************************************************************
+
         protected bool hold = true;
         public bool Hold
         {get {return hold;}
@@ -47,9 +67,9 @@ namespace Plot2D_Embedded
             set {bool change = (mouseEnabled != value); if (change) {mouseEnabled = value; if (mouseEnabled) EnableMouse (); else DisableMouse (); FlagChangeEvent ();}}
         }
 
-        protected bool fixedGridLines = true;
-        public bool FixedGridLines  {get {return fixedGridLines;} set {fixedGridLines = value;}}
-        public bool FixedGridValues {get {return !FixedGridLines;} set {FixedGridLines = !value;}}
+        //protected bool fixedGridLines = true;
+        //public bool FixedGridLines  {get {return fixedGridLines;} set {fixedGridLines = value;}}
+        //public bool FixedGridValues {get {return !FixedGridLines;} set {FixedGridLines = !value;}}
 
         private void FlagChangeEvent ()
         {
