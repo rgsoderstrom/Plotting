@@ -88,7 +88,7 @@ namespace Plot2D_Embedded_Driver
 
         //****************************************************************************************
 
-        Point CurveFunction (double x) {return new Point (x, x * x - 0.25) + new Vector (3, 4);}
+        Point CurveFunction (double x) {return new Point (x, x * x - 0.25) + new Vector (3.456, 4.567);}
 
         private void LineViewCurveButton_Click (object sender, RoutedEventArgs e)
         {
@@ -96,29 +96,26 @@ namespace Plot2D_Embedded_Driver
             {
                 List<Point> parabola = new List<Point> ();
 
-                for (double x = -5; x<=5; x+=1)
+                for (double x = -2; x<=2; x+=0.125)
                     parabola.Add (CurveFunction (x));
 
-                //for (double x = -2; x<=2; x+=0.125)
-                //    parabola.Add (CurveFunction (x));
 
                 LineView h = new LineView (parabola);
                 h.LineStyle = LineView.DrawingStyle.Dashes;
                 h.Color = Brushes.LightSteelBlue;
 
-                //h.ArrowheadAtStart = true;
-                //h.ArrowheadAtEnd = true;
+                h.ArrowheadAtStart = true;
+                h.ArrowheadAtEnd = true;
 
                 h.Thickness = 3;
-                //h.ArrowheadScaleFactor = 1/30.0;
+                h.ArrowheadScaleFactor = 1/30.0;
 
                 figure.Plot (h);
-                figure.AxesEqual = true;
                 figure.RectangularGridOn = true;
-
-                figure.FixedGridLines = false;
-                figure.FixedGridValues = true;
-              //  figure.NumberXAxisTics = 2;
+                figure.DataAreaTitle = "Title Here";
+                figure.XAxisLabel = "X Label Here";
+                figure.YAxisLabel = "Y Label Here";
+                figure.AxesEqual = true;
             }
 
             catch (Exception ex)
