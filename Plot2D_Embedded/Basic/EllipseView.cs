@@ -42,8 +42,7 @@ namespace Plot2D_Embedded
             grp.Children.Add (xlate);
             ellipseGeometry.Transform = grp;
 
-            //Width = width;
-            //Height = height;
+            Height = Width = Radius * 2;            
             Center = center;
 
             // construct objects top-down
