@@ -164,7 +164,7 @@ namespace Plot2D_Embedded
             set 
             {
                 if (value < 0.001) value = 0.001;
-                if (value > 1) value = 1;
+               // if (value > 1) value = 1;
 
                 bool startArrow = ArrowheadAtStart;
                 bool endArrow = ArrowheadAtEnd;

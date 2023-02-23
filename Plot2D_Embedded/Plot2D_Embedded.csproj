@@ -61,6 +61,7 @@
     <Compile Include="Composite\ContourPlotLine.cs" />
     <Compile Include="Composite\ContourPlotSquare.cs" />
     <Compile Include="Composite\ContourPlotView.cs" />
+    <Compile Include="Composite\CoordinateAxesView.cs" />
     <Compile Include="Composite\VectorFieldView.cs" />
     <Compile Include="Composite\VectorView.cs" />
     <Compile Include="Kernel\Bare2DPlot.xaml.cs">

@@ -69,6 +69,18 @@ namespace Plot2D_Embedded_Driver
             figure.Refresh ();
         }
 
+        private void Axes_Click (object sender, RoutedEventArgs e)
+        {
+            double s = 10;
+
+            figure.Plot (new CoordinateAxesView (10 * s, 1 * s, 2.5 * s));
+           
+            LineView l = new LineView (new Point (5 * s, -2 * s), new Point (5 * s, 2 * s));
+            figure.Plot (l);
+
+            figure.AxesEqual = true;
+        }
+
 
 
 
