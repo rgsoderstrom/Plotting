@@ -50,10 +50,11 @@ namespace PlottingLib
 
         //****************************************************************************************************
           
-        public CanvasObject    Plot (CanvasObject co)    {PlotArea.Plot (co); return co;}
-        public ContourPlotView Plot (ContourPlotView pv) {PlotArea.Plot (pv); return pv;}
-        public VectorView      Plot (VectorView vv)      {PlotArea.Plot (vv); return vv;}
-        public VectorFieldView Plot (VectorFieldView vf) {PlotArea.Plot (vf); return vf;}
+        public CanvasObject       Plot (CanvasObject co)       {PlotArea.Plot (co); return co;}
+        public ContourPlotView    Plot (ContourPlotView pv)    {PlotArea.Plot (pv); return pv;}
+        public VectorView         Plot (VectorView vv)         {PlotArea.Plot (vv); return vv;}
+        public VectorFieldView    Plot (VectorFieldView vf)    {PlotArea.Plot (vf); return vf;}
+        public CoordinateAxesView Plot (CoordinateAxesView cv) {PlotArea.Plot (cv); return cv;}
 
         //*************************************************************************************************
     }
