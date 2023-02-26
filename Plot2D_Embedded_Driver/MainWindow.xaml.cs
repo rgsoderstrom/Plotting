@@ -69,19 +69,55 @@ namespace Plot2D_Embedded_Driver
             figure.Refresh ();
         }
 
+        CoordinateAxesView cv;
+
         private void Axes_Click (object sender, RoutedEventArgs e)
         {
-            double s = 10;
+            //List<NameValuePair> properties = new List<NameValuePairs> ();
+            //properties.Add (new NameValuePair ("origin",     new Point (20, 30));
+            //properties.Add (new NameValuePair ("relative",   true);
+            //properties.Add (new NameValuePair ("axisLength", 50);
+            //properties.Add (new NameValuePair ("firstTic",   10);
+            //properties.Add (new NameValuePair ("ticStep",    5);
+            //
+            //figure.Plot (new CoordinateAxesView (properties);
 
-            figure.Plot (new CoordinateAxesView (10 * s, 1 * s, 2.5 * s));
-           
-            LineView l = new LineView (new Point (5 * s, -2 * s), new Point (5 * s, 2 * s));
-            figure.Plot (l);
 
+
+            List<Point> hyper = new List<Point> ();
+
+            for (double x = -5; x<=5; x+=0.1)
+                hyper.Add (new Point (x, Math.Sqrt (1 + x * x)));
+
+            LineView h = new LineView (hyper);
+            h.LineStyle = LineView.DrawingStyle.Dashes;
+            figure.Plot (h);
+
+
+            cv = new CoordinateAxesView (new Point (3, 2), true, 4, 6, 0.8, 1, 3)
+            {
+                PositiveOnly = true
+            };
+
+            figure.Plot (cv);
+
+            figure.RectangularGridOn = true;
             figure.AxesEqual = true;
         }
 
+        private void ModAxes_Click (object sender, RoutedEventArgs e)
+        {
+            if (cv == null)
+                return;
 
+            figure.Remove (cv);
+
+            cv.PositiveOnly = false;
+            //cv.FirstTic = 3;
+            cv.TicStep = 1;
+            
+            figure.Plot (cv);
+        }
 
 
 

@@ -57,6 +57,7 @@
                 <Button Margin="8,4,8,0" Padding="10,3,10,3" Click="ClearButton_Click">Clear</Button>
                 <Button Margin="8,2,8,0" Padding="10,3,10,3" Click="Refresh_Click">Refresh</Button>
                 <Button Margin="8,2,8,0" Padding="10,3,10,3" Click="Axes_Click">X,Y Axes</Button>
+                <Button Margin="8,2,8,0" Padding="10,3,10,3" Click="ModAxes_Click">Mod X,Y Axes</Button>
 
                 <Expander BorderBrush="Black" BorderThickness="1" Background="Gainsboro" Margin="8,4,8,0" Padding="10,3,10,3" Header="Basic Objects" IsExpanded="True">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
