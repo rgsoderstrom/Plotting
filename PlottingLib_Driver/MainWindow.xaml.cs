@@ -159,6 +159,17 @@ namespace PlottingLib_Driver
         // Methods specific to the Application
         //
 
+        private void CoordAxesButton_Click (object sender, RoutedEventArgs e)
+        {
+            CoordinateAxesView cv = new CoordinateAxesView (10, 10, 2, 2);
+            SetCurrentFigureTo2D ();
+            (CurrentFigure as Plot2D).Hold = true;
+            (CurrentFigure as Plot2D).AxesEqual = true;
+            (CurrentFigure as Plot2D).Plot (cv);
+        }
+
+        //*******************************************************************************************************************
+
         Random random = new Random ();
 
         private void VectorButton_Click (object sender, RoutedEventArgs e) 
@@ -480,9 +491,5 @@ namespace PlottingLib_Driver
 
             EventLog.WriteLine (str);
         }
-
-
-
-
     }
 }

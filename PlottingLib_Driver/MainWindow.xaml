@@ -60,6 +60,7 @@
                         <Button Style="{StaticResource A}" Click="VectorButton_Click">Vector</Button>
                         <Button Style="{StaticResource A}" Click="VectorFieldButton_Click">Vector Field</Button>
                         <Button Style="{StaticResource A}" Click="ContourPlotButton_Click">Contour Plot</Button>
+                        <Button Style="{StaticResource A}" Click="CoordAxesButton_Click">Coordinate Axes</Button>
                     </StackPanel>
                 </Expander>
 
