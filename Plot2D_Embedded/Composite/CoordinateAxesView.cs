@@ -20,8 +20,6 @@ namespace Plot2D_Embedded
         TranslateTransform move;
         TransformGroup xform;
         Point Start, End;
-        //bool drawArrowhead = false;
-        //double arrowHeadScaleFactor = 1;
         LineView axisView;
         List<double> ticValues = new List<double> ();
 
@@ -92,15 +90,19 @@ namespace Plot2D_Embedded
 
         // Copy of all parameters needed to draw
 
-        Point  localOrigin;
-        bool   absoluteCoordinates; // tic mark values can be displayed as absolute or relative
+        Point  localOrigin = new Point (0, 0); 
+        bool   absoluteCoordinates = true; // tic mark values can be displayed as absolute or relative
+                                           // no effect if localOrigin == absOrigin (i.e. (0,0))
         double negAxisLength;
         double posAxisLength;
-        double ticScaleFactor;
+        double ticScaleFactor = 1;
         double firstTic;
         double ticStep;
 
         //******************************************************************
+        /// <summary>
+        /// Add all elements to "this" list
+        /// </summary>
 
         private void Draw ()
         {
@@ -126,48 +128,46 @@ namespace Plot2D_Embedded
 
         //******************************************************************
 
-        public bool PositiveOnly {
-            set 
-            {   
-                Clear ();
-
-                if (value == true) negAxisLength = 0;
-                else               negAxisLength = posAxisLength;
-
-                Draw ();
-            }
+        public double TicScaleFactor // affects drawinf size only, not location
+        {
+            get {return ticScaleFactor;}
+            set {ticScaleFactor = value; Clear (); Draw ();}
         }
 
         //******************************************************************
 
-        public CoordinateAxesView (Point  _localOrigin,
-                                   bool   _absoluteCoordinates, // tic mark values can be displayed as absolute or relative
-                                   double _negAxisLength,
+        public bool PositiveOnly 
+        {
+            set {if (value == true) negAxisLength = 0; else negAxisLength = posAxisLength; Clear (); Draw ();}
+        }
+
+        //******************************************************************
+
+        public Point LocalOrigin 
+        {
+            set {localOrigin = value; Clear (); Draw ();}
+        }
+
+        //******************************************************************
+
+        public bool AbsoluteCoordinates
+        {
+            set {absoluteCoordinates = value; Clear (); Draw ();}
+        }
+
+        //******************************************************************
+
+        public CoordinateAxesView (double _negAxisLength,
                                    double _posAxisLength,
-                                   double _ticScaleFactor,  // affects drawing size only
                                    double _firstTic, 
                                    double _ticStep)
         {
-            localOrigin         = _localOrigin;
-            absoluteCoordinates = _absoluteCoordinates;
             negAxisLength       = _negAxisLength;      
             posAxisLength       = _posAxisLength;      
-            ticScaleFactor      = _ticScaleFactor;     
             firstTic            = _firstTic;           
             ticStep             = _ticStep;
 
             Draw ();
-
-           // AxisLine X1 = new AxisLine (localOrigin, negAxisLength, posAxisLength, firstTic, ticStep, absoluteCoordinates, ticScaleFactor, 20, 1.14, Brushes.LightPink, this);
-           // AxisLine Y1 = new AxisLine (localOrigin, negAxisLength, posAxisLength, firstTic, ticStep, absoluteCoordinates, ticScaleFactor, 70, 1.14, Brushes.LightGreen, this);
         }
-
-        //public CoordinateAxesView (double axisLength, double firstTic, double ticStep) : this (new Point (3,2), axisLength, firstTic, ticStep)
-        //{
-        //}
-
-        //public CoordinateAxesView ()
-        //{
-        //}
     }
 }

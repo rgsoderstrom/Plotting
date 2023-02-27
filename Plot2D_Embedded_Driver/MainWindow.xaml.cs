@@ -73,17 +73,6 @@ namespace Plot2D_Embedded_Driver
 
         private void Axes_Click (object sender, RoutedEventArgs e)
         {
-            //List<NameValuePair> properties = new List<NameValuePairs> ();
-            //properties.Add (new NameValuePair ("origin",     new Point (20, 30));
-            //properties.Add (new NameValuePair ("relative",   true);
-            //properties.Add (new NameValuePair ("axisLength", 50);
-            //properties.Add (new NameValuePair ("firstTic",   10);
-            //properties.Add (new NameValuePair ("ticStep",    5);
-            //
-            //figure.Plot (new CoordinateAxesView (properties);
-
-
-
             List<Point> hyper = new List<Point> ();
 
             for (double x = -5; x<=5; x+=0.1)
@@ -93,8 +82,7 @@ namespace Plot2D_Embedded_Driver
             h.LineStyle = LineView.DrawingStyle.Dashes;
             figure.Plot (h);
 
-
-            cv = new CoordinateAxesView (new Point (3, 2), true, 4, 6, 0.8, 1, 3)
+            cv = new CoordinateAxesView (4, 6, 0, 3)
             {
                 PositiveOnly = true
             };
@@ -113,8 +101,8 @@ namespace Plot2D_Embedded_Driver
             figure.Remove (cv);
 
             cv.PositiveOnly = false;
-            //cv.FirstTic = 3;
-            cv.TicStep = 1;
+            cv.FirstTic = 2;
+            cv.TicStep = 2;
             
             figure.Plot (cv);
         }
