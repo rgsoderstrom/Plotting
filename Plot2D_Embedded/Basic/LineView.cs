@@ -17,10 +17,9 @@ namespace Plot2D_Embedded
         static Point p1 = new Point (0, 0);
         static Point p2 = new Point (-1, 0.8);
 
-        static readonly List<Point> arrowheadTemplate = new List<Point> () { p0, p1, p2 };
+        static readonly List<Point> arrowheadTemplate = new List<Point> () {p0, p1, p2};
 
         PathGeometry lineGeometry = null;
-        double Length = -1; // length only needed if we are drawing arrowheads
         List<Point> LinePoints = null; 
 
         //*************************************************************
@@ -186,21 +185,8 @@ namespace Plot2D_Embedded
 
         void ArrowheadCommon ()
         {
-            Length = 0;
-
-            for (int i=1; i<LinePoints.Count; i++)
-            {
-                Vector v = LinePoints [i] - LinePoints [i-1];
-                Length += v.Length;
-            }
-
-            // size the arrowhead proportional to line length
-
-            //Length = 1 * Math.Log10 (Length);
-            Length = 1;
-            scale = new ScaleTransform (Length * scaleFactor, Length * (scaleFactor / 2)); 
+            scale = new ScaleTransform (scaleFactor, scaleFactor / 2); 
         }
-
 
         //********************************************************************************************
         //
