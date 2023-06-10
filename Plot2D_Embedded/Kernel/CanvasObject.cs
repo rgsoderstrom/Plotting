@@ -23,11 +23,14 @@ namespace Plot2D_Embedded
         // used to identify groups of related objects in a list of CanvasObjects
         //  - e.g. Vector arrows on contour levels
 
-        //string tag;
+        string tag = "";
 
-        //public string Tag {get {return tag;}
-        //                   set {tag = value; if (path != null) path.ToolTip = value;}}
-       
+        public string Tag
+        {
+            get {return tag;}
+            set {tag = value;}
+        }
+
         //**********************************************************************************
 
         public Path path = new Path ();

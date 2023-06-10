@@ -13,46 +13,27 @@ namespace Plot2D_Embedded
 
         //*************************************************************
         //
-        // Instance Variables
-        //
-
-        List<Vector> Basis; // X1 = Basis [0], X2 =Basis [1]
-        Point  p1;          // location of tail, in thisBasis
-        Vector v1;
-
-
-        LineView ArrowView;
-        LineView X1ComponentView; // projection on X1 basis vector
-        LineView X2ComponentView;
-
-        //*************************************************************
-        //
         // Instance Constructors
         //
 
-        public VectorView (Point p, Vector v, List<Vector> basis) 
-        {
-            Basis = basis;
-            p1 = p;
-            v1 = v;
+        LineView ArrowView;
+        List<CanvasObject> basisArrows = new List<CanvasObject> ();
 
+        public VectorView (Point tail, Vector vect, List<Vector> basis) 
+        {
             // must be in standard basis for drawing
-            Point  p2 = (Point) (p1.X * Basis [0] + p1.Y * Basis [1]);
-            Vector v2 =          v1.X * Basis [0] + v1.Y * Basis [1];
+            Point  p2 = (Point) (tail.X * basis [0] + tail.Y * basis [1]);
+            Vector v2 =          vect.X * basis [0] + vect.Y * basis [1];
 
             ArrowView = new LineView (p2, p2 + v2);
             Add (ArrowView);
             ArrowView.ArrowheadAtEnd = true;
 
-            X1ComponentView = new LineView (p2, p2 + v1.X * Basis [0]);
-            X2ComponentView = new LineView (p2 + v1.X * Basis [0], p2 + v1.X * Basis [0] + v1.Y * Basis [1]);
-            X1ComponentView.ArrowheadAtEnd = X2ComponentView.ArrowheadAtEnd = true;
+            ExpandBasisVector (p2, basis [0], vect.X, basisArrows);
+            ExpandBasisVector (p2 + vect.X * basis [0], basis [1], vect.Y, basisArrows);
 
-            Add (X1ComponentView);
-            Add (X2ComponentView);
-
-            X1ComponentView.Color = null;
-            X2ComponentView.Color = null;
+            foreach (CanvasObject co in basisArrows)
+                Add (co);
         }
 
         //*************************************************************
@@ -74,7 +55,6 @@ namespace Plot2D_Embedded
         }
 
         //********************************************************************************************
-        //********************************************************************************************
 
         public Brush Color {get { return (this [0] as LineView).Color;} 
                             set {(this [0] as LineView).Color = value;}}
@@ -89,11 +69,9 @@ namespace Plot2D_Embedded
         {
             set
             {
-                if (value == true) X1ComponentView.Color = X2ComponentView.Color = Brushes.LightGray;
-                else               X1ComponentView.Color = X2ComponentView.Color = null;
+                if (value == true) {foreach (CanvasObject co in basisArrows) (co as LineView).Color = Brushes.LightGray;}
+                else               {foreach (CanvasObject co in basisArrows) (co as LineView).Color = null;}
             }
-
-            get {return X1ComponentView.Color != null;}
         }
 
         public double ArrowheadSize
@@ -101,13 +79,50 @@ namespace Plot2D_Embedded
             set
             {
                 ArrowView.ArrowheadScaleFactor = value;
-                X1ComponentView.ArrowheadScaleFactor = value;
-                X2ComponentView.ArrowheadScaleFactor = value;
+
+                foreach (CanvasObject co in basisArrows)
+                    (co as LineView).ArrowheadScaleFactor = value;
             }
 
             get
             {
                 return ArrowView.ArrowheadScaleFactor;
+            }
+        }
+
+        //*************************************************************************************
+
+        private void ExpandBasisVector (Point startPoint, Vector unit, double length, List<CanvasObject> container)
+        {
+            if (length < 0)
+            {
+                length *= -1;
+                unit *= -1;
+            }
+
+            int count = (int) Math.Floor (length);
+
+            Point tail = startPoint;
+            Point head = startPoint + unit;
+
+            for (int i=0; i<count; i++)
+            {
+                LineView lv = new LineView (tail, head);
+                lv.Color = null;
+                lv.ArrowheadAtEnd = true;
+                container.Add (lv);
+                tail = head;
+                head += unit;
+            }
+
+            double unitsRemaining = length - count; // "count" is number of unit vectors drawn
+
+            if (unitsRemaining > 0.01)
+            {
+                LineView lv = new LineView (tail, tail + unitsRemaining * unit);
+                lv.Color = null;
+                lv.ArrowheadAtEnd = true;
+                container.Add (lv);
             }
         }
     }

@@ -101,25 +101,30 @@ namespace Plot2D_Embedded_Driver
         {
             try
             {
-              //  figure.Clear ();
+                figure.Clear ();
 
-                List<Vector> basis = new List<Vector> () {new Vector (1, 0), new Vector (0, 1)};
-                //List<Vector> basis = new List<Vector> () {new Vector (1, 0.8), new Vector (0.1, 1.5)};
+                //List<Vector> basis = new List<Vector> () {new Vector (1, 0), new Vector (0, 1)};
+                List<Vector> basis = new List<Vector> () {new Vector (0.9, 0.1), new Vector (0.1, 0.9)};
 
                 // random vector, expressed in that basis
-                Vector rvect = new Vector ((random.NextDouble () - 0.5) * 40, (random.NextDouble () - 0.5) * 40);
+                //Vector vect = new Vector (1, 2);
+                //Vector vect = new Vector ((random.NextDouble () - 0.5) * 8, (random.NextDouble () - 0.5) * 8);
+                Vector vect = new Vector ((random.NextDouble () - 0.5) * 2, (random.NextDouble () - 0.5) * 2);
 
                 // random position of tail
-                Point rposition = new Point ((random.NextDouble () - 0.5) * 40, (random.NextDouble () - 0.5) * 40);
+                //Point tail = new Point (0, 0);
+                Point tail = new Point ((random.NextDouble () - 0.5) * 40, (random.NextDouble () - 0.5) * 40);
 
-                Print (string.Format ("Vector ({0:0.00}, {1:0.00}), from ({2:0.00}, {3:0.00})", rvect.X, rvect.Y, rposition.X, rposition.Y));
+                Print (string.Format ("Vector ({0:0.00}, {1:0.00}) in basis ([{2:0.00} ; {3:0.00}], [{4:0.00} ; {5:0.00}]), from tail ({6:0.00}, {7:0.00})", 
+                       vect.X, vect.Y, basis [0].X, basis [0].Y, basis [1].X, basis [1].Y, tail.X, tail.Y));
 
-                VectorView vv = new VectorView (rposition, rvect, basis);
-                vv.Color = Brushes.Maroon;
-               
+                VectorView vv = new VectorView (tail, vect, basis);
+                vv.Color = Brushes.Maroon;               
 
                 figure.Plot (vv);
                 vv.ShowComponents = true;
+                vv.ArrowheadSize = 0.02;
+                vv.ShowComponents = false;
 
                 //int select = random.Next (1, 100);
                 //if (select % 3 == 0) {vv.Color = Brushes.Orchid;}

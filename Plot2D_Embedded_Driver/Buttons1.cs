@@ -27,6 +27,17 @@ namespace Plot2D_Embedded_Driver
            // figure.RectangularGridOn = true;
         }
 
+        private void LineButton_Click (object sender, RoutedEventArgs e)
+        {
+            LineView lv = new LineView (new Point (-1, 1), new Point (3, 4));
+
+            figure.Plot (lv);
+            lv.ArrowheadAtEnd = true;
+            lv.Color = Brushes.DarkBlue;
+            figure.AxesEqual = true;
+            figure.RectangularGridOn = true;
+        }
+
         private void CircleButton_Click (object sender, RoutedEventArgs e)
         {
             EllipseView h = new EllipseView (new Point (2, 2), 1);
