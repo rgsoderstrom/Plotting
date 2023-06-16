@@ -32,6 +32,9 @@ namespace PlottingLib
             Hold = src.Hold;
             ID = src.ID;
 
+            DataAreaTitle = src.DataAreaTitle;
+            XAxisLabel = src.XAxisLabel;
+            YAxisLabel = src.YAxisLabel;
             Show ();
         }
 

@@ -47,6 +47,7 @@ namespace PlottingLib
             Hold = src.Hold;
             ID = src.ID;
 
+            DataAreaTitle = src.DataAreaTitle;
             Show ();
         }
 

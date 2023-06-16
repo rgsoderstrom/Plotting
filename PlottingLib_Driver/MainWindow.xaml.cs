@@ -50,6 +50,10 @@ namespace PlottingLib_Driver
             CurrentFigure = new PlotFigure ();
             (CurrentFigure as PlotFigure).Closed += Figure_Closed;
             (CurrentFigure as PlotFigure).Activated += Figure_Activated;
+            (CurrentFigure as PlotFigure).DataAreaTitle = "DataAreaTitle";
+            (CurrentFigure as PlotFigure).XAxisLabel    = "XAxisLabel";
+            (CurrentFigure as PlotFigure).YAxisLabel    = "YAxisLabel";
+
             Figures.Add (CurrentFigure);
         }
 
@@ -162,6 +166,8 @@ namespace PlottingLib_Driver
         private void CoordAxesButton_Click (object sender, RoutedEventArgs e)
         {
             CoordinateAxesView cv = new CoordinateAxesView (10, 10, 2, 2);
+            cv.PositiveOnly = true;
+
             SetCurrentFigureTo2D ();
             (CurrentFigure as Plot2D).Hold = true;
             (CurrentFigure as Plot2D).AxesEqual = true;

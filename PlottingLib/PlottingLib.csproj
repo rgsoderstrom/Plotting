@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\bin\Debug\Common.dll</HintPath>
+    </Reference>
     <Reference Include="CommonMath, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\CommonMath\bin\Debug\CommonMath.dll</HintPath>
@@ -59,7 +63,6 @@
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
     <Compile Include="Common\IPlotCommon.cs" />
-    <Compile Include="Common\PlotFigure.cs" />
     <Compile Include="Plot2D\Plot2D.xaml.cs">
       <DependentUpon>Plot2D.xaml</DependentUpon>
     </Compile>
@@ -71,6 +74,9 @@
       <DependentUpon>Plot3D.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plot3D\Wrappers1.cs" />
+    <Compile Include="PlotFigure\PlotFigure.xaml.cs">
+      <DependentUpon>PlotFigure.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +91,10 @@
     <Page Include="Plot3D\Plot3D.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PlotFigure\PlotFigure.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

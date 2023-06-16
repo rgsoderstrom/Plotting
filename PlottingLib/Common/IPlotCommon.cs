@@ -17,6 +17,8 @@ namespace PlottingLib
         double Top    {set; get;}
         double Width  {set; get;}
         double Height {set; get;}
+
+        string DataAreaTitle { set; get; }
     }
 
     /// <summary>
