@@ -1,73 +1,81 @@
-﻿using System.Windows;
-using System.Windows.Media;
+﻿//using System.Windows;
+//using System.Windows.Media;
 
-/// <summary>
-/// PlotFigure - lets the user create a figure without declaring it 2D or 3D. Can set its position
-///              and size, but can't draw on it. Will be used to construct a Plot2D or Plot3D when
-///              a plot function is called
-/// </summary>
+///// <summary>
+///// PlotFigure - lets the user create a figure without declaring it 2D or 3D. Can set its position
+/////              and size, but can't draw on it. Will be used to construct a Plot2D or Plot3D when
+/////              a plot function is called
+///// </summary>
 
-namespace PlottingLib
-{
-    /// <summary>
-    /// PlotFigure - a placeholder for a 2D or 3D plot. Lets an application (e.g. PlotLab uses this) open a
-    /// window and assign some properties before deciding whether it is a 2D or 3D plot
-    /// </summary>
+//namespace PlottingLib
+//{
+//    /// <summary>
+//    /// PlotFigure - a placeholder for a 2D or 3D plot. Lets an application (e.g. PlotLab uses this) open a
+//    /// window and assign some properties before deciding whether it is a 2D or 3D plot
+//    /// </summary>
     
-    public class PlotFigure : Window, IPlotCommon
-    {
-        // these are read by Plot2D and 3D ctors
-        public int ID {get; set;}
-        public bool Hold {get; set;}
+//    public class PlotFigure : Window, IPlotCommon
+//    {
+//        // these are read by Plot2D and 3D ctors
+//        public int ID {get; set;}
+//        public bool Hold {get; set;}
 
-        public new double Left   {get { return base.Left; }   set { base.Left = value; } }
-        public new double Top    {get { return base.Top; }    set { base.Top = value; } }
-        public new double Width  {get { return base.Width; }  set { base.Width = value; } }
-        public new double Height {get { return base.Height; } set { base.Height = value; } }
+//        public new double Left   {get { return base.Left; }   set { base.Left = value; } }
+//        public new double Top    {get { return base.Top; }    set { base.Top = value; } }
+//        public new double Width  {get { return base.Width; }  set { base.Width = value; } }
+//        public new double Height {get { return base.Height; } set { base.Height = value; } }
 
-        private System.Windows.Controls.Border Border = new System.Windows.Controls.Border ();
+//        protected string dataAreaTitle = "";
+//        public string DataAreaTitle
+//        {
+//            get { return dataAreaTitle; }
+//            set { dataAreaTitle = value; /*Draw ();*/ }
+//        }
 
-        public PlotFigure ()
-        {
-            Loaded += Window_Loaded;
-            SizeChanged += Figure_SizeChanged;
-            Show ();
-        }
 
-        private void Figure_SizeChanged (object sender, SizeChangedEventArgs e)
-        {
-            Border.Height = Height - 150;
-            Border.Width = Width - 200;
-        }
+//        private System.Windows.Controls.Border Border = new System.Windows.Controls.Border ();
 
-        protected virtual void Window_Loaded (object sender, RoutedEventArgs e)
-        {
-            Common.WindowLoaded (this);
-            ID = Common.instanceCounter;
+//        public PlotFigure ()
+//        {
+//            Loaded += Window_Loaded;
+//            SizeChanged += Figure_SizeChanged;
+//            Show ();
+//        }
 
-            MatlabStyle ();
-            Title = string.Format ("Figure {0}", ID);
-        }
+//        private void Figure_SizeChanged (object sender, SizeChangedEventArgs e)
+//        {
+//            Border.Height = Height - 150;
+//            Border.Width = Width - 200;
+//        }
 
-        private void  MatlabStyle ()
-        {
-            Background = new SolidColorBrush (Color.FromRgb (0xa8, 0xa8, 0xa8));
-            Height = 650;
-            Width = 800;
+//        protected virtual void Window_Loaded (object sender, RoutedEventArgs e)
+//        {
+//            Common.WindowLoaded (this);
+//            ID = Common.instanceCounter;
 
-            Border = new System.Windows.Controls.Border (); 
-            Border.BorderThickness = new Thickness (1);
-            Border.BorderBrush = Brushes.Black;
-            Border.Background = Brushes.White;
-            Border.Height = Height - 150;
-            Border.Width = Width - 200;
+//            MatlabStyle ();
+//            Title = string.Format ("Figure {0}", ID);
+//        }
 
-            AddChild (Border);
-        }
+//        private void  MatlabStyle ()
+//        {
+//            Background = new SolidColorBrush (Color.FromRgb (0xa8, 0xa8, 0xa8));
+//            Height = 650;
+//            Width = 800;
 
-        public override string ToString ()
-        {
-            return "PlotFigure " + ID.ToString ();
-        }
-    }
-}
+//            Border = new System.Windows.Controls.Border (); 
+//            Border.BorderThickness = new Thickness (1);
+//            Border.BorderBrush = Brushes.Black;
+//            Border.Background = Brushes.White;
+//            Border.Height = Height - 150;
+//            Border.Width = Width - 200;
+
+//            AddChild (Border);
+//        }
+
+//        public override string ToString ()
+//        {
+//            return "PlotFigure " + ID.ToString ();
+//        }
+//    }
+//}
