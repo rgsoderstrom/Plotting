@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Common;
+
 namespace Plot2D_Embedded
 {
     abstract internal class Plot2DGrid
@@ -37,6 +39,21 @@ namespace Plot2D_Embedded
                 throw new Exception ("Plot2D.CalculateTicValues: min == max in CalculateTicValues");
 
             int numberTics = (int) ((max - min) / ticStep); // approximate
+
+            if (numberTics < 0)
+                return;
+
+
+
+            //EventLog.WriteLine ("number tics " + numberTics.ToString ());
+            //EventLog.WriteLine (max.ToString ());
+            //EventLog.WriteLine (min.ToString ());
+            //EventLog.WriteLine (ticStep.ToString ());
+
+            //return;
+
+
+
 
             while (numberTics > 10)
             {
