@@ -32,13 +32,17 @@ namespace Plot3D_Embedded_Driver
         {
             try
             {
+                double halfLength = 53;
+                double halfWidth = halfLength * 0.75;
+                double step = halfWidth / 4;
+
                 List<double> xCoords = new List<double> ();
                 List<double> yCoords = new List<double> ();
 
-                for (double x=-40; x<=40; x+=10)
+                for (double x=-halfWidth; x<=halfWidth; x+=step)
                     xCoords.Add (x);
 
-                for (double y=-40; y<=40; y+=10)
+                for (double y=-halfLength; y<=halfLength; y+=step)
                     yCoords.Add (y);
 
                 double [,] zValues = new double [yCoords.Count, xCoords.Count];
@@ -55,6 +59,9 @@ namespace Plot3D_Embedded_Driver
                 Surface3DView sv = figure.Plot (ZFunc) as Surface3DView;
                 ZFunc.ShowTraceLines = true;
                 //sv.Color = Colors.Fuchsia;
+
+                figure.CenterDistance = 10 * halfWidth;
+              //  figure.CameraPosition += new Vector3D (2000, 2000, 2000);
             }
 
             catch (Exception ex)

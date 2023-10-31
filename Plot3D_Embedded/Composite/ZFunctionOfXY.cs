@@ -10,7 +10,7 @@ namespace Plot3D_Embedded
     {
         public readonly List<double> xCoords;
         public readonly List<double> yCoords;
-        public readonly double [,]   zValues;
+        public readonly double [,]   zValues; // [yCoords.Count, xCoords.Count]
 
         public ZFunctionOfXYGeometry (List<double> x, List<double> y, double [,] z)
         {
@@ -99,6 +99,9 @@ namespace Plot3D_Embedded
             gm.Material = gm.BackMaterial = dm;
         }
 
+        //
+        // DrawTraceLines - coordinate-like lines that appear to be embedded in the surface
+        //
         private void DrawTraceLines (ZFunctionOfXYGeometry geom)
         {
             int rows = geom.yCoords.Count;
@@ -110,48 +113,109 @@ namespace Plot3D_Embedded
             int ys = (int) (0.5 + (double) rows / (numberLines - 1));
             int step = Math.Min (xs, ys);
 
-            for (int row=0; row<rows; row+=step)
+            //
+            // pick out (x, y, z) points on the surface we want lines to pass through
+            //
+            List<double> meshX = new List<double> ();
+            List<double> meshY = new List<double> ();
+
+            for (int row = 0; row<rows; row+=step)
+                meshY.Add (geom.yCoords [row]);
+
+            for (int col = 0; col<cols; col+=step)
+                meshX.Add (geom.xCoords [col]);
+
+            if (meshX.Count < 2 || meshY.Count < 2)
+                throw new Exception ("Exception drawing trace lines on 3D surface. Not enough lines");
+
+            List<List<double>> meshZ = new List<List<double>> (); // double [yCoords.Count, xCoords.Count];
+
+            for (int row = 0; row<rows; row+=step)
+            {
+                List<double> thisRow = new List<double> ();
+                meshZ.Add (thisRow);
+
+                for (int col = 0; col<cols; col+=step)
+                {
+                    thisRow.Add (geom.zValues [row, col]);
+                }
+            }
+
+            //
+            // normal vector at those points
+            //
+            Vector3D [,] normals = new Vector3D [meshY.Count, meshX.Count];
+
+            for (int i=0; i<meshX.Count; i++)
+            {
+                int iNext = (i < meshX.Count - 1) ? (i + 1) : (i - 1);
+                int xMult = (iNext > i) ? 1 : -1;
+
+                for (int j=0; j<meshY.Count; j++)
+                {
+                    int jNext = (j < meshY.Count - 1) ? (j + 1) : (j - 1);
+                    int yMult = (jNext > j) ? 1 : -1;
+
+                    Point3D here  = new Point3D (meshX [i],     meshY [j],     meshZ [j] [i]);
+                    Point3D nextX = new Point3D (meshX [iNext], meshY [j],     meshZ [j] [iNext]);
+                    Point3D nextY = new Point3D (meshX [i],     meshY [jNext], meshZ [jNext] [i]);
+                    Vector3D vx = (nextX - here) * xMult;
+                    Vector3D vy = (nextY - here) * yMult;
+                    normals [j, i] = Vector3D.CrossProduct (vx, vy);
+                    normals [j, i].Normalize ();
+                }
+            }
+
+            //
+            // draw the lines
+            //
+
+            // d = distance of trace lines from surface
+            double d = Math.Abs (meshX [1] - meshX [0]) * 0.01;
+
+            // lines along rows
+            for (int row=0; row<meshY.Count; row++)
             {
                 List<Point3D> above = new List<Point3D> ();
                 List<Point3D> below = new List<Point3D> ();
 
-                for (int col=0; col<cols; col+=1)
+                for (int col=0; col<meshX.Count; col++)
                 {
-                    above.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] + 0.001));
-                    below.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] - 0.001));
+                    above.Add (new Point3D (meshX [col], meshY [row], meshZ [row][col]) + d * normals [row, col]);
+                    below.Add (new Point3D (meshX [col], meshY [row], meshZ [row][col]) - d * normals [row, col]);
                 }
 
                 Polyline3D pl3 = new Polyline3D (above);
                 pl3.PolylineView.Color = Colors.Black;
-               // pl3.PolylineView.Thickness = 0.5;
+                //pl3.PolylineView.Thickness = 0.5;
                 Children.Add (pl3.PolylineView);
 
                 pl3 = new Polyline3D (below);
                 pl3.PolylineView.Color = Colors.Black;
-               // pl3.PolylineView.Thickness = 0.5;
+                //pl3.PolylineView.Thickness = 0.5;
                 Children.Add (pl3.PolylineView);
             }
 
-
-            for (int col=0; col<cols; col+=step)
+            // lines along columns
+            for (int col = 0; col<cols; col+=step)
             {
                 List<Point3D> above = new List<Point3D> ();
                 List<Point3D> below = new List<Point3D> ();
 
-                for (int row=0; row<rows; row+=1)
+                for (int row = 0; row<rows; row+=step)//1)
                 {
-                    above.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] + 0.001));
-                    below.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col] - 0.001));
+                    above.Add (new Point3D (meshX [col], meshY [row], meshZ [row][col]) + d * normals [row, col]);
+                    below.Add (new Point3D (meshX [col], meshY [row], meshZ [row][col]) - d * normals [row, col]);
                 }
 
                 Polyline3D pl3 = new Polyline3D (above);
                 pl3.PolylineView.Color = Colors.Black;
-             //   pl3.PolylineView.Thickness = 0.5;
+                //pl3.PolylineView.Thickness = 0.5;
                 Children.Add (pl3.PolylineView);
 
                 pl3 = new Polyline3D (below);
                 pl3.PolylineView.Color = Colors.Black;
-             //   pl3.PolylineView.Thickness = 0.5;
+                //pl3.PolylineView.Thickness = 0.5;
                 Children.Add (pl3.PolylineView);
             }
         }
