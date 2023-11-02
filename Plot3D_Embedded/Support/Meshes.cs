@@ -104,16 +104,33 @@ namespace Plot3D_Embedded
             mesh.TextureCoordinates = new PointCollection ();
 
             //
-            // Store points in 1D list as WPF requires. points stored by row, i.e. x index varies more rapidly.
+            // Store points in 1D lists as WPF requires. All stored by row, i.e. x index varies more rapidly.
             //
 
             for (int yi = 0; yi<yCount; yi++)
             {
+                int yNext = (yi < yCount - 1) ? (yi + 1) : (yi - 1);
+                int yMult = (yNext > yi) ? 1 : -1;
+
                 for (int xi = 0; xi<xCount; xi++)
                 {
-                    double Z = zValues [yi, xi];
-                    mesh.Positions.Add (new Point3D (xCoords [xi], yCoords [yi], Z));
-                    mesh.TextureCoordinates.Add (new Point (Z, Z));
+                    // normal vector
+                    int xNext = (xi < xCount - 1) ? (xi + 1) : (xi - 1);
+                    int xMult = (xNext > xi) ? 1 : -1;
+
+                    Point3D here  = new Point3D (xCoords [xi],    yCoords [yi],    zValues [yi, xi]);
+                    Point3D nextX = new Point3D (xCoords [xNext], yCoords [yNext], zValues [yi, xNext]);
+                    Point3D nextY = new Point3D (xCoords [xi],    yCoords [yNext], zValues [yNext, xi]);
+
+                    Vector3D vx = (nextX - here) * xMult;
+                    Vector3D vy = (nextY - here) * yMult;                    
+                    mesh.Normals.Add (Vector3D.CrossProduct (vx, vy));
+
+                    // position
+                    mesh.Positions.Add (here);                    
+
+                    // texture - color the mesh based on z value
+                    mesh.TextureCoordinates.Add (new Point (zValues [yi, xi], zValues [yi, xi]));
                 }
             }
 
@@ -132,12 +149,12 @@ namespace Plot3D_Embedded
                     int trc = tlc + 1;
 
                     mesh.TriangleIndices.Add (blc);
-                    mesh.TriangleIndices.Add (tlc);
                     mesh.TriangleIndices.Add (brc);
+                    mesh.TriangleIndices.Add (tlc);
 
                     mesh.TriangleIndices.Add (brc);
-                    mesh.TriangleIndices.Add (tlc);
                     mesh.TriangleIndices.Add (trc);
+                    mesh.TriangleIndices.Add (tlc);
                 }
             }
 

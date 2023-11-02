@@ -104,6 +104,11 @@ namespace Plot3D_Embedded
         //
         private void DrawTraceLines (ZFunctionOfXYGeometry geom)
         {
+            MeshGeometry3D mesh = (MeshGeometry3D) (Content as GeometryModel3D).Geometry;
+
+            if (mesh.Normals.Count == 0)
+                throw new Exception ("ZFunctionOfXY - trace lines failed, normals not found");
+
             int rows = geom.yCoords.Count;
             int cols = geom.xCoords.Count;
 
@@ -113,109 +118,52 @@ namespace Plot3D_Embedded
             int ys = (int) (0.5 + (double) rows / (numberLines - 1));
             int step = Math.Min (xs, ys);
 
-            //
-            // pick out (x, y, z) points on the surface we want lines to pass through
-            //
-            List<double> meshX = new List<double> ();
-            List<double> meshY = new List<double> ();
-
-            for (int row = 0; row<rows; row+=step)
-                meshY.Add (geom.yCoords [row]);
-
-            for (int col = 0; col<cols; col+=step)
-                meshX.Add (geom.xCoords [col]);
-
-            if (meshX.Count < 2 || meshY.Count < 2)
-                throw new Exception ("Exception drawing trace lines on 3D surface. Not enough lines");
-
-            List<List<double>> meshZ = new List<List<double>> (); // double [yCoords.Count, xCoords.Count];
-
-            for (int row = 0; row<rows; row+=step)
-            {
-                List<double> thisRow = new List<double> ();
-                meshZ.Add (thisRow);
-
-                for (int col = 0; col<cols; col+=step)
-                {
-                    thisRow.Add (geom.zValues [row, col]);
-                }
-            }
-
-            //
-            // normal vector at those points
-            //
-            Vector3D [,] normals = new Vector3D [meshY.Count, meshX.Count];
-
-            for (int i=0; i<meshX.Count; i++)
-            {
-                int iNext = (i < meshX.Count - 1) ? (i + 1) : (i - 1);
-                int xMult = (iNext > i) ? 1 : -1;
-
-                for (int j=0; j<meshY.Count; j++)
-                {
-                    int jNext = (j < meshY.Count - 1) ? (j + 1) : (j - 1);
-                    int yMult = (jNext > j) ? 1 : -1;
-
-                    Point3D here  = new Point3D (meshX [i],     meshY [j],     meshZ [j] [i]);
-                    Point3D nextX = new Point3D (meshX [iNext], meshY [j],     meshZ [j] [iNext]);
-                    Point3D nextY = new Point3D (meshX [i],     meshY [jNext], meshZ [jNext] [i]);
-                    Vector3D vx = (nextX - here) * xMult;
-                    Vector3D vy = (nextY - here) * yMult;
-                    normals [j, i] = Vector3D.CrossProduct (vx, vy);
-                    normals [j, i].Normalize ();
-                }
-            }
-
-            //
-            // draw the lines
-            //
-
             // d = distance of trace lines from surface
-            double d = Math.Abs (meshX [1] - meshX [0]) * 0.01;
+            double d = Math.Abs (geom.xCoords [1] - geom.xCoords [0]) * 0.01;
 
-            // lines along rows
-            for (int row=0; row<meshY.Count; row++)
+            // horizontal lines (i.e. parallel to x axis) every "step" rows
+            for (int row = 0; row<rows; row+=step)
             {
                 List<Point3D> above = new List<Point3D> ();
                 List<Point3D> below = new List<Point3D> ();
 
-                for (int col=0; col<meshX.Count; col++)
+                for (int col = 0; col<geom.xCoords.Count; col++)
                 {
-                    above.Add (new Point3D (meshX [col], meshY [row], meshZ [row][col]) + d * normals [row, col]);
-                    below.Add (new Point3D (meshX [col], meshY [row], meshZ [row][col]) - d * normals [row, col]);
+                    Vector3D normal = mesh.Normals [row * geom.xCoords.Count + col];
+                    normal.Normalize ();
+                    above.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col]) + d * normal);
+                    below.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col]) - d * normal);
                 }
 
                 Polyline3D pl3 = new Polyline3D (above);
                 pl3.PolylineView.Color = Colors.Black;
-                //pl3.PolylineView.Thickness = 0.5;
                 Children.Add (pl3.PolylineView);
 
                 pl3 = new Polyline3D (below);
                 pl3.PolylineView.Color = Colors.Black;
-                //pl3.PolylineView.Thickness = 0.5;
                 Children.Add (pl3.PolylineView);
             }
 
-            // lines along columns
+            // vertical lines (i.e. parallel to y axis) every "step" columns
             for (int col = 0; col<cols; col+=step)
             {
                 List<Point3D> above = new List<Point3D> ();
                 List<Point3D> below = new List<Point3D> ();
 
-                for (int row = 0; row<rows; row+=step)//1)
+                for (int row = 0; row<geom.yCoords.Count; row++)
                 {
-                    above.Add (new Point3D (meshX [col], meshY [row], meshZ [row][col]) + d * normals [row, col]);
-                    below.Add (new Point3D (meshX [col], meshY [row], meshZ [row][col]) - d * normals [row, col]);
+                    Vector3D normal = mesh.Normals [row * geom.xCoords.Count + col];
+                    normal.Normalize ();
+                    above.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col]) + d * normal);
+                    below.Add (new Point3D (geom.xCoords [col], geom.yCoords [row], geom.zValues [row, col]) - d * normal);
                 }
 
                 Polyline3D pl3 = new Polyline3D (above);
                 pl3.PolylineView.Color = Colors.Black;
-                //pl3.PolylineView.Thickness = 0.5;
                 Children.Add (pl3.PolylineView);
 
                 pl3 = new Polyline3D (below);
                 pl3.PolylineView.Color = Colors.Black;
-                //pl3.PolylineView.Thickness = 0.5;
                 Children.Add (pl3.PolylineView);
             }
         }

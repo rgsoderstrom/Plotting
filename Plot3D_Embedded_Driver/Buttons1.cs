@@ -23,26 +23,30 @@ namespace Plot3D_Embedded_Driver
 
         private double ZFunction (double x, double y)
         {
-            //return y - x - 0.5;
-            return 0.025 * (x * x + y * y - 6) + 0;
-            //return 1 + x * y / 4;
+            double d = Math.Sqrt (x * x + y * y);
+            if (d < 0.001) return 1;
+            return Math.Sin (4 * d) / (4 * d);// - 0.5;
+
+            ////return y - x - 0.5;
+            //return 0.025 * (x * x + y * y - 6) + 0;
+            ////return 1 + x * y / 4;
         }
 
         void Surface_Clicked (object sender, RoutedEventArgs args)
         {
             try
             {
-                double halfLength = 53;
+                double halfLength = 5;
                 double halfWidth = halfLength * 0.75;
-                double step = halfWidth / 4;
+                double step = halfWidth / 32; // 64;
 
                 List<double> xCoords = new List<double> ();
                 List<double> yCoords = new List<double> ();
 
-                for (double x=-halfWidth; x<=halfWidth; x+=step)
+                for (double x=-halfWidth / 2; x<=halfWidth; x+=step)
                     xCoords.Add (x);
 
-                for (double y=-halfLength; y<=halfLength; y+=step)
+                for (double y=-halfLength / 8; y<=halfLength; y+=step)
                     yCoords.Add (y);
 
                 double [,] zValues = new double [yCoords.Count, xCoords.Count];
@@ -58,7 +62,7 @@ namespace Plot3D_Embedded_Driver
                 ZFunctionOfXY ZFunc = new ZFunctionOfXY (xCoords, yCoords, zValues);
                 Surface3DView sv = figure.Plot (ZFunc) as Surface3DView;
                 ZFunc.ShowTraceLines = true;
-                //sv.Color = Colors.Fuchsia;
+                //sv.Color = Colors.GreenYellow;
 
                 figure.CenterDistance = 10 * halfWidth;
               //  figure.CameraPosition += new Vector3D (2000, 2000, 2000);

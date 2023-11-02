@@ -478,6 +478,58 @@ namespace PlottingLib_Driver
             Polyline3DView pv = (CurrentFigure as Plot3D).Plot (pl3) as Polyline3DView;
         }
 
+        private double ZFunction (double x, double y)
+        {
+            double d = Math.Sqrt (x * x + y * y);
+            //if (d < 0.001) return 1;
+            //return Math.Sin (4 * d) / d;
+            return d * d;
+        }
+
+        void Surface_Func_Clicked (object sender, RoutedEventArgs args)
+        {
+            SetCurrentFigureTo3D ();
+
+            try
+            {
+                double halfLength = 5;
+                double halfWidth = halfLength * 0.75;
+                double step = halfWidth / 16;
+
+                List<double> xCoords = new List<double> ();
+                List<double> yCoords = new List<double> ();
+
+                for (double x=-halfWidth; x<=halfWidth; x+=step)
+                    xCoords.Add (x);
+
+                for (double y=-halfLength; y<=halfLength; y+=step)
+                    yCoords.Add (y);
+
+                double [,] zValues = new double [yCoords.Count, xCoords.Count];
+
+                for (int r=0; r<yCoords.Count; r++)
+                {
+                    for (int c=0; c<xCoords.Count; c++)
+                    {
+                        zValues [r, c] = ZFunction (xCoords [c], yCoords [r]);
+                    }
+                }
+
+                ZFunctionOfXY ZFunc = new ZFunctionOfXY (xCoords, yCoords, zValues);
+                Surface3DView sv = (CurrentFigure as Plot3D).Plot (ZFunc) as Surface3DView;
+                ZFunc.ShowTraceLines = true;
+                //sv.Color = Colors.Fuchsia;
+
+                (CurrentFigure as Plot3D).CenterDistance = 10 * halfWidth;
+              //  figure.CameraPosition += new Vector3D (2000, 2000, 2000);
+            }
+
+            catch (Exception ex)
+            {
+                Print (string.Format ("Exception in UserMesh_Clicked: {0}", ex.Message));
+            }
+        }
+
         //*****************************************************************************************
         //*****************************************************************************************
         //*****************************************************************************************
