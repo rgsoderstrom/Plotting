@@ -76,9 +76,10 @@ namespace Plot3D_Embedded
                 TicSize               = commonTicSize,
                 TicTextSize           = commonTicTextSize,
                 TicTextOffsetDistance = commonTicTextOffsetDistance,
-                Color = Colors.Gray,
+                Color = Colors.Gray, // Red,
                 TailCoordinate = geometry.MinX,
                 HeadCoordinate = geometry.MaxX,
+                Label = "X",
             };
 
             YAxisLine yAxis1 = new YAxisLine ()
@@ -92,6 +93,7 @@ namespace Plot3D_Embedded
                 Color = Colors.Gray,
                 TailCoordinate = geometry.MinY,
                 HeadCoordinate = geometry.MaxY,
+                Label = "Y",
             };
 
             ZAxisLine zAxis1 = new ZAxisLine ()
@@ -105,18 +107,19 @@ namespace Plot3D_Embedded
                 Color = Colors.Gray,
                 TailCoordinate = geometry.MinZ,
                 HeadCoordinate = geometry.MaxZ,
+                Label = "Z",
             };
 
-            // three more of each.tics only drawn on the first (i.e. xAxis1, yAxis1,...)
-            XAxisLine xAxis2 = new XAxisLine (xAxis1) {ZeroPoint = new Point3D (0, geometry.MaxY, geometry.MinZ), TicsAt = null,};
+            // Three more of each. Tics only drawn on the first (i.e. xAxis1, yAxis1,...)
+            XAxisLine xAxis2 = new XAxisLine (xAxis1) {ZeroPoint = new Point3D (0, geometry.MaxY, geometry.MinZ), TicsAt = null, Label = null};
             XAxisLine xAxis3 = new XAxisLine (xAxis2) {ZeroPoint = new Point3D (0, geometry.MaxY, geometry.MaxZ)};
             XAxisLine xAxis4 = new XAxisLine (xAxis2) {ZeroPoint = new Point3D (0, geometry.MinY, geometry.MaxZ)};
 
-            YAxisLine yAxis2 = new YAxisLine (yAxis1) {ZeroPoint = new Point3D (geometry.MaxX, 0, geometry.MinZ), TicsAt = null,};
+            YAxisLine yAxis2 = new YAxisLine (yAxis1) {ZeroPoint = new Point3D (geometry.MaxX, 0, geometry.MinZ), TicsAt = null, Label = null};
             YAxisLine yAxis3 = new YAxisLine (yAxis2) {ZeroPoint = new Point3D (geometry.MaxX, 0, geometry.MaxZ)};
             YAxisLine yAxis4 = new YAxisLine (yAxis2) {ZeroPoint = new Point3D (geometry.MinX, 0, geometry.MaxZ)};
 
-            ZAxisLine zAxis2 = new ZAxisLine (zAxis1) {ZeroPoint = new Point3D (geometry.MaxX, geometry.MinY, 0), TicsAt = null};
+            ZAxisLine zAxis2 = new ZAxisLine (zAxis1) {ZeroPoint = new Point3D (geometry.MaxX, geometry.MinY, 0), TicsAt = null, Label = null};
             ZAxisLine zAxis3 = new ZAxisLine (zAxis2) {ZeroPoint = new Point3D (geometry.MaxX, geometry.MaxY, 0)};
             ZAxisLine zAxis4 = new ZAxisLine (zAxis2) {ZeroPoint = new Point3D (geometry.MinX, geometry.MaxY, 0)};
 
