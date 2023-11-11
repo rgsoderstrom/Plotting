@@ -196,7 +196,10 @@ namespace Plot3D_Embedded_Driver
                 CartesianAxesBox box;
 
                 if (figure.ViewportBoundingBox.IsValid)
+                {
                     box = new CartesianAxesBox (figure.ViewportBoundingBox);
+                    figure.AxesFrozen = true;
+                }
                 else
                     box = new CartesianAxesBox (new Point3D (-5, -5, -5), new Point3D (5, 5, 5));
 

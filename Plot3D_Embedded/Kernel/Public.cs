@@ -136,7 +136,7 @@ namespace Plot3D_Embedded
         public Point3D CameraPosition
         {
             get {return Camera3D.AbsPosition;}
-            set {AxesTight = false;  Camera3D.AbsPosition = value;}
+            set {AxesTight = false;  Camera3D.AbsPosition = value;}  // must update scroll bars
         }
 
         public Point3D CameraRelPosition

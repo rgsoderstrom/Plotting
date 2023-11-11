@@ -71,6 +71,7 @@ namespace PlottingLib
         private void cartesianBox_Click (object sender, RoutedEventArgs args)
         {
             MenuItem b1 = args.OriginalSource as MenuItem;
+            //PlotArea.AxesFrozen = true;
             PlotArea.AxesBoxOn = b1.IsChecked;
         }
 

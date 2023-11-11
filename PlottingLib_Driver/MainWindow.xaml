@@ -43,7 +43,7 @@
                               Margin="10,3,10,3" FontSize="16" Background="Gainsboro" Click="Hold_Click">Hold</CheckBox>
                 </Border>
 
-                <Expander Style="{StaticResource B}" Header="Basic 2D Objects" IsExpanded="true">
+                <Expander Style="{StaticResource B}" Header="Basic 2D Objects" IsExpanded="False">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Name="Basic2D">
                         <Button Style="{StaticResource A}" Click="CircleButton_Click">Circle</Button>
                         <Button Style="{StaticResource A}" Click="EllipseButton_Click">Ellipse</Button>
@@ -64,7 +64,7 @@
                     </StackPanel>
                 </Expander>
 
-                <Expander Style="{StaticResource B}" Header="Basic 3D Objects" IsExpanded="False">
+                <Expander Style="{StaticResource B}" Header="Basic 3D Objects" IsExpanded="True">
                     <StackPanel Orientation="Vertical" Name="Basic3D">
                         <Button Style="{StaticResource A}" Click="Point_Clicked">One Point</Button>
                         <Button Style="{StaticResource A}" Click="PointCloud_Clicked">Point Cloud</Button>
@@ -72,6 +72,7 @@
                         <Button Style="{StaticResource A}" Click="Line_PV_Clicked">Point and Vector</Button>
                         <Button Style="{StaticResource A}" Click="Polyline_Points_Clicked">Polyline, Points</Button>
                         <Button Style="{StaticResource A}" Click="Polyline_Func_Clicked">Polyline, Functions</Button>
+                        <Button Style="{StaticResource A}" Click="Surface_Func_Clicked">Surface, z = f (x, y)</Button>
                     </StackPanel>
                 </Expander>
 

@@ -97,7 +97,7 @@ namespace Plot3D_Embedded
             if (AxesTight == true)
             {
                 Camera3D.CenterOn = ViewportBoundingBox.Center;
-                Camera3D.Rho = ViewportBoundingBox.DiagonalSize * 3;   
+                Camera3D.Rho = ViewportBoundingBox.DiagonalSize * 1.5;   
             }
 
             if (AxesBoxOn == true)
