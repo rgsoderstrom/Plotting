@@ -19,6 +19,12 @@ namespace Plot2D_Embedded_Driver
             EventLog.WriteLine ("Plot2D_Kernel_Driver");
 
             InitializeComponent ();
+            figure.PlotWindowReady += PrintReady;
+        }
+
+        private void PrintReady (object fig)
+        {            
+            Print ((fig as Bare2DPlot).Name + " is Ready");
         }
 
         //*******************************************************************************************************

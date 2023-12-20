@@ -112,8 +112,19 @@ namespace Plot2D_Embedded
             //EventLog.WriteLine ("Plot2D InnerBorder loaded");
         }
 
+        //*************************************************************
+        //
+        // Tell application using Bare2DPlot that the plot is ready
+        //
+
+        // handler should have this signature
+        public delegate void PlotReady_Callback (object sender); 
+
+        public event PlotReady_Callback PlotWindowReady; // list of all the callbacks
+
         private void InnerCanvas_Loaded (object sender, RoutedEventArgs e)
         {
+            PlotWindowReady?.Invoke (this);
             //EventLog.WriteLine ("Plot2D InnerCanvas loaded");
         }
     }
