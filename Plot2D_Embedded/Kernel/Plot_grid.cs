@@ -35,15 +35,19 @@ namespace Plot2D_Embedded
         {
            //EventLog.WriteLine (string.Format ("CalculateTicValues: {0:0.0}, {1:0.0}, {2}, {3}", min, max, numberTics, values.Count));
 
-            if (min == max)
-                throw new Exception ("Plot2D.CalculateTicValues: min == max in CalculateTicValues");
+            //if (min == max)
+            //    throw new Exception ("Plot2D.CalculateTicValues: min == max in CalculateTicValues");
+
+            if (min == max) 
+            {
+                if (min == 0) {min = -1; max = 1;}
+                else          {min *= 0.99; max *= 1.01;}
+            }
 
             int numberTics = (int) ((max - min) / ticStep); // approximate
 
             if (numberTics < 0)
                 return;
-
-
 
             //EventLog.WriteLine ("number tics " + numberTics.ToString ());
             //EventLog.WriteLine (max.ToString ());

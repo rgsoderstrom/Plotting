@@ -37,6 +37,9 @@ namespace Plot2D_Embedded
 
         internal double WorldYToCanvasY (double Yw)
         {
+            if (double.IsInfinity (my))
+                my = 999;
+
             return my * (Yw - Viewport.Center.Y) + DrawingCenterWPF.Y;
         }
 
