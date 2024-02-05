@@ -54,8 +54,8 @@ namespace Plot2D_Embedded
         {
             if (Empty)
             {
-                double xPad = (other.X == 0 ? 0.01 : 0.01 * Math.Abs (other.X));
-                double yPad = (other.Y == 0 ? 0.01 : 0.01 * Math.Abs (other.Y));
+                double xPad = double.Epsilon; // 0; // (other.X == 0 ? 0.01 : 0.01 * Math.Abs (other.X));
+                double yPad = double.Epsilon; // 0; // (other.Y == 0 ? 0.01 : 0.01 * Math.Abs (other.Y));
 
                 left   = other.X - xPad;
                 right  = other.X + xPad;
@@ -76,10 +76,10 @@ namespace Plot2D_Embedded
         
         public void Clear ()
         {
-            left   = -1;
-            right  =  1;
-            bottom = -1;
-            top    =  1;
+            left   = -1e-9;
+            right  =  1e-9;
+            bottom = -1e-9;
+            top    =  1e-9;
 
             Empty = true;
         }
@@ -387,7 +387,7 @@ namespace Plot2D_Embedded
 
         public override string ToString ()
         {
-            return string.Format ("MinX = {0:0.0}, MaxX = {1:0.0}, MinY = {2:0.0}, MaxY = {3:0.0}", MinX, MaxX, MinY, MaxY);
+            return string.Format ("MinX = {0:E03}, MaxX = {1:E03}, MinY = {2:0.0}, MaxY = {3:0.0}", MinX, MaxX, MinY, MaxY);
         }
     }
 }

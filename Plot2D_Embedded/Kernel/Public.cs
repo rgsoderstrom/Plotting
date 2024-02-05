@@ -157,8 +157,8 @@ namespace Plot2D_Embedded
             if (YMin >= YMax)
                 throw new Exception ("Plot2D SetAxes: YMin must be less than YMax");
 
-            double ViewportWidth  = Math.Max (XMax - XMin, 0.01);
-            double ViewportHeight = Math.Max (YMax - YMin, 0.01);
+            double ViewportWidth = Math.Max (XMax - XMin, 1e-9); // 0.01);
+            double ViewportHeight = Math.Max (YMax - YMin, 1e-9); // 0.01);
            
             mx =  DrawingWidthWPF  / ViewportWidth;
             my = -DrawingHeightWPF / ViewportHeight;
