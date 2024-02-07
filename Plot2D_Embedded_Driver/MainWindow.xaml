@@ -59,7 +59,7 @@
                 <Button Margin="8,2,8,0" Padding="10,3,10,3" Click="Axes_Click">X,Y Axes</Button>
                 <Button Margin="8,2,8,0" Padding="10,3,10,3" Click="ModAxes_Click">Mod X,Y Axes</Button>
 
-                <Expander BorderBrush="Black" BorderThickness="1" Background="Gainsboro" Margin="8,4,8,0" Padding="10,3,10,3" Header="Basic Objects" IsExpanded="False">
+                <Expander BorderBrush="Black" BorderThickness="1" Background="Gainsboro" Margin="8,4,8,0" Padding="10,3,10,3" Header="Basic Objects" IsExpanded="True">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                         <Button Style="{StaticResource A}" Click="PointButton_Click">Point</Button>
                         <Button Style="{StaticResource A}" Click="LineButton_Click">Line with arrow</Button>
@@ -68,7 +68,7 @@
                         <Button Style="{StaticResource A}" Click="RectangleButton_Click">Rectangle</Button>
                         <Button Style="{StaticResource A}" Click="RotateRectButton_Click" IsEnabled="False" Name="RotateButton">Rotate Rectangle</Button>
                         <Button Style="{StaticResource A}" Click="MoveRectButton_Click" IsEnabled="False" Name="MoveButton">Move Rectangle</Button>
-                        <Button Style="{StaticResource A}" Click="LineViewCurveButton_Click">LineView Curve</Button>
+                        <Button Style="{StaticResource A}" Click="HandKDrillProbButton_Click">HandK Drill Prob</Button>
                         <Button Style="{StaticResource A}" Click="PointViewCurveButton_Click">PointView Curve</Button>
                     </StackPanel>
                 </Expander>
@@ -85,7 +85,7 @@
 
                 <Button Margin="8,2,8,0" Padding="10,3,10,3" Click="Text_Click">Text</Button>
 
-                <Expander BorderBrush="Black" BorderThickness="1" Background="Gainsboro"  Margin="8,4,8,0" Padding="10,3,10,3" Header="Composite Objects" IsExpanded="True">
+                <Expander BorderBrush="Black" BorderThickness="1" Background="Gainsboro"  Margin="8,4,8,0" Padding="10,3,10,3" Header="Composite Objects" IsExpanded="False">
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                         <Button Style="{StaticResource A}" Click="VectorButton_Click">Vector</Button>
                         <Button Style="{StaticResource A}" Click="VectorFieldButton_Click">Vector Field</Button>
