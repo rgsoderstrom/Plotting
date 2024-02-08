@@ -57,21 +57,45 @@ namespace Plot2D_Embedded
             //return;
 
 
+            //*****************************************************************************
 
+            // Adjust ticStep to not give too many or too few tics on axis
 
-            while (numberTics > 10)
+            const int MaxTics = 8;
+            const int MinTics = 3;
+            int stuckCount = 5;
+
+            double d = 5;
+
+            do
             {
-                ticStep *= 2;
-                numberTics = (int) ((max - min) / ticStep);
-            }
+                while (numberTics > MaxTics)
+                {
+                    ticStep *= d;
+                    numberTics = (int)((max - min) / ticStep);
+                    d = d == 2 ? 5 : 2; // alternate between adjusting by a factor of 2 and a factor of 5. 
+                }
 
-            while (numberTics < 3)
-            {
-                ticStep /= 2;
-                numberTics = (int) ((max - min) / ticStep);
-            }
+                d = 5;
 
-             // if list is empty build the whole list
+                while (numberTics < MinTics)
+                {
+                    ticStep /= d;
+                    numberTics = (int)((max - min) / ticStep);
+                    d = d == 2 ? 5 : 2;
+                }
+
+                if (stuckCount-- == 0)
+                {
+                    EventLog.WriteLine ("Plot2D tic adjust stuck");
+                    break;
+                }
+
+            } while (numberTics > MaxTics || numberTics < MinTics);
+
+            //****************************************************************************
+
+            // if list is empty build the whole list
             if (values.Count == 0)
             {
                 double NMin = (min - anchor) / ticStep;

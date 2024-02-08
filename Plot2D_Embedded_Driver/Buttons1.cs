@@ -123,11 +123,12 @@ namespace Plot2D_Embedded_Driver
             List<double> t = new List<double> ();
             List<Point> vt = new List<Point> ();
 
-            for (double tt = 0; tt < 20e-6; tt += 0.1e-6)
+            //for (double tt = 0; tt < 20e-6; tt += 0.1e-6)
+            for (double tt = 3.45e-6; tt < 23e-6; tt += 0.1e-6)
                 t.Add (tt);
 
             foreach (double tt in t)
-                vt.Add (new Point (tt * 1e6, A1 * Math.Exp (s1 * tt) + A2 * Math.Exp (s2 * tt)));
+                vt.Add (new Point (23 + tt * 1e6, A1 * Math.Exp (s1 * tt) + A2 * Math.Exp (s2 * tt)));
 
             try
             {
