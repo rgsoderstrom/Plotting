@@ -334,9 +334,50 @@ namespace PlottingLib_Driver
         }
 
 
-        void PointCurveButton_Click (object sender, RoutedEventArgs e) 
-        { 
-        
+        //Point CurveFunction (double x) {return new Point (x, x * x - 0.25) + new Vector (3.456, 4.567);}
+        Point CurveFunction (double x) {return new Point (x, x * x);}
+
+        private void PointCurveButton_Click (object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SetCurrentFigureTo2D ();
+                Plot2D figure = (CurrentFigure as Plot2D);
+
+                List<Point> parabola = new List<Point> ();
+
+                //for (double x = -2; x<=2; x+=0.125)
+                //    parabola.Add (CurveFunction (x));
+
+                for (double x = -0.0000002; x<=0.0000002; x+=0.00000000125)
+                    parabola.Add (CurveFunction (x));
+
+
+                LineView h = new LineView (parabola);
+                h.LineStyle = LineView.DrawingStyle.Dashes;
+                h.Color = Brushes.LightSteelBlue;
+
+             //   h.ArrowheadAtStart = true;
+              //  h.ArrowheadAtEnd = true;
+
+                h.Thickness = 3;
+
+                double l = (parabola [1] - parabola [0]).Length;
+                h.ArrowheadScaleFactor = l / 400; // 1/300.0;
+
+                figure.Plot (h);
+                //figure.RectangularGridOn = true;
+                //figure.DataAreaTitle = "Title Here";
+                //figure.XAxisLabel = "X Label Here";
+                //figure.YAxisLabel = "Y Label Here";
+              //  figure.AxesEqual = true;
+              //  figure.AxesTight = false;
+            }
+
+            catch (Exception ex)
+            {
+                Print (string.Format ("Exception: {0}", ex.Message));
+            }
         }
 
         //**********************************************************************************
