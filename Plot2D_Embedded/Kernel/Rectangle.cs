@@ -54,8 +54,10 @@ namespace Plot2D_Embedded
         {
             if (Empty)
             {
-                double xPad = double.Epsilon; // 0; // (other.X == 0 ? 0.01 : 0.01 * Math.Abs (other.X));
-                double yPad = double.Epsilon; // 0; // (other.Y == 0 ? 0.01 : 0.01 * Math.Abs (other.Y));
+                double xPad = (other.X == 0 ? 0.01 : 0.01 * Math.Abs (other.X));
+                double yPad = (other.Y == 0 ? 0.01 : 0.01 * Math.Abs (other.Y));
+                //double xPad = double.Epsilon; // 0; // (other.X == 0 ? 0.01 : 0.01 * Math.Abs (other.X));
+                //double yPad = double.Epsilon; // 0; // (other.Y == 0 ? 0.01 : 0.01 * Math.Abs (other.Y));
 
                 left   = other.X - xPad;
                 right  = other.X + xPad;
