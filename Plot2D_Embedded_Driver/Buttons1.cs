@@ -29,7 +29,8 @@ namespace Plot2D_Embedded_Driver
 
         private void LineButton_Click (object sender, RoutedEventArgs e)
         {
-            LineView lv = new LineView (new Point (-1, 1), new Point (3, 4));
+            //LineView lv = new LineView (new Point (-1, 1), new Point (3, 4));
+            LineView lv = new LineView (new Point (0, 100), new Point (1000, 100));
 
             figure.Plot (lv);
             lv.ArrowheadAtEnd = true;
