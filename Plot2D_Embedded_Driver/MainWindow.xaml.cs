@@ -13,6 +13,8 @@ namespace Plot2D_Embedded_Driver
     {
         Random random = new Random ();
 
+        bool WindowIsLoaded = false;
+
         public MainWindow ()
         {
             EventLog.Open (@"..\..\Log.txt", true);
@@ -130,12 +132,62 @@ namespace Plot2D_Embedded_Driver
             figure.PolarGridOn = (bool) (sender as CheckBox).IsChecked;
         }
 
-        private void Equal_Click  (object sender, RoutedEventArgs e) {figure.AxesEqual  = (bool) AxesEqual_Button.IsChecked;}
+        private void Equal_Click  (object sender, RoutedEventArgs e) 
+        {
+            figure.AxesEqual = (bool) AxesEqual_Button.IsChecked;            
+            ZoomBoth_Button.IsChecked = true;
+        }
+
         private void Tight_Click  (object sender, RoutedEventArgs e) {figure.AxesTight  = (bool) AxesTight_Button.IsChecked;}
         private void Frozen_Click (object sender, RoutedEventArgs e) {figure.AxesFrozen = (bool) AxesFrozen_Button.IsChecked;}
         private void Hold_Click   (object sender, RoutedEventArgs e) {figure.Hold       = (bool) PlotHold_Button.IsChecked;}
 
-        private void MouseEnable_Click (object sender, RoutedEventArgs args) {figure.MouseEnabled = (bool) MouseEnable_Button.IsChecked;}
+        private void MouseEnable_Click (object sender, RoutedEventArgs args) 
+        {
+            figure.MouseEnabled = (bool) MouseEnable_Button.IsChecked;
+
+            // enable or disable zoom buttons
+            ZoomBoth_Button.IsEnabled = (bool) MouseEnable_Button.IsChecked;
+            ZoomX_Button.IsEnabled    = (bool) MouseEnable_Button.IsChecked;
+            ZoomY_Button.IsEnabled    = (bool) MouseEnable_Button.IsChecked;
+        }
+
+        private void ZoomOptionButton_Checked (object sender, RoutedEventArgs e)
+        {
+
+            if (sender is RadioButton rb)
+            {
+                string tag = rb.Tag as string;
+
+                if (WindowIsLoaded)
+                { 
+                    switch (tag)
+                    {
+                        case "Zoom_Both":
+                            figure.ZoomX = true;
+                            figure.ZoomY = true;
+                            break;
+
+                        case "Zoom_X":
+                            figure.AxesEqual = false;
+                            figure.ZoomX = true;
+                            figure.ZoomY = false;
+                            break;
+
+                        case "Zoom_Y":
+                            figure.AxesEqual = false;
+                            figure.ZoomX = false;
+                            figure.ZoomY = true;
+                            break;
+
+                        default:
+                            figure.ZoomX = true;
+                            figure.ZoomY = true;
+                            break;
+                    }
+                }
+            }
+        }
 
         private void CheckButtonStates ()
         {
@@ -169,6 +221,8 @@ namespace Plot2D_Embedded_Driver
 
         private void Window_Loaded (object sender, RoutedEventArgs e)
         {
+            WindowIsLoaded = true;
+
             Title = "Plot2D Kernel Test Driver";
             figure.DataAreaTitle = "Plot2D Kernel";
 
@@ -186,16 +240,23 @@ namespace Plot2D_Embedded_Driver
 
         internal void Print (string str)
         {
-            lock (TextBoxLock)
-            {
-                TxtBox.Text += string.Format ("{0}: ", lineNumber++);
-                TxtBox.Text += str;
-                TxtBox.Text += "\n";
-                TxtBox.ScrollToEnd ();
+            try
+            { 
+                lock (TextBoxLock)
+                {
+                    TxtBox.Text += string.Format ("{0}: ", lineNumber++);
+                    TxtBox.Text += str;
+                    TxtBox.Text += "\n";
+                    TxtBox.ScrollToEnd ();
+                }
+
+                EventLog.WriteLine (str);
             }
 
-            EventLog.WriteLine (str);
+            catch (Exception ex)
+            {
+                EventLog.WriteLine ("Exception " + ex.Message + " While printing: " + str);
+            }
         }
-
     }
 }

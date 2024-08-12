@@ -50,9 +50,20 @@
                     </StackPanel>
                 </GroupBox>
 
+                
+                
+                
                 <GroupBox Header="Mouse Functions" BorderThickness="2" BorderBrush="Black" Margin="8,2,8,0">
-                    <CheckBox Style="{StaticResource B}" Name="MouseEnable_Button"  Click="MouseEnable_Click">Mouse Enabled</CheckBox>
+                    <StackPanel Orientation="Vertical">
+                        <CheckBox Style="{StaticResource B}" Name="MouseEnable_Button" Click="MouseEnable_Click">Mouse Enabled</CheckBox>
+                        <RadioButton Margin="8,2,8,0"        Name="ZoomBoth_Button"    Tag="Zoom_Both" Checked="ZoomOptionButton_Checked" IsChecked="True">Zoom Both</RadioButton>
+                        <RadioButton Margin="8,2,8,0"        Name="ZoomX_Button"       Tag="Zoom_X"    Checked="ZoomOptionButton_Checked">Zoom X Only</RadioButton>
+                        <RadioButton Margin="8,2,8,0"        Name="ZoomY_Button"       Tag="Zoom_Y"    Checked="ZoomOptionButton_Checked">Zoom Y Only</RadioButton>
+                    </StackPanel>
                 </GroupBox>
+                
+                
+                
 
                 <Button Margin="8,4,8,0" Padding="10,3,10,3" Click="ClearButton_Click">Clear</Button>
                 <Button Margin="8,2,8,0" Padding="10,3,10,3" Click="Refresh_Click">Refresh</Button>

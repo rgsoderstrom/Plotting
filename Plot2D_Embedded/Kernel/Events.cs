@@ -146,7 +146,7 @@ namespace Plot2D_Embedded
         // zooming
         //
 
-        bool zoomAboutMousePointer = true;
+        bool zoomAboutMousePointer = true; // compile-time option, not user changeable
 
         public void Zoom (double factor) // zoom in or out under program control rather than mouse wheel
         {
@@ -162,6 +162,17 @@ namespace Plot2D_Embedded
         }
 
         //********************************************************************************************************************
+
+        private bool zoomX = true, zoomY = true;
+
+        public bool ZoomX 
+        {get {return zoomX;}
+         set {zoomX = value;}}
+
+        public bool ZoomY 
+        {get {return zoomY;}
+         set {zoomY = value;}}
+
 
         protected void InnerCanvas_MouseWheel (object sender, MouseWheelEventArgs args)
         {
@@ -181,10 +192,13 @@ namespace Plot2D_Embedded
                     Point pointerCanvasCoords = args.GetPosition (InnerCanvas);
                     Point pointerWorldCoords = CanvasToWorld.Transform (pointerCanvasCoords);
 
-                    double newCenterX = pointerWorldCoords.X - 1/scale * (pointerWorldCoords.X - Viewport.Center.X);
-                    double newCenterY = pointerWorldCoords.Y - 1/scale * (pointerWorldCoords.Y - Viewport.Center.Y);
+                    double XScale = ZoomX ? scale : 1;
+                    double YScale = ZoomY ? scale : 1;
 
-                    Viewport.Scale (scale, scale);
+                    double newCenterX = pointerWorldCoords.X - 1/XScale * (pointerWorldCoords.X - Viewport.Center.X);
+                    double newCenterY = pointerWorldCoords.Y - 1/YScale * (pointerWorldCoords.Y - Viewport.Center.Y);
+
+                    Viewport.Scale (XScale, YScale);
                     Viewport.MoveTo (new Point (newCenterX, newCenterY));
                 }
                 else
