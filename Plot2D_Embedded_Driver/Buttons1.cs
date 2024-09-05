@@ -27,15 +27,47 @@ namespace Plot2D_Embedded_Driver
            // figure.RectangularGridOn = true;
         }
 
+
         private void LineButton_Click (object sender, RoutedEventArgs e)
         {
             //LineView lv = new LineView (new Point (-1, 1), new Point (3, 4));
-            LineView lv = new LineView (new Point (0, 100), new Point (1000, 100));
+            //LineView lv = new LineView (new Point (10, 100), new Point (1000, 100));
+            //LineView lv = new LineView (new Point (10, 100), new Point (10, 1000));
+            LineView lv = new LineView (new Point (10, 100), new Point (10, 100.02));
+
+
+
+            //int BatchSize = 1024;
+            //double SampleRate = 100000;
+            //double Frequency = 19000;
+
+            //List<Point> Samples = new List<Point> ();
+
+            //Samples.Clear ();
+
+            //double time = 0;
+
+            //for (int i = 0; i<BatchSize; i++, time+=1/SampleRate)
+            //{
+            //    double s = 0;
+
+            //    for (int k = 0; k<1; k++)
+            //    {
+            //        double ampl = k == 0 ? 1 : 0.1;
+            //        s += ampl * 500 * Math.Sin (2 * Math.PI * Frequency * time);
+            //    }
+
+            //    Samples.Add (new Point (time, random.NextDouble () + 512 + s));
+            //}
+
+            //LineView lv = new LineView (Samples);
+
+
 
             figure.Plot (lv);
-            lv.ArrowheadAtEnd = true;
+          //  lv.ArrowheadAtEnd = true;
             lv.Color = Brushes.DarkBlue;
-            figure.AxesEqual = true;
+          //  figure.AxesEqual = true;
             figure.RectangularGridOn = true;
         }
 

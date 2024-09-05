@@ -39,10 +39,10 @@ namespace Plot2D_Embedded
         {
             if (Empty)
             {
-                 left   = other.Left;
-                 right  = other.Right;
-                 top    = other.Top;
-                 bottom = other.Bottom;
+                 left   = other.left;
+                 right  = other.right;
+                 top    = other.top;
+                 bottom = other.bottom;
             }
             else
                 base.Union (other);
@@ -54,15 +54,10 @@ namespace Plot2D_Embedded
         {
             if (Empty)
             {
-                double xPad = (other.X == 0 ? 0.01 : 0.01 * Math.Abs (other.X));
-                double yPad = (other.Y == 0 ? 0.01 : 0.01 * Math.Abs (other.Y));
-                //double xPad = double.Epsilon; // 0; // (other.X == 0 ? 0.01 : 0.01 * Math.Abs (other.X));
-                //double yPad = double.Epsilon; // 0; // (other.Y == 0 ? 0.01 : 0.01 * Math.Abs (other.Y));
-
-                left   = other.X - xPad;
-                right  = other.X + xPad;
-                bottom = other.Y - yPad;
-                top    = other.Y + yPad;
+                left   = other.X;
+                right  = other.X;
+                bottom = other.Y;
+                top    = other.Y;
             }
             else
                 base.Union (other);
@@ -78,10 +73,10 @@ namespace Plot2D_Embedded
         
         public void Clear ()
         {
-            left   = -1e-9;
-            right  =  1e-9;
-            bottom = -1e-9;
-            top    =  1e-9;
+            left   = 0;//-1e-9;
+            right  = 0;// 1e-9;
+            bottom = 0;//-1e-9;
+            top    = 0;// 1e-9;
 
             Empty = true;
         }
@@ -244,33 +239,35 @@ namespace Plot2D_Embedded
         protected double bottom; // minimum Y
         protected double top;
 
-        public double Left   {get {return left;}}
-        public double Right  {get {return right;}}
-        public double Bottom {get {return bottom;}}
-        public double Top    {get {return top;}}
+        const double Z = 1;
+
+        public double Left   {get {return left == right ? left - Z   : left;}}
+        public double Right  {get {return left == right ? right + Z  : right;}}
+        public double Bottom {get {return top == bottom ? bottom - Z : bottom;}}
+        public double Top    {get {return top == bottom ? top + Z    : top;}}
 
         public Point TLC {get {return new Point (Left,  Top);}}
         public Point TRC {get {return new Point (Right, Top);}}
         public Point BRC {get {return new Point (Right, Bottom);}}
         public Point BLC {get {return new Point (Left,  Bottom);}}
 
-        public double MinX {get {return left;}}
-        public double MaxX {get {return right;}}
-        public double MinY {get {return bottom;}}
-        public double MaxY {get {return top;}}
+        public double MinX {get {return Left;}}
+        public double MaxX {get {return Right;}}
+        public double MinY {get {return Bottom;}}
+        public double MaxY {get {return Top;}}
 
-        public double Width  {get {return right - left;}}
-        public double Height {get {return top - bottom;}}
+        public double Width  {get {return Right - Left;}}
+        public double Height {get {return Top - Bottom;}}
 
         public double AspectRatio {get {return Width / Height;}}
 
-        public Point Center {get {return new Point ((left + right) / 2, (top + bottom) / 2);}}
+        public Point Center {get {return new Point ((Left + Right) / 2, (Top + Bottom) / 2);}}
 
         public bool Contains (Point pt)
         {
             if (pt.X < Left)   return false;
             if (pt.X > Right)  return false;
-            if (pt.Y < bottom) return false;
+            if (pt.Y < Bottom) return false;
             if (pt.Y > Top)    return false;
 
             return true;
@@ -298,7 +295,7 @@ namespace Plot2D_Embedded
 
         public CartesianRect (CartesianRect src)
         {
-            left   = src.Left;
+            left   = src.left;
             right  = src.right;
             top    = src.top;
             bottom = src.bottom;
@@ -306,10 +303,10 @@ namespace Plot2D_Embedded
 
         public void Union (CartesianRect other)
         {
-            left   = Math.Min (Left,   other.Left);
-            right  = Math.Max (Right,  other.right);
-            top    = Math.Max (Top,    other.top);
-            bottom = Math.Min (Bottom, other.bottom);
+            left   = Math.Min (left,   other.left);
+            right  = Math.Max (right,  other.right);
+            top    = Math.Max (top,    other.top);
+            bottom = Math.Min (bottom, other.bottom);
         }
 
         public void MoveBy (Vector delta)
@@ -333,10 +330,10 @@ namespace Plot2D_Embedded
 
         public void Union (Point other)
         {
-            left   = Math.Min (Left,   other.X);
-            right  = Math.Max (Right,  other.X);
-            top    = Math.Max (Top,    other.Y);
-            bottom = Math.Min (Bottom, other.Y);
+            left   = Math.Min (left,   other.X);
+            right  = Math.Max (right,  other.X);
+            top    = Math.Max (top,    other.Y);
+            bottom = Math.Min (bottom, other.Y);
         }
 
         public void Offset (double dx, double dy)
