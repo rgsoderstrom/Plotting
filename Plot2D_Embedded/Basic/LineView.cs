@@ -51,6 +51,28 @@ namespace Plot2D_Embedded
         {
         }
 
+        //********************************************************************
+
+        static private List<Point> FromDoubles (List<double> yList)
+        {
+            List<Point> points = new List<Point> ();
+            double x = 0;
+
+            foreach (double y in yList)
+            {
+                points.Add (new Point (x, y));
+                x += 1;
+            }    
+               
+            return points;
+        }
+
+        public LineView (List<double> yValues) : this (FromDoubles (yValues))
+        {
+        }
+
+        //********************************************************************
+
         public LineView (List<Point> pts)
         {
             if (pts.Count < 2)
