@@ -165,14 +165,25 @@ namespace Plot2D_Embedded
 
         private bool zoomX = true, zoomY = true;
 
-        public bool ZoomX 
+        public bool ZoomX
         {get {return zoomX;}
          set {zoomX = value;}}
 
-        public bool ZoomY 
+        public bool ZoomY
         {get {return zoomY;}
          set {zoomY = value;}}
 
+        public bool ZoomXOnly 
+        {get {return zoomX;}
+         set {zoomX = value; if (value == true) zoomY = false;}}
+
+        public bool ZoomYOnly 
+        {get {return zoomY;}
+         set {zoomY = value; if (value == true) zoomX = false;}}
+
+        public bool ZoomBoth 
+        {get {return zoomX & zoomY;}
+         set {zoomX = zoomY = value;}}
 
         protected void InnerCanvas_MouseWheel (object sender, MouseWheelEventArgs args)
         {
