@@ -38,43 +38,18 @@ namespace Plot2D_Embedded_Driver
             List<double> d = new List<double> ();
 
             for (int i=0; i<500; i++)
-                d.Add (10 * Math.Sin (2 * 3.14 * i / 500));
+                d.Add (100 * Math.Sin (2 * 3.14 * i / 500));
 
             LineView lv = new LineView (d);
 
-
-            //int BatchSize = 1024;
-            //double SampleRate = 100000;
-            //double Frequency = 19000;
-
-            //List<Point> Samples = new List<Point> ();
-
-            //Samples.Clear ();
-
-            //double time = 0;
-
-            //for (int i = 0; i<BatchSize; i++, time+=1/SampleRate)
-            //{
-            //    double s = 0;
-
-            //    for (int k = 0; k<1; k++)
-            //    {
-            //        double ampl = k == 0 ? 1 : 0.1;
-            //        s += ampl * 500 * Math.Sin (2 * Math.PI * Frequency * time);
-            //    }
-
-            //    Samples.Add (new Point (time, random.NextDouble () + 512 + s));
-            //}
-
-            //LineView lv = new LineView (Samples);
-
-
-
             figure.Plot (lv);
-          //  lv.ArrowheadAtEnd = true;
+            lv.ArrowheadAtEnd = true;
+            lv.ArrowheadScaleFactor = 10;
             lv.Color = Brushes.DarkBlue;
-          //  figure.AxesEqual = true;
+            figure.AxesEqual = true;
             figure.RectangularGridOn = true;
+
+            figure.YAxisLabel = "Y Label";
         }
 
         private void CircleButton_Click (object sender, RoutedEventArgs e)
