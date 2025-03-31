@@ -30,15 +30,16 @@ namespace Plot2D_Embedded_Driver
 
         private void LineButton_Click (object sender, RoutedEventArgs e)
         {
-            //LineView lv = new LineView (new Point (-1, 1), new Point (3, 4));
-            //LineView lv = new LineView (new Point (10, 100), new Point (1000, 100));
-            //LineView lv = new LineView (new Point (10, 100), new Point (10, 1000));
-            //LineView lv = new LineView (new Point (10, 100), new Point (10, 100.02));
+            //List<double> d = new List<double> ();
 
-            List<double> d = new List<double> ();
+            //for (int i=0; i<500; i++)
+            //    d.Add (100 * Math.Sin (2 * 3.14 * i / 500));
+
+            double [] d = new double [500];
 
             for (int i=0; i<500; i++)
-                d.Add (100 * Math.Sin (2 * 3.14 * i / 500));
+                d [i] = (100 * Math.Sin (2 * 3.14 * 2 * i / 500));
+
 
             LineView lv = new LineView (d);
 
