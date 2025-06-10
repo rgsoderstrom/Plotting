@@ -81,6 +81,22 @@ namespace Plot2D_Embedded
             return points;
         }
 
+        static private List<Point> FromTwoDoubles (IList<double> xList, IList<double> yList)
+        {
+            if (xList.Count != yList.Count)
+                throw new Exception ("LineView: x and y lists must be same length");
+
+            List<Point> points = new List<Point> ();
+            int count = xList.Count;
+
+            for (int i=0; i<count; i++)
+            {
+                points.Add (new Point (xList [i], yList [i]));
+            }    
+               
+            return points;
+        }
+
         static private List<Point> FromInt16 (IList<Int16> yList, int fractBits)
         {
             double divisor = 1 << fractBits;
@@ -101,6 +117,8 @@ namespace Plot2D_Embedded
 
         public LineView (List<Int16>  yValues, int fractionBits = 0) : this (FromInt16 (yValues, fractionBits)) {}
         public LineView (Int16 []     yValues, int fractionBits = 0) : this (FromInt16 (yValues, fractionBits)) {}
+
+        public LineView (List<double> xValues, List<double> yValues) : this (FromTwoDoubles (xValues, yValues)) {}
 
         //********************************************************************
 
