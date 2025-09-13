@@ -112,9 +112,25 @@ namespace Plot2D_Embedded
             return points;
         }
 
+        static private List<Point> FromInt32 (IList<Int32> yList, int fractBits)
+        {
+            double divisor = 1 << fractBits;
+            List<Point> points = new List<Point> ();
+            double x = 0;
+
+            foreach (double y in yList)
+            {
+                points.Add (new Point (x, y / divisor));
+                x += 1;
+            }
+
+            return points;
+        }
+
         public LineView (List<double> yValues) : this (FromDoubles (yValues)) {}
         public LineView (double []    yValues) : this (FromDoubles (yValues)) {}
 
+        public LineView (List<Int32>  yValues, int fractionBits = 0) : this (FromInt32 (yValues, fractionBits)) {}
         public LineView (List<Int16>  yValues, int fractionBits = 0) : this (FromInt16 (yValues, fractionBits)) {}
         public LineView (Int16 []     yValues, int fractionBits = 0) : this (FromInt16 (yValues, fractionBits)) {}
 
